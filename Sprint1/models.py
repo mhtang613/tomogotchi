@@ -1,6 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+ 
+# Messages Model
+class Messages(model.Model):
+    # Sender:
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Recipient:
+    house = models.ManyToOne(House, on_delete=models.CASCADE)
+    # Text:
+    text    = models.CharField(max_length=100)
+    # Date:
+    date    = models.DateTimeField()
+
 
 # Items Model
 class Items(model.Model):
@@ -17,7 +29,12 @@ class Furniture(model.Model):
     # image
     picture = models.FileField(blank=True)
     # hitbox
-    # locations
+    hitboxX = models.IntegerField()
+    hitboxY = models.IntegerField()
+    # location
+    locationX = models.IntegerField()
+    locationY = models.IntegerField()
+
 
 # House Model (The Player's House)
 class House(model.Models):
@@ -26,8 +43,11 @@ class House(model.Models):
     # furniture (displayed furniture)
     furniturePlaced = models.ManyToManyField(Furniture, on_delete=models.PROTECT)
     # owned furniture
+    furnitureOwned = models.ManyToManyField(Furniture, on_delete=models.PROTECT)
     # messages
+    messages = models.ManyToOneField(Messages, on_delete=models.PROTECT)
     # visitors:
+    visitors = models.ManyToManyField(User, related_name="visitors")
 
 # Player Model: (The Player's data)
 class Player(model.Models):
@@ -44,14 +64,3 @@ class Player(model.Models):
     picture = models.FileField(blank=True)
     hunger = models.IntegerField()
     mood = models.IntegerField()
-    
-# Messages Model
-class Messages(model.Model):
-    # Sender:
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # Recipient:
-    house = models.ManyToOne(House, on_delete=models.CASCADE)
-    # Text:
-    text    = models.CharField(max_length=100)
-    # Date:
-    date    = models.DateTimeField()
