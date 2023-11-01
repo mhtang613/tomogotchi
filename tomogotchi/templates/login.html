@@ -15,7 +15,8 @@
             <img src={% static 'images/backgrounds/loginBg.jpeg' %} alt="Background Image" class="bg-image">
         </div>
         <div class="login-button-container">
-            <a href="PUT THE OAUTH URL HERE" class="login-button">Login</a>
+            {% comment %} <a href="PUT THE OAUTH URL HERE" class="login-button">Login</a> {% endcomment %}
+            <a href="{% url "social:begin" "google-oauth2" %}" class="login-button">Google OAuth</a>
         </div>
 	</body>
 </html>
