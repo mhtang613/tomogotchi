@@ -12,5 +12,5 @@
     * Implement Furniture Display in home (not editing yet)
     * Implement Sending Friend requests
     * Implement Accepting Friend requests & friend list
-    * Implement Visiting Friends' Homes
+    * Implement Visiting Friends' Homes (without your tomogotchi sprite)
 
