@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from configparser import ConfigParser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+CONFIG = ConfigParser()
+CONFIG.read(BASE_DIR / "config.ini")
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'tomogotchi',
 ]
 
@@ -61,6 +66,8 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -122,3 +129,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ----- GOOGLE AUTHENTICATOR STUFF HERE: --------
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = CONFIG.get("GoogleOAuth2", "client_id")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = CONFIG.get("GoogleOAuth2", "client_secret")
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'prompt': 'select_account'}
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['fullname', 'picture']
+
+ADDRBOOK_TITLE = CONFIG.get("Addrbook", "title")
+ADDRBOOK_USERS = CONFIG.get("Addrbook", "users")
+
+# Used by the @login_required decorator to redirect to the login action
+LOGIN_URL = '/oauth/login/google-oauth2/'
+
+# Default URL to redirect to after a user logs in.
+LOGIN_REDIRECT_URL = '/'
