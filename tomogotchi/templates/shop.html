@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    {% load static %}
+    <link href="{% static 'shop.css' %}" rel="stylesheet" type="text/css">
+    {% block javascript %} {% endblock %}
+    <script>
+        function cellSelected() {
+                alert("Selected item/furniture"); 
+        }
+    </script>
+    <title> The Shop! </title>
+</head>
+<body>
+    <div class="container">
+        <div class="left-half">
+            <div class="title">Item</div>
+            <div class="grid">
+                {% for item in item_list %}
+                    <div class="cell" onclick="cellSelected()">item</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="right-half">
+            <div class="title">Furniture</div>
+            <div class="grid">
+                {% for furniture in furniture_list %}
+                    <div class="cell" onclick="cellSelected()">furniture</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="button">
+            <button>
+                Buy!
+            </button>
+        </div>
+    </div>
+</body>
+</html>
