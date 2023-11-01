@@ -35,12 +35,12 @@
     <body>
         <!-- The sidebar -->
         <div class="sidebar" id="sidebar_left">
-            left
+            {% block leftside %}
+            {% endblock %}
         </div>
 
         <div class="container">
             <div id="header">
-                header
                 {% block header %}
                 {% endblock %}
             </div>
@@ -51,7 +51,6 @@
                 </div>
             </div>
             <div id="footer">
-                footer
                 {% block footer %}
                 {% endblock %}
             </div>
@@ -59,7 +58,8 @@
 
         <!-- The sidebar -->
         <div class="sidebar" id="sidebar_right">
-            right
+            {% block rightside %}
+            {% endblock %}
         </div>
         
     </body>

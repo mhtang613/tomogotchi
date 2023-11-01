@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 def test_html(request):
     context = {}
-    return render(request, 'base.html', context)
+    return render(request, 'other_home.html', context)
