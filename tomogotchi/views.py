@@ -19,8 +19,13 @@ import json
 
 def test_html(request):
     context = {}
+    return render(request, 'other_home.html', context)
 
-    return render(request, 'base.html', context)
+def login(request):
+    context = {}
+    return render(request, "login.html", context)
+
+    
 
 # Params : player - an instance of the Player model
 # Returns : nothing
@@ -54,4 +59,3 @@ def shop(request):
     context = {'furniture_list' : furniture_list, 'item_list' : item_list}
     return render(request, 'shop.html', context)
     
-
