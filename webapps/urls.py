@@ -19,4 +19,8 @@ from tomogotchi import views
 
 urlpatterns = [
     path('test', views.test_html, name='test'),
+    path('', views.login_action, name='login'),
+    path('my-house', views.my_house, name='my-house'),
+    path('friends-house', views.friends_house, name='friends-house'),
+    path('shop', views.shop, name='shop'),
 ]
