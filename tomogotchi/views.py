@@ -19,6 +19,7 @@ import json
 
 def test_html(request):
     context = {}
+
     return render(request, 'base.html', context)
 
 # Params : player - an instance of the Player model
@@ -52,3 +53,4 @@ def my_house(request):
     return render(request, 'tomogotchi/my_house.html', context)
 
     
+

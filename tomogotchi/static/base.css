@@ -1,28 +1,35 @@
 /* Base CSS goes here */
+body {
+    font-family: system-ui;
+}
 
 .sidebar {
     height: 100%; /* 100% Full-height */
-    width: 15vw; /* 0 width - changeable this with JavaScript */
+    width: 20vw; /* 0 width - changeable this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
-    background-color: #ffb4d2; /* Black*/
-    padding-top: 2vh; /* Place content 2% viewport height from the edges */
     /* transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
 
-#sidebar_right {
-    top: 0;
-    left: 0;
+.sidebar-container {
+    padding: 1vh;
+    border: #b4e7ff solid 1vh;
+    height: 96vh;
 }
 
 #sidebar_left {
     top: 0;
-    left: 85vw;
+    left: 0;
+}
+
+#sidebar_right {
+    top: 0;
+    left: 80vw;
 }
 
 .container {
-    margin-left: 15vw;
-    margin-right: 15vw;
+    margin-left: 20vw;
+    margin-right: 20vw;
 }
 
 #room {
@@ -41,6 +48,7 @@
     border-style: dotted;
     border-width: 0.5vh;
     padding: 0vh;
+    overflow: hidden;
 }
 
 #grid-container > .gridlines {
@@ -49,7 +57,6 @@
     border-color: pink;
     border-style: dotted;
     border-width: 0.1vh;
-    text-align: center;
 }
 
 #grid-container > .gridlines:hover {
@@ -58,4 +65,62 @@
 
 .item1 {
     grid-area: 2 / 1 / span 2 / span 3;
+    text-align: center;
+}
+
+#player-info {
+    height: 9vh;
+    width: 100%;
+    outline-offset: 1vh;
+    outline: #b4e7ff solid 1vh;
+}
+
+#message-area {
+    height: 80vh;
+    width: 100%;
+    margin-top: 3vh;
+}
+
+.label {
+    text-decoration: underline;
+    font-size: large;
+    text-align: center;
+}
+
+#messages-box {
+    margin-top: 1vh;
+    border: pink solid 0.5vh;
+    padding: 0.5vh;
+    height: 100%;
+    width: 100%;
+}
+
+tbody {
+    vertical-align: bottom;
+}
+
+#messages-list {
+    height: 74vh;
+    vertical-align: bottom;
+}
+
+input {
+    width: 95%;
+    margin-top: 1vh;
+}
+
+#search-friend-input {
+    width: 90%;
+}
+
+#friends-list {
+    height: 100%;
+    display: grid;
+    align-content: baseline;
+    grid-template-columns: auto;
+    gap: 0.5vh;
+    overflow: hidden;
+    margin-top: 2vh;
+    border: pink solid 0.5vh;
+    padding: 0.5vh;
 }
