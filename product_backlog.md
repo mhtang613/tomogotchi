@@ -11,7 +11,7 @@
     * Furniture model - This contains all of the available furniture items, including a picture, dimensions, and location in a house.
     * Messages model - This contains all of the messages sent at all houses, including which house it was sent at and the sender.
 3. Visiting houses using HTML
-    * Each house will display the user’s placed furniture and a message boar and the current user’s friend list.
+    * Each house will display the user’s placed furniture and a message board and the current user’s friend list.
     * Each own house will also have links to editing
     * Users can visit their friend’s houses by clicking on links to their house from the displayed friend’s list.
 4. Interacting with others using WebSockets and JavaScript
