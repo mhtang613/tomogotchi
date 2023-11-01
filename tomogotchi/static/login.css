@@ -1,0 +1,37 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1; /* Places the image below the login button */
+}
+
+.bg-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Ensures the image covers the entire viewport */
+}
+
+.login-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* To align the button 2/3rds down */
+    height: 66.66%; /* 2/3rds of the viewport height */
+    width: 100%;
+}
+
+.login-button {
+    padding: 10px 20px;
+    background-color: #007BFF; 
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+}

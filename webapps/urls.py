@@ -18,5 +18,6 @@ from django.urls import path
 from tomogotchi import views
 
 urlpatterns = [
+    path('', views.login, name="login"),
     path('test', views.test_html, name='test'),
 ]
