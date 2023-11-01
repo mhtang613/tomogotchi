@@ -43,18 +43,19 @@ def edit_username(request):
     if 'username' not in request.POST or not request.POST['username']:
         context['error'] = True
         context['error_message'] = 'You must enter text to post.'
-        return render(request, 'tomogotchi/own_house.html', context)
+        return render(request, 'own_home.html', context)
     user_id = request.user
     player = get_object_or_404(Player, user_id=user_id)
     player.name = request.POST['username']
 
-    return redirect('view-own-house')
+    return redirect('view-own-home')
 
 
 
-# view your own house
-def my_house(request):
-    context = {}
-    return render(request, 'tomogotchi/my_house.html', context)
-
+def shop(request):
+    # todo: fill in context with the Items and Furniture models
+    furniture_list = [i for i in range(30)]
+    item_list = [i for i in range(30)]
+    context = {'furniture_list' : furniture_list, 'item_list' : item_list}
+    return render(request, 'shop.html', context)
     
