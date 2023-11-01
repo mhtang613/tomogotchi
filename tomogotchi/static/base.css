@@ -1,1 +1,61 @@
 /* Base CSS goes here */
+
+.sidebar {
+    height: 100%; /* 100% Full-height */
+    width: 15vw; /* 0 width - changeable this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    background-color: #ffb4d2; /* Black*/
+    padding-top: 2vh; /* Place content 2% viewport height from the edges */
+    /* transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+#sidebar_right {
+    top: 0;
+    left: 0;
+}
+
+#sidebar_left {
+    top: 0;
+    left: 85vw;
+}
+
+.container {
+    margin-left: 15vw;
+    margin-right: 15vw;
+}
+
+#room {
+    height: 80vh;
+}
+
+#grid-container {
+    height: 100%;
+    height: 100%;
+    display: grid;
+    align-content: stretch;
+    grid-template-columns: repeat(20, 5%);
+    grid-template-rows: repeat(20, 5%);
+    gap: 0vh;
+    border-color: pink;
+    border-style: dotted;
+    border-width: 0.5vh;
+    padding: 0vh;
+}
+
+#grid-container > .gridlines {
+    width: auto;
+    height: auto;
+    border-color: pink;
+    border-style: dotted;
+    border-width: 0.1vh;
+    text-align: center;
+}
+
+#grid-container > .gridlines:hover {
+    background-color: aquamarine;
+}
+
+.item1 {
+    grid-area: 2 / 1 / span 2 / span 3;
+}

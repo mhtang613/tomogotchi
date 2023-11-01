@@ -1,1 +1,66 @@
 <!-- HTML base template here -->
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <link href="{% static 'base.css' %}" rel="stylesheet" type="text/css">
+        {% block javascript %} {% endblock %}
+        <script>
+            function displayGrid() {
+                grid = document.getElementById("grid-container");
+                for (i = grid.childElementCount; i < 400; i++) {
+                    let new_elem = document.createElement("div");
+                    new_elem.setAttribute("class", "gridlines");
+                    grid.append(new_elem);
+                }
+            }
+            function hideGrid() {
+                grid = document.getElementById("grid-container");
+                let index = 0;
+                let original_cnt = grid.childElementCount;
+                for (i = 0; i < original_cnt; i++) {
+                    let child = grid.children[index];
+                    if (child.getAttribute("class") == "gridlines") {
+                        child.remove()
+                    } else {
+                        index++;
+                    }
+                }
+            }
+        </script>
+        <title> Tomogotchi </title>
+    </head>
+
+    <body>
+        <!-- The sidebar -->
+        <div class="sidebar" id="sidebar_left">
+            left
+        </div>
+
+        <div class="container">
+            <div id="header">
+                header
+                {% block header %}
+                {% endblock %}
+            </div>
+            <div id="room">
+                <div id="grid-container">
+                    <!-- Furniture Grid Items Go Here -->
+                    <div class="item1">hi</div>
+                </div>
+            </div>
+            <div id="footer">
+                footer
+                {% block footer %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <!-- The sidebar -->
+        <div class="sidebar" id="sidebar_right">
+            right
+        </div>
+        
+    </body>
+</html>
