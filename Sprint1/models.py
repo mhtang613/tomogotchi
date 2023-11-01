@@ -1,21 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
- 
-# Messages Model
-class Messages(model.Model):
-    # Sender:
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # Recipient:
-    house = models.ManyToOne(House, on_delete=models.CASCADE)
-    # Text:
-    text    = models.CharField(max_length=100)
-    # Date:
-    date    = models.DateTimeField()
-
-
 # Items Model
-class Items(model.Model):
+class Items(models.Model):
     # name
     name = models.CharField(max_length=200)
     # image
@@ -23,7 +10,7 @@ class Items(model.Model):
 
 
 # Furniture Model
-class Furniture(model.Model):
+class Furniture(models.Model):
     # name
     name = models.CharField(max_length=200)
     # image
@@ -35,22 +22,32 @@ class Furniture(model.Model):
     locationX = models.IntegerField()
     locationY = models.IntegerField()
 
-
 # House Model (The Player's House)
-class House(model.Models):
+class House(models.Model):
     # user
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # furniture (displayed furniture)
-    furniturePlaced = models.ManyToManyField(Furniture, on_delete=models.PROTECT)
+    furniturePlaced = models.ManyToManyField(Furniture, related_name="furnitureActive")
     # owned furniture
-    furnitureOwned = models.ManyToManyField(Furniture, on_delete=models.PROTECT)
+    furnitureOwned = models.ManyToManyField(Furniture, related_name="furniture")
     # messages
-    messages = models.ManyToOneField(Messages, on_delete=models.PROTECT)
-    # visitors:
+    # messages = models.ManyToOneField(Messages, on_delete=models.PROTECT, related_name="house") <--- this is a reverse relation from Messages
+    # visitors
     visitors = models.ManyToManyField(User, related_name="visitors")
 
+# Messages Model
+class Messages(models.Model):
+    # Sender:
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Recipient: (ForeignKey => each messages has ONE house, but a house can have many messages)
+    house = models.ForeignKey(House, on_delete=models.CASCADE) 
+    # Text:
+    text = models.CharField(max_length=100)
+    # Date:
+    date = models.DateTimeField()
+
 # Player Model: (The Player's data)
-class Player(model.Models):
+class Player(models.Model):
     # user
     user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="user")
     # house
