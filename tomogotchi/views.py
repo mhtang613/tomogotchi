@@ -19,8 +19,13 @@ import json
 
 def test_html(request):
     context = {}
+    return render(request, 'other_home.html', context)
 
-    return render(request, 'base.html', context)
+def login(request):
+    context = {}
+    return render(request, "login.html", context)
+
+    
 
 # Params : player - an instance of the Player model
 # Returns : nothing
@@ -53,4 +58,3 @@ def my_house(request):
     return render(request, 'tomogotchi/my_house.html', context)
 
     
-
