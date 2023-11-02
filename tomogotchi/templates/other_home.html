@@ -8,7 +8,12 @@
                 Player Name
             </td>
             <td id="edit-name-button">
-                <button> E </button>
+                <form method="POST" action="/edit-username" >
+                    <label id="target_desc" for="target_text">New Target:</label>
+                    <input id="target_text" name="target_text" type="text">
+                    <button type="submit" id="start_button">Start</button>
+                    {% csrf_token %} 
+                </form>
             </td>
         </tr>
     </table>
