@@ -37,6 +37,9 @@ def visit(request, user_id):
     context = {}
     # other_user = get_object_or_404(User, id=user_id)
     # context['house'] = other_user.house
+
+    # Check that users are Mutual Friends
+    # If not, return redirect(reverse('home'))
     context['house'] = {    # example data
         "user": {"player": {"name": "Jeff"}},
         "furniturePlaced": [],
@@ -44,6 +47,34 @@ def visit(request, user_id):
         "visitors": "",
     }        
     return render(request, 'other_home.html', context)
+
+def edit_furniture_page(request):
+    context = {}
+    # furniture_inventory = request.user.house.furnitureOwned
+    # filter by size (big vs smol)
+
+    # example data
+    context['big_list'] = [{'hitboxX': 3*3, 'hitboxY': 2*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 3*3},
+                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 3*3},
+                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 3*3},
+                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 3*3},
+                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
+                           {'hitboxX': 4*3, 'hitboxY': 3*3},
+                           ]
+    context['small_list'] = [{'hitboxX': 2*5, 'hitboxY': 2*5}, 
+                             {'hitboxX': 1*5, 'hitboxY': 2*5}, 
+                             {'hitboxX': 1*5, 'hitboxY': 1*5}]
+    
+    return render(request, 'edit.html', context)
 
 def login(request):
     context = {}

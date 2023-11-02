@@ -33,12 +33,16 @@
             <tr>
                 <td>
                     <a href="{% url 'shop' %}">
-                        <img id="shop" src="{% static 'images/icons/shop-icon.png' %}" width="100">
+                        <div class="icon">
+                            <img id="shop" src="{% static 'images/icons/shop-icon.png' %}" width="50">
+                        </div>
                     </a>
                 </td>
                 <td>
-                    <a href="{% url 'shop' %}">
-                        <img src="{% static 'images/icons/shop-icon.png' %}" width="100">
+                    <a href="{% url 'edit' %}" class="icon" >
+                        <div class="icon">
+                            <img id="edit-furniture" src="{% static 'images/icons/shop-icon.png' %}" width="50">
+                        </div>
                     </a>
                 </td>
             </tr>

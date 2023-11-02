@@ -141,10 +141,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = CONFIG.get("GoogleOAuth2", "client_secret")
 SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'prompt': 'select_account'}
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['fullname', 'picture']
 
-# Unknown:
-# ADDRBOOK_TITLE = CONFIG.get("Addrbook", "title")
-# ADDRBOOK_USERS = CONFIG.get("Addrbook", "users")
-
 # Used by the @login_required decorator to redirect to the login action
 LOGIN_URL = '/oauth/login/google-oauth2/'
 
