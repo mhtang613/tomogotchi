@@ -1,6 +1,6 @@
 # Sprint 2: Backlog
 * Implement initializing and saving player data on first log in (wmshaw)
-* Implement Player's own tomogotchi sprite (mhtang)
+* Animate Player's own tomogotchi sprite (mhtang)
 * Displaying all pages with database items
     * Add shop catalog to database (mhtang, zhejiay)
     * Display Shop Catalog (& make items selectable/togglable) (mhtang)
