@@ -124,8 +124,21 @@ def edit_username(request):
 
 def shop(request):
     # todo: fill in context with the Items and Furniture models
-    furniture_list = [i for i in range(30)]
-    item_list = [i for i in range(30)]
+    furniture_list = []
+    item_list = []
+    for i in range(10):
+        item_list.append("images/icons/burger.png")
+        item_list.append("images/icons/cake.png")
+        item_list.append("images/icons/sushi.png")
+        item_list.append("images/icons/sushi.png")
+        furniture_list.append("images/icons/bookshelf1.png")
+        furniture_list.append("images/icons/plant1.png")
+        furniture_list.append("images/icons/plant1.png")
+        furniture_list.append("images/icons/table1.png")
+        
+    
+    
+
     context = {'furniture_list' : furniture_list, 'item_list' : item_list}
     return render(request, 'shop.html', context)
     

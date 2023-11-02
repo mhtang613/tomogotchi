@@ -9,16 +9,24 @@
         function cellSelected() {
                 alert("Selected item/furniture"); 
         }
+        
     </script>
     <title> The Shop! </title>
 </head>
 <body>
+    <a href="{% url 'home' %}">
+        <button>Home!</button>
+    </a>
     <div class="container">
         <div class="left-half">
             <div class="title">Item</div>
             <div class="grid">
                 {% for item in item_list %}
-                    <div class="cell" onclick="cellSelected()">item</div>
+                    <div class="cell" onclick="cellSelected()">
+                        <div class="icon">
+                            <img id="shop" src="{% static item %}" width="50">
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -26,7 +34,11 @@
             <div class="title">Furniture</div>
             <div class="grid">
                 {% for furniture in furniture_list %}
-                    <div class="cell" onclick="cellSelected()">furniture</div>
+                    <div class="cell" onclick="cellSelected()">
+                        <div class="icon">
+                            <img id="shop" src="{% static furniture %}" width="50">
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
