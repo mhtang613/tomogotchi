@@ -6,7 +6,5 @@ venv
 my_env
 .idea
 /migrations/
-/tomogotchi/__pycache__/*
-/webapps/__pycache__/*
 /tomogotchi/migrations/*
-__pycache__/
+*/__pycache__/*
