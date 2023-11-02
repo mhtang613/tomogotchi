@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block javascript %} 
+<script> 
+    window.onload = displayGrid;
+    function cellSelected() {
+        alert("Selected furniture"); 
+    }
+</script>
+{% endblock %}
+
+{% block header %}
+<div class="room-name" id="furniture-editor-title">
+    Room Editor
+</div>
+{% endblock %}
+
+{% block leftside %}
+<div class="sidebar-container">
+    <div class="label-center">
+        Big Furniture
+    </div>
+    <div class="scroll-list">
+        {% for item in big_list %}
+            <!-- In actuality, width & height are in block units, so must multiply by grid block unit width -->
+            <!-- only set width since these will be images (rather than divs) to preserve aspect ratio -->
+            <div class="grid-elem">
+                <div class="furniture" onclick="cellSelected()" style="width: {{item.hitboxX}}vw; height: {{item.hitboxY}}vh;">item</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block rightside %}
+<div class="sidebar-container">
+    <div class="label-center">
+        Little Furniture
+    </div>
+    <div class="scroll-list">
+        {% for item in small_list %}
+            <div class="grid-elem">
+                <div class="furniture" onclick="cellSelected()" style="width: {{item.hitboxX}}vw; height: {{item.hitboxY}}vh;">item</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="center-button">
+    <button> Save </button>
+    
+    <a href="{% url 'home' %}">
+        <button> Home </button>
+    </a>
+</div>
+{% endblock %}

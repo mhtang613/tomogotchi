@@ -1,6 +1,24 @@
 /* Base CSS goes here */
 body {
     font-family: system-ui;
+    height: 100vh;
+    overflow: hidden;
+}
+
+button {
+    margin-inline-start: 1vh;
+}
+
+.icon {
+    padding-left: 5vh;
+}
+
+#header {
+    height: 10vh;
+}
+
+#footer {
+    margin-top: 0.5vh;
 }
 
 .sidebar {
@@ -15,6 +33,7 @@ body {
     padding: 1vh;
     border: #b4e7ff solid 1vh;
     height: 96vh;
+    overflow: auto;
 }
 
 #sidebar_left {
@@ -30,23 +49,25 @@ body {
 .container {
     margin-left: 20vw;
     margin-right: 20vw;
-}
-
-#room {
-    height: 80vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #grid-container {
-    height: 100%;
-    height: 100%;
+    height: 57vw;
+    width: 57vw;
+    max-height: 80vh;
+    max-width: 80vh;
     display: grid;
     align-content: stretch;
     grid-template-columns: repeat(20, 5%);
     grid-template-rows: repeat(20, 5%);
-    gap: 0vh;
     border-color: pink;
     border-style: dotted;
     border-width: 0.5vh;
+    gap: 0vh;
     padding: 0vh;
     overflow: hidden;
 }
@@ -81,10 +102,16 @@ body {
     margin-top: 3vh;
 }
 
-.label {
+.label-center {
     text-decoration: underline;
     font-size: large;
     text-align: center;
+}
+
+.label-left {
+    text-decoration: underline;
+    font-size: large;
+    text-align: left;
 }
 
 #messages-box {
@@ -101,7 +128,11 @@ tbody {
 
 #messages-list {
     height: 74vh;
+    display: grid;
     vertical-align: bottom;
+    justify-content: left;
+    min-height: min-content;
+    overflow: auto;
 }
 
 input {
@@ -113,14 +144,83 @@ input {
     width: 90%;
 }
 
+#friends-container {
+    overflow: auto;
+    height: 90vh;
+}
+
 #friends-list {
-    height: 100%;
+    height: auto;
     display: grid;
     align-content: baseline;
-    grid-template-columns: auto;
     gap: 0.5vh;
     overflow: hidden;
     margin-top: 2vh;
-    border: pink solid 0.5vh;
+    /* border: pink solid 0.5vh; */
     padding: 0.5vh;
+    overflow: auto;
+}
+
+#my-home-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#money-container {
+    margin: 1vh;
+    padding: 1vh;
+    border: #b4e7ff dotted 0.5vh;
+}
+
+.room-name {
+    font-size: 5vh;
+    font-weight: bold;
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+#other-player-name {
+    padding-top: 3vh;
+}
+
+#furniture-editor-title {
+    padding-top: 2vh;
+}
+
+progress {
+    text-align: center;
+    accent-color: pink;
+}
+
+.scroll-list {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 5vw; 
+    width: 100%; 
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.furniture {
+    margin-top: 2vh;
+    border: 1px solid #000000;
+    font-size: 80%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui;
+    font-weight: bold;
+    min-width: 1vw;
+    min-height: 1vh;
+}
+
+.grid-elem, .center-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vh;
 }

@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block leftside %}
+<div class="sidebar-container">
+    <table id="player-info">
+        <tr>
+            <td class="label-left">
+                Your Profile:
+            </td>
+        </tr>
+        <tr>
+            <td id="player-name">
+                <a href="{% url 'home' %}">
+                    {{self.user.player.name}}
+                </a>
+            </td>
+            <td id="edit-name-button">
+                <button> E </button>
+            </td>
+        </tr>
+    </table>
+    <div id="message-area">
+        <div id="messages-label" class="label-center">
+            Messages:
+        </div>
+        <table id="messages-box">
+            <tbody>
+                <tr>
+                    <td>
+                        <div id="messages-list">
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                            <div class="message-example">
+                                <span> Friendo: </span> 
+                                <span> Hi! </span>
+                                <span class="timestamp"> - 1:53 AM </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="message-input"> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block rightside %}
+<div class="sidebar-container">
+    <div id="friends">
+        <div id="friends-label" class="label-center">
+            Friends:
+        </div>
+        <table>
+            <tr>
+                <td>
+                    <input type="text" id="search-friend-input"> 
+                </td>
+                <td>
+                    <button type="submit" id="search-friend-button">Q</button>
+                </td>
+            </tr>
+        </table>
+        <div id="friends-container">
+            <div id="friends-list">
+                <div id="friend-example-1">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                <div id="friend-example-2">
+                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
+                    <a> Friendo 2 </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

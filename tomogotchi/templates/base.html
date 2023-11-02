@@ -5,7 +5,6 @@
         <meta charset="utf-8">
         {% load static %}
         <link href="{% static 'base.css' %}" rel="stylesheet" type="text/css">
-        {% block javascript %} {% endblock %}
         <script>
             function displayGrid() {
                 grid = document.getElementById("grid-container");
@@ -29,6 +28,7 @@
                 }
             }
         </script>
+        {% block javascript %} {% endblock %}
         <title> Tomogotchi </title>
     </head>
 

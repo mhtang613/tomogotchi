@@ -25,7 +25,7 @@ class Furniture(models.Model):
 # House Model (The Player's House)
 class House(models.Model):
     # user
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="house")
     # furniture (displayed furniture)
     furniturePlaced = models.ManyToManyField(Furniture, related_name="furnitureActive")
     # owned furniture

@@ -20,7 +20,10 @@ from tomogotchi import views
 
 urlpatterns = [
     path('', views.login, name="login"),
-    path('test', views.test_html, name='home'),
+    path('home/self', views.home, name="home"),
+    path('home/<int:user_id>', views.visit, name="other-home"),
+    path('edit', views.edit_furniture_page, name='edit'),
+    path('test', views.test_html, name='test'),
     path('shop', views.shop, name='shop'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('logout', auth_views.logout_then_login, name='logout'),
