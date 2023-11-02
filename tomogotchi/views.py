@@ -31,6 +31,13 @@ def home(request):
         "furnitureOwned": [],
         "visitors": "",
     } 
+    context['self'] = {     # replaces real logged in user for now
+        'user' : {
+            'player' : {
+                'name' : "ahjlkdshflkjd"
+            }
+        }
+    }
     return render(request, 'my_home.html', context)
 
 def visit(request, user_id):
@@ -45,7 +52,14 @@ def visit(request, user_id):
         "furniturePlaced": [],
         "furnitureOwned": [],
         "visitors": "",
-    }        
+    }  
+    context['self'] = {     # replaces real logged in user for now
+        'user' : {
+            'player' : {
+                'name' : "ahjlkdshflkjd"
+            }
+        }
+    }      
     return render(request, 'other_home.html', context)
 
 def edit_furniture_page(request):

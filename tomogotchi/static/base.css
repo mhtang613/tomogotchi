@@ -5,6 +5,10 @@ body {
     overflow: hidden;
 }
 
+button {
+    margin-inline-start: 1vh;
+}
+
 .icon {
     padding-left: 5vh;
 }
@@ -14,7 +18,7 @@ body {
 }
 
 #footer {
-    margin-top: 2vh;
+    margin-top: 0.5vh;
 }
 
 .sidebar {
@@ -126,7 +130,7 @@ tbody {
     height: 74vh;
     display: grid;
     vertical-align: bottom;
-    justify-content: flex-end;
+    justify-content: left;
     min-height: min-content;
     overflow: auto;
 }
@@ -178,7 +182,7 @@ input {
 }
 
 #other-player-name {
-    padding-top: 5vh;
+    padding-top: 3vh;
 }
 
 #furniture-editor-title {
@@ -218,4 +222,5 @@ progress {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 2vh;
 }

@@ -10,7 +10,9 @@
         </tr>
         <tr>
             <td id="player-name">
-                {{house.user.player.name}}
+                <a href="{% url 'home' %}">
+                    {{self.user.player.name}}
+                </a>
             </td>
             <td id="edit-name-button">
                 <button> E </button>
