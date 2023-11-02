@@ -25,5 +25,6 @@
 6. Displaying different views/rooms and users with HTML, CSS, and spritejs libraries
     * We will draw sprites or take premade sprite gifs and animate them
     * Players can transition between views with links/buttons.
-7. Deploying to cloud
+7. Avoiding security flaws and deploying to cloud
+    * We will add features that prevent XSS, CSRF, and SQL injection attacks
     * We will deploy Tomogotchi using EC2, Daphne, and MySql
