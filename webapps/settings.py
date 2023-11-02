@@ -149,4 +149,4 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['fullname', 'picture']
 LOGIN_URL = '/oauth/login/google-oauth2/'
 
 # Default URL to redirect to after a user logs in.
-LOGIN_REDIRECT_URL = 'test'
+LOGIN_REDIRECT_URL = 'home'

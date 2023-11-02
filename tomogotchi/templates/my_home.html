@@ -1,0 +1,48 @@
+{% extends "home.html" %}
+
+{% block header %}
+<div id="my-home-header">
+    <div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="hunger">Hunger:</label>
+                    </td>
+                    <td>
+                        <progress id="hunger" value="{{house.user.player.hunger}}" max="100"> </progress>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="mood">Mood:</label>
+                    </td>
+                    <td>
+                        <progress id="mood" value="{{house.user.player.mood}}" max="100"> </progress>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="money-container">
+        <span>$</span><span id="current-money">1000.00</span>
+    </div>
+    <table>
+        <tbody>
+            {% load static %}
+            <tr>
+                <td>
+                    <a href="{% url 'shop' %}">
+                        <img id="shop" src="{% static 'images/icons/shop-icon.png' %}" width="100">
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'shop' %}">
+                        <img src="{% static 'images/icons/shop-icon.png' %}" width="100">
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

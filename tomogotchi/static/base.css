@@ -1,6 +1,7 @@
 /* Base CSS goes here */
 body {
     font-family: system-ui;
+    height: 100vh;
 }
 
 .sidebar {
@@ -30,6 +31,7 @@ body {
 .container {
     margin-left: 20vw;
     margin-right: 20vw;
+    height: 100%;
 }
 
 #room {
@@ -81,10 +83,16 @@ body {
     margin-top: 3vh;
 }
 
-.label {
+.label-center {
     text-decoration: underline;
     font-size: large;
     text-align: center;
+}
+
+.label-left {
+    text-decoration: underline;
+    font-size: large;
+    text-align: left;
 }
 
 #messages-box {
@@ -102,6 +110,9 @@ tbody {
 #messages-list {
     height: 74vh;
     vertical-align: bottom;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
 }
 
 input {
@@ -123,4 +134,30 @@ input {
     margin-top: 2vh;
     border: pink solid 0.5vh;
     padding: 0.5vh;
+}
+
+#my-home-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#money-container {
+    margin: 1vh;
+    padding: 1vh;
+    border: #b4e7ff dotted 0.5vh;
+}
+
+#room-name {
+    margin-top: 5vh;
+    font-size: 5vh;
+    font-weight: bold;
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+progress {
+    text-align: center;
+    accent-color: pink;
 }
