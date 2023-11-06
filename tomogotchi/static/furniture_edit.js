@@ -1,18 +1,18 @@
 "use strict"
 
 function displayGrid() {
-    grid = document.getElementById("grid-container");
-    for (i = grid.childElementCount; i < 400; i++) {
+    let grid = document.getElementById("grid-container");
+    for (let i = grid.childElementCount; i < 400; i++) {
         let new_elem = document.createElement("div");
         new_elem.setAttribute("class", "gridlines");
         grid.append(new_elem);
     }
 }
 function hideGrid() {
-    grid = document.getElementById("grid-container");
+    let grid = document.getElementById("grid-container");
     let index = 0;
     let original_cnt = grid.childElementCount;
-    for (i = 0; i < original_cnt; i++) {
+    for (let i = 0; i < original_cnt; i++) {
         let child = grid.children[index];
         if (child.getAttribute("class") == "gridlines") {
             child.remove()
@@ -114,7 +114,7 @@ function updateList(items) {
 // Builds a new HTML "li" element for the to do list
 function makeListItemElement(item) {
     let deleteButton
-    if (item.user === myUserName) {
+    if (item.user === myUserName) { // myUserName defined in edit.html
         deleteButton = `<button onclick='deleteItem(${item.id})'>X</button>`
     } else {
         deleteButton = "<button style='visibility: hidden'>X</button> "

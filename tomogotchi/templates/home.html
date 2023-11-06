@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block javascript %} 
+{% load static %}
+<script src="{% static 'test.js' %}" type="text/javascript"></script>
+<script> 
+    const myUserName = "{{ request.user.username }}"
+    window.onload = connectToServer
+</script>
+{% endblock %}
+
 {% block leftside %}
 <div class="sidebar-container">
     <table id="player-info">
@@ -200,6 +209,9 @@
         </table>
     </div>
 </div>
+<script>
+    attachEvents()
+</script>
 {% endblock %}
 
 {% block rightside %}
