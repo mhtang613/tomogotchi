@@ -11,8 +11,22 @@ class Items(models.Model):
     def __str__(self):
         return f'id={self.id}, name="{self.name}", picture={self.picture}'
 
+# House Model (The Player's House)
+class House(models.Model):
+    # user
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="house")
+    # furniture (displayed furniture) <-- Use filter (trading between lists is not necessary)
+    # owned furniture <-- reverse relation 
+    # messages
+    # messages = models.ManyToOneField(Messages, on_delete=models.PROTECT, related_name="house") <--- this is a reverse relation from Messages
+    # visitors
+    visitors = models.ManyToManyField(User, related_name="visitors")
+
+    def __str__(self):
+        return f'id={self.id}, user={self.user.username}'
 
 # Furniture Model
+# Buying a furniture must create a new instance (bc pos must be unique)
 class Furniture(models.Model):
     # name
     name = models.CharField(max_length=200)
@@ -24,25 +38,14 @@ class Furniture(models.Model):
     # location
     locationX = models.IntegerField()
     locationY = models.IntegerField()
+    
+    # Each furniture belongs to exactly 1 house (house can have many furniture)
+    house = models.ForeignKey(House, on_delete=models.PROTECT, related_name="furnitureOwned")
+    # True iff the furniture is placed in room
+    placed = models.BooleanField()
 
     def __str__(self):
         return f'id={self.id}, name="{self.name}", hitbox=({self.hitboxX},{self.hitboxY}), location=({self.locationX},{self.locationY})'
-
-# House Model (The Player's House)
-class House(models.Model):
-    # user
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="house")
-    # furniture (displayed furniture)
-    furniturePlaced = models.ManyToManyField(Furniture, related_name="furnitureActive")
-    # owned furniture
-    furnitureOwned = models.ManyToManyField(Furniture, related_name="furniture")
-    # messages
-    # messages = models.ManyToOneField(Messages, on_delete=models.PROTECT, related_name="house") <--- this is a reverse relation from Messages
-    # visitors
-    visitors = models.ManyToManyField(User, related_name="visitors")
-
-    def __str__(self):
-        return f'id={self.id}, user={self.user.username}'
 
 # Messages Model
 class Message(models.Model):
