@@ -35,6 +35,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',               # Websocket requirements for django
+    'channels',             # Websocket requirements for django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

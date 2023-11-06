@@ -8,6 +8,9 @@ class Items(models.Model):
     # image
     picture = models.FileField(blank=True)
 
+    def __str__(self):
+        return f'id={self.id}, name="{self.name}", picture={self.picture}'
+
 
 # Furniture Model
 class Furniture(models.Model):
@@ -22,6 +25,9 @@ class Furniture(models.Model):
     locationX = models.IntegerField()
     locationY = models.IntegerField()
 
+    def __str__(self):
+        return f'id={self.id}, name="{self.name}", hitbox=({self.hitboxX},{self.hitboxY}), location=({self.locationX},{self.locationY})'
+
 # House Model (The Player's House)
 class House(models.Model):
     # user
@@ -35,16 +41,21 @@ class House(models.Model):
     # visitors
     visitors = models.ManyToManyField(User, related_name="visitors")
 
+    def __str__(self):
+        return f'id={self.id}, user={self.user.username}'
+
 # Messages Model
-class Messages(models.Model):
-    # Sender:
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # Recipient: (ForeignKey => each messages has ONE house, but a house can have many messages)
+class Message(models.Model):
+    # Sender: (each message has ONE sender, but each user can send many messages)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Recipient: (ForeignKey => each message has ONE house, but a house can have many messages)
     house = models.ForeignKey(House, on_delete=models.CASCADE) 
     # Text:
     text = models.CharField(max_length=100)
     # Date:
     date = models.DateTimeField()
+    def __str__(self):
+        return f'id={self.id}, user={self.user.username}, text="{self.text}", date={self.date}'
 
 # Player Model: (The Player's data)
 class Player(models.Model):
@@ -61,3 +72,6 @@ class Player(models.Model):
     picture = models.FileField(blank=True)
     hunger = models.IntegerField()
     mood = models.IntegerField()
+
+    def __str__(self):
+        return f'id={self.id}, user="{self.user.username}"'

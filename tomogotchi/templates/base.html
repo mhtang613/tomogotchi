@@ -5,29 +5,6 @@
         <meta charset="utf-8">
         {% load static %}
         <link href="{% static 'base.css' %}" rel="stylesheet" type="text/css">
-        <script>
-            function displayGrid() {
-                grid = document.getElementById("grid-container");
-                for (i = grid.childElementCount; i < 400; i++) {
-                    let new_elem = document.createElement("div");
-                    new_elem.setAttribute("class", "gridlines");
-                    grid.append(new_elem);
-                }
-            }
-            function hideGrid() {
-                grid = document.getElementById("grid-container");
-                let index = 0;
-                let original_cnt = grid.childElementCount;
-                for (i = 0; i < original_cnt; i++) {
-                    let child = grid.children[index];
-                    if (child.getAttribute("class") == "gridlines") {
-                        child.remove()
-                    } else {
-                        index++;
-                    }
-                }
-            }
-        </script>
         {% block javascript %} {% endblock %}
         <title> Tomogotchi </title>
     </head>

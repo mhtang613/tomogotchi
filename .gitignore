@@ -8,3 +8,4 @@ my_env
 /migrations/
 /tomogotchi/migrations/*
 */__pycache__/*
+.vscode/*
