@@ -12,7 +12,8 @@ from django.utils import timezone
 from tomogotchi.models import *
 # from tomogotchi.forms import *
 
-import randomname
+import randomname, random
+import imghdr
 import json
 
 # Create your views here.
@@ -21,45 +22,42 @@ def test_html(request):
     context = {}
     return render(request, 'other_home.html', context)
 
+# Tomogotchi Retrival Funcs
+def get_random_tomogotchi(player):
+    tomogotchi_list = [('images/icons/pikachu.png')]
+    rand_tomogotchi = tomogotchi_list[random.randint(0, len(tomogotchi_list)-1 )]
+    player.picture = rand_tomogotchi[0]
+    player.hunger = 100
+    player.mood = 100
+
+@login_required
 def home(request):
     context = {}
-    # my_home = request.user.house
-    # context['house'] = my_home
-    context['house'] = {    # example data
-        "user": {"player": {"name": "ahjlkdshflkjd", "hunger": 40, "mood": 70}},
-        "furniturePlaced": [],
-        "furnitureOwned": [],
-        "visitors": "",
-    } 
-    context['self'] = {     # replaces real logged in user for now
-        'user' : {
-            'player' : {
-                'name' : "ahjlkdshflkjd"
-            }
-        }
-    }
+    # If this is a new user (no player, no house, CREATE needed things for new user)
+    if not Player.objects.filter(user=request.user).exists():
+        print("New user registering")
+        house = House(user=request.user)
+        house.save()
+        player = Player(user=request.user, house=house, visiting=house, money=0)
+        get_random_tomogotchi(player)
+        assign_random_username(player)
+        player.save()
+
+    my_home = request.user.house
+    context['house'] = my_home
     return render(request, 'my_home.html', context)
 
 def visit(request, user_id):
     context = {}
-    # other_user = get_object_or_404(User, id=user_id)
-    # context['house'] = other_user.house
+    other_user = get_object_or_404(User, id=user_id)
+    context['house'] = other_user.house
+    # update self's visiting room
+    request.user.player.visiting = other_user.house
+    request.user.player.save()
 
-    # Check that users are Mutual Friends
-    # If not, return redirect(reverse('home'))
-    context['house'] = {    # example data
-        "user": {"player": {"name": "Jeff"}},
-        "furniturePlaced": [],
-        "furnitureOwned": [],
-        "visitors": "",
-    }  
-    context['self'] = {     # replaces real logged in user for now
-        'user' : {
-            'player' : {
-                'name' : "ahjlkdshflkjd"
-            }
-        }
-    }      
+    # TODO: Check that users are Mutual Friends
+    # TODO: If not, return redirect(reverse('home'))
+   
     return render(request, 'other_home.html', context)
 
 def edit_furniture_page(request):
@@ -104,7 +102,6 @@ def assign_random_username(player):
     while Player.objects.filter(name=rand_name).exists():
         rand_name = randomname.get_name()
     player.name = rand_name
-    player.save()
 
 
 # Params : this function runs when a player clicks on the "Edit Username" button

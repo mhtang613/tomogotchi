@@ -13,6 +13,10 @@ button {
     padding-left: 5vh;
 }
 
+#error {
+    color: red;
+}
+
 #header {
     height: 10vh;
 }
@@ -84,9 +88,10 @@ button {
     background-color: aquamarine;
 }
 
-.item1 {
-    grid-area: 2 / 1 / span 2 / span 3;
+.item {
+    grid-area: 7 / 7 / span 3 / span 3;
     text-align: center;
+    overflow: hidden;
 }
 
 #player-info {
@@ -133,6 +138,13 @@ tbody {
     justify-content: left;
     min-height: min-content;
     overflow: auto;
+}
+
+.msg-info {
+    color: gray;
+    font-style: italic;
+    font-size: small;
+    opacity: 50%;
 }
 
 input {

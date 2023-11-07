@@ -10,7 +10,7 @@
                         <label for="hunger">Hunger:</label>
                     </td>
                     <td>
-                        <progress id="hunger" value="{{house.user.player.hunger}}" max="100"> </progress>
+                        <progress id="hunger" value="{{request.user.player.hunger}}" max="100"> </progress>
                     </td>
                 </tr>
                 <tr>
@@ -18,14 +18,14 @@
                         <label for="mood">Mood:</label>
                     </td>
                     <td>
-                        <progress id="mood" value="{{house.user.player.mood}}" max="100"> </progress>
+                        <progress id="mood" value="{{request.user.player.mood}}" max="100"> </progress>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div id="money-container">
-        <span>$</span><span id="current-money">1000.00</span>
+        <span>$</span><span id="current-money">{{request.user.player.money}}</span>
     </div>
     <table>
         <tbody>

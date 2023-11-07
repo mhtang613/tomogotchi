@@ -19,8 +19,7 @@ class House(models.Model):
     # owned furniture <-- reverse relation 
     # messages
     # messages = models.ManyToOneField(Messages, on_delete=models.PROTECT, related_name="house") <--- this is a reverse relation from Messages
-    # visitors
-    visitors = models.ManyToManyField(User, related_name="visitors")
+    # visitors (each house can have many visitors, but each user can only visit one house (at a time)) <---- reverse relation
 
     def __str__(self):
         return f'id={self.id}, user={self.user.username}'
@@ -50,9 +49,9 @@ class Furniture(models.Model):
 # Messages Model
 class Message(models.Model):
     # Sender: (each message has ONE sender, but each user can send many messages)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="messages")
     # Recipient: (ForeignKey => each message has ONE house, but a house can have many messages)
-    house = models.ForeignKey(House, on_delete=models.CASCADE) 
+    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name="messages") 
     # Text:
     text = models.CharField(max_length=100)
     # Date:
@@ -63,13 +62,17 @@ class Message(models.Model):
 # Player Model: (The Player's data)
 class Player(models.Model):
     # user
-    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="user")
+    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="player")
     # house
     house = models.OneToOneField(House, on_delete=models.PROTECT, related_name="house")
+    # Player currently in house ...
+    visiting = models.ForeignKey(House, on_delete=models.PROTECT, related_name="visitors")
     # friends
     following = models.ManyToManyField(User, related_name="following")
     # inventory (all items and food owned)
     inventory = models.ManyToManyField(Items, related_name="inventory")
+    # money
+    money = models.IntegerField(default=0)
     # tamagotchi info
     name = models.CharField(max_length=200)
     picture = models.FileField(blank=True)

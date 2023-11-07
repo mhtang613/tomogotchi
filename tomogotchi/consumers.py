@@ -2,7 +2,7 @@ from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from tomogotchi.models import Items, Furniture, House, Message, Player
 import json
-
+from django.utils import timezone
 
 class FurnitureConsumer(WebsocketConsumer):
     group_name = 'furniture_group'
@@ -147,8 +147,55 @@ class TestConsumer(WebsocketConsumer):
         except json.JSONDecodeError:
             self.send_error('invalid JSON sent to server')
             return
+        
+        # NOTE: DEBUG SEND
+        self.broadcast_event({'message': f'Event recieved from user {self.user.id} with data {data}'}) 
+        if 'action' not in data or not data['action']:
+            self.send_error('your request must contain an action')
+            return
+        
+        action = data['action']
 
-        self.broadcast_event({'message': f'Event recieved from user {self.user} with data {data}'})
+        if action == 'add':
+            self.add_message(data)
+            return
+
+        if action == 'get':
+            self.send_message_list()
+            return
+
+        self.send_error(f'Invalid action property: "{action}"')
+
+    # Sends current list of messages through websocket
+    def send_message_list(self): 
+        # Get house from player current visiting house
+        house = self.user.player.visiting
+        msg_list = list()
+        for msg in house.messages.order_by('date'):
+            msg_info = {
+                'id': msg.id,
+                'text': msg.text,
+                'date': msg.date.isoformat(),    # ISO formatted date & time (needs to be read & reformatted in JS)
+                'user' : {
+                    'id': msg.user.id,
+                    'first_name' : msg.user.first_name,
+                    'last_name': msg.user.last_name,
+                },
+            }
+            msg_list.append(msg_info)  
+        self.send(text_data=json.dumps(msg_list))
+
+    # Saves a new message to the current visiting house
+    def add_message(self, data):
+        if 'message' not in data or not data['message']:
+            self.send_error('you must send a nonempty message')
+            return
+        # Get house from player current visiting house
+        house = self.user.player.visiting
+        msg = Message(user=self.user, house=house, text=data['message'], date=timezone.now())
+        msg.save()
+        self.send_message_list()
+        
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))

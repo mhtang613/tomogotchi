@@ -2,9 +2,12 @@
 
 {% block javascript %} 
 {% load static %}
-<script src="{% static 'test.js' %}" type="text/javascript"></script>
+<script src="{% static 'messages.js' %}" type="text/javascript"></script>
 <script> 
     const myUserName = "{{ request.user.username }}"
+    const otherHomeURL = function (user_id) {
+            return "{% url 'other-home' 0 %}".replace("0", user_id)
+        } 
     window.onload = connectToServer
 </script>
 {% endblock %}
@@ -16,11 +19,16 @@
             <td class="label-left">
                 Your Profile:
             </td>
+            <td>
+                <a href="{% url 'logout' %}">
+                    <button>Logout</button>
+                </a>
+            </td>
         </tr>
         <tr>
             <td id="player-name">
                 <a href="{% url 'home' %}">
-                    {{self.user.player.name}}
+                    {{request.user.player.name}}
                 </a>
             </td>
             <td id="edit-name-button">
@@ -37,166 +45,7 @@
                 <tr>
                     <td>
                         <div id="messages-list">
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
-                            <div class="message-example">
-                                <span> Friendo: </span> 
-                                <span> Hi! </span>
-                                <span class="timestamp"> - 1:53 AM </span>
-                            </div>
+                            
                         </div>
                     </td>
                 </tr>
