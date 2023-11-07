@@ -111,8 +111,8 @@ class FurnitureConsumer(WebsocketConsumer):
 
 
 class TestConsumer(WebsocketConsumer):
-    group_name = 'test_group'
-    channel_name = 'test_channel'
+    group_name = 'message_group'
+    channel_name = 'message_channel'
 
     user = None
 
@@ -183,7 +183,14 @@ class TestConsumer(WebsocketConsumer):
                 },
             }
             msg_list.append(msg_info)  
-        self.send(text_data=json.dumps(msg_list))
+        
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(msg_list)
+            }
+        )
 
     # Saves a new message to the current visiting house
     def add_message(self, data):

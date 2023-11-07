@@ -45,6 +45,9 @@ def home(request):
 
     my_home = request.user.house
     context['house'] = my_home
+    # update self's visiting room
+    request.user.player.visiting = my_home
+    request.user.player.save()
     return render(request, 'my_home.html', context)
 
 def visit(request, user_id):
@@ -116,8 +119,6 @@ def edit_username(request):
     player.name = request.POST['username']
 
     return redirect(reverse('home'))
-
-
 
 def shop(request):
     # todo: fill in context with the Items and Furniture models
