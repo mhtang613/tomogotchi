@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.db import transaction
 
 from django.http import HttpResponse, Http404
 
@@ -33,15 +34,16 @@ def get_random_tomogotchi(player):
 @login_required
 def home(request):
     context = {}
-    # If this is a new user (no player, no house, CREATE needed things for new user)
-    if not Player.objects.filter(user=request.user).exists():
-        print("New user registering")
-        house = House(user=request.user)
-        house.save()
-        player = Player(user=request.user, house=house, visiting=house, money=0)
-        get_random_tomogotchi(player)
-        assign_random_username(player)
-        player.save()
+    with transaction.atomic():  # prevent race conditions
+        # If this is a new user (no player, no house, CREATE needed things for new user)
+        if not Player.objects.select_for_update().filter(user=request.user).exists():   # get DB lock
+            print("New user registering")
+            house = House(user=request.user)
+            house.save()
+            player = Player(user=request.user, house=house, visiting=house, money=0)
+            get_random_tomogotchi(player)
+            assign_random_username(player)
+            player.save()
 
     my_home = request.user.house
     context['house'] = my_home
