@@ -2,7 +2,7 @@
 * Implement initializing and saving player data on first log in (zhejiay) (done)
 * Animate Player's own tomogotchi sprite (mhtang)
 * Displaying all pages with database items
-    * Add shop catalog to database (mhtang, zhejiay)
+    * Add shop catalog to database (mhtang)
     * Display Shop Catalog (& make items selectable/togglable) (mhtang)
     * Display Furniture in home (not editing yet) (zhejiay)
     * Display Friend List (zhejiay)

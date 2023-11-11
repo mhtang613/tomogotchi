@@ -2,13 +2,15 @@
 
 {% block javascript %} 
 {% load static %}
+<!-- Utils MUST be loaded FIRST -->
+<script src="{% static 'utils.js' %}" type="text/javascript"></script>  
+<script src="{% static 'friends.js' %}" type="text/javascript"></script>
 <script src="{% static 'messages.js' %}" type="text/javascript"></script>
 <script> 
     const myUserName = "{{ request.user.username }}"
     const otherHomeURL = function (user_id) {
             return "{% url 'other-home' 0 %}".replace("0", user_id)
-        } 
-    window.onload = connectToServer
+        }
 </script>
 {% endblock %}
 
@@ -59,7 +61,7 @@
     </div>
 </div>
 <script>
-    attachEvents()
+    MessageHandler.attachEvents()
 </script>
 {% endblock %}
 
@@ -81,73 +83,12 @@
         </table>
         <div id="friends-container">
             <div id="friends-list">
-                <div id="friend-example-1">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
-                <div id="friend-example-2">
-                    <img src="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D" width="50">
-                    <a> Friendo 2 </a>
-                </div>
                 
             </div>
         </div>
     </div>
 </div>
+<script>
+    FriendHandler.attachEvents()
+</script>
 {% endblock %}

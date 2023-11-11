@@ -110,7 +110,7 @@ class FurnitureConsumer(WebsocketConsumer):
         self.send(text_data=event['message'])
 
 
-class TestConsumer(WebsocketConsumer):
+class MessagesConsumer(WebsocketConsumer):
     group_name = 'message_group'
     channel_name = 'message_channel'
 
@@ -130,7 +130,8 @@ class TestConsumer(WebsocketConsumer):
 
         self.user = self.scope["user"]
 
-        self.broadcast_event({'message': 'Connected to Websocket'})
+        self.broadcast_event({'message': 'Connected to Messages Websocket'})
+        self.send_message_list()    # On connection, send over current messages
     
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -203,6 +204,99 @@ class TestConsumer(WebsocketConsumer):
         msg.save()
         self.send_message_list()
         
+    
+    def send_error(self, error_message):
+        self.send(text_data=json.dumps({'error': error_message}))
+
+    def broadcast_event(self, event):
+        self.send(text_data=event['message'])
+
+class FriendConsumer(WebsocketConsumer):
+    group_name = 'friends_group'
+    channel_name = 'friends_channel'
+    
+    user = None
+
+    def connect(self):
+        async_to_sync(self.channel_layer.group_add)(
+            self.group_name, self.channel_name
+        )
+
+        self.accept()
+
+        if not self.scope["user"].is_authenticated:
+            self.send_error(f'You must be logged in')
+            self.close()
+            return        
+
+        self.user = self.scope["user"]
+
+        self.broadcast_event({'message': 'Connected to Friends Websocket'})
+        self.send_friend_list()
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.group_name, self.channel_name
+        )
+
+    def receive(self, **kwargs):
+        if 'text_data' not in kwargs:
+            self.send_error('you must send text_data')
+            return
+
+        try:
+            data = json.loads(kwargs['text_data'])
+        except json.JSONDecodeError:
+            self.send_error('invalid JSON sent to server')
+            return
+        
+        # NOTE: DEBUG SEND
+        self.broadcast_event({'message': f'Event recieved from user {self.user.id} with data {data}'}) 
+        
+        # Handle friend request logic HERE
+        # NOTE: make sure to deny friend requests to self
+
+    # Sends current list of messages through websocket
+    def send_friend_list(self): 
+        # Get following from player (filter by the ones that follow back)
+        # following = self.user.player.following.filter(following__in=self.user)
+        
+        # DUMMY DATA
+        class player_data:
+                picture = ''
+                def __init__(self, picture) -> None:
+                    self.picture = picture
+        class user_data:
+            id = 0
+            first_name = ''
+            last_name = ''
+            player = None
+            def __init__(self, id, picture, first, last):
+                self.id = id
+                self.player = player_data(picture)
+                self.first_name = first
+                self.last_name = last
+
+        following = [user_data(1, '/images/icons/pikachu.png', 'first', 'last'), user_data(2, '/images/icons/burger.png', 'nyan', 'burger')] # Test data
+        
+
+        friend_list = list()
+        for user in following:
+            friend_info = {
+                'id': user.id,
+                'picture': user.player.picture,
+                'first_name': user.first_name, 
+                'last_name': user.last_name,
+            }
+            friend_list.append(friend_info)  
+        
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(friend_list)
+            }
+        )
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
