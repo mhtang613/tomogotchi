@@ -21,9 +21,12 @@ function connectToServer() {
         requestData()
     }
 
-    // Show a disconnected message when the WebSocket is closed.
+    // Show a disconnected message when the WebSocket is closed & try to reconnect
     socket.onclose = function(event) {
-        displayMessage("WebSocket Disconnected")
+        displayMessage("WebSocket Disconnected: Trying to Reconnect")
+        setTimeout(function() {
+            connectToServer()
+        }, 1000);
     }
 
     // Handle messages received from the server.

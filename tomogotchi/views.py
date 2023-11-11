@@ -25,11 +25,11 @@ def test_html(request):
 
 # Tomogotchi Retrival Funcs
 def get_random_tomogotchi(player):
-    tomogotchi_list = [('images/icons/pikachu.png')]
+    tomogotchi_list = ['images/icons/pikachu.png']
     rand_tomogotchi = tomogotchi_list[random.randint(0, len(tomogotchi_list)-1 )]
-    player.picture = rand_tomogotchi[0]
-    player.hunger = 100
-    player.mood = 100
+    player.picture = rand_tomogotchi
+    player.hunger = 70
+    player.mood = 70
 
 @login_required
 def home(request):
