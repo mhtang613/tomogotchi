@@ -27,6 +27,11 @@
                     <div class="item">
                         <img id="sprite" src="{% static request.user.player.picture %}" height="100%">
                     </div>
+                    {% for furniture in placedFurniture %}
+                        <div class="item" style="grid-area: {{ furniture.locationY }} / {{ furniture.locationX }} / span {{ furniture.hitboxY }} / span {{ furniture.hitboxX }};">
+                            <img src="{{ furniture.picture.url }}" alt="{{ furniture.name }}" height="100%">
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
             <div id="footer">
