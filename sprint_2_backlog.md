@@ -1,10 +1,12 @@
 # Sprint 2: Backlog
 * Implement initializing and saving player data on first log in (zhejiay) (done)
-* Animate Player's own tomogotchi sprite (wmshaw)
+* Animate Player's own tomogotchi sprite (wmshaw) (done)
+    * Add more sprites (wmshaw) (done)
+    * Edited some functions to accomodate for new sprites added (wmshaw) (done)
 * Displaying all pages with database items
     * Add shop catalog to database (mhtang)
     * Display Shop Catalog (& make items selectable/togglable) (mhtang)
-    * Display Furniture in home (not editing yet) (wmshaw)
+    * Display Furniture in home (not editing yet) (wmshaw) (done)
     * Display Friend List (zhejiay) (done)
     * Display Messages (zhejiay) (done)
 * Implement interactions with database pages with websockets:
