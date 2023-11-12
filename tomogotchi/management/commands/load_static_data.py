@@ -13,16 +13,15 @@ class Command(BaseCommand):
         for file in os.listdir(files_dir):
             if file.endswith('.png') or file.endswith('.gif'):
                 is_furniture = True if "furniture" in file.lower() else False
-
                 file_path = os.path.join(files_dir, file)
-                if not Items.objects.filter(name=file).exists():
-                    if not os.path.isfile(file):
-                        with open(file_path, 'rb') as file_content:
-                            item = Items(name=file, picture=File(file_content), is_furniture=is_furniture)
-                            item.save()
-                            self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))
-                    else:
-                        self.stdout.write(self.style.SUCCESS(f'Skipped {file}'))
+
+                if not Items.objects.filter(name__iexact=file).exists():
+                    with open(file_path, 'rb') as file_content:
+                        file_instance = File(file_content)
+                        file_instance.name = file
+                        item = Items(name=file, picture=file_instance, is_furniture=is_furniture)
+                        item.save()
+                        self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))
                 else:
                     self.stdout.write(self.style.SUCCESS(f'Skipped {file}'))
 

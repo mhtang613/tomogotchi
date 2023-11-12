@@ -6,7 +6,7 @@ class Items(models.Model):
     # name
     name = models.CharField(max_length=200)
     # image
-    picture = models.FileField(blank=True)
+    picture = models.FileField(blank=True,upload_to='',storage=None)
     # is_furniture - true if furniture, false if other item
     is_furniture = models.BooleanField(default=True)
 
