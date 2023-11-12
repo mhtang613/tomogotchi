@@ -55,6 +55,20 @@ def get_random_tomogotchi(player):
     player.hunger = 70
     player.mood = 70
 
+# Gets furniture from home and puts it into a list.
+@login_required
+def get_placed_furniture(player):
+    house = player.house
+    furniture_list = Furniture.objects.filter(house=house)
+    placedFurniture = [{
+        'locationX': furniture.locationX,
+        'locationY': furniture.locationY,
+        'hitboxX': furniture.hitboxX,
+        'hitboxY': furniture.hitboxY,
+        'imageUrl': furniture.picture.url
+    } for furniture in furniture_list]
+    return placedFurniture
+
 @login_required
 def home(request):
     context = {}
@@ -71,6 +85,7 @@ def home(request):
 
     my_home = request.user.house
     context['house'] = my_home
+    context['placedFurniture'] = get_placed_furniture(request.user.player)
     # update self's visiting room
     request.user.player.visiting = my_home
     request.user.player.save()
