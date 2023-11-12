@@ -61,7 +61,7 @@ class MessageHandler {
 
     // Builds a new HTML "div" element for each message
     static makeMessageDiv(msg) {
-        let author_home_link = `<a class="home-inline" id="id_msg_home_${msg.id}" href="${otherHomeURL(msg.user.id)}">${msg.user.first_name} ${msg.user.last_name}</a>`
+        let author_home_link = `<a class="home-inline" id="id_msg_home_${msg.id}" href="${otherHomeURL(msg.user.id)}">${msg.user.player.name}</a>`
         let author_name = `<span class="msg_author"> ${author_home_link}: </span>`
         let msg_text = `<span id="id_msg_text_${msg.id}">${sanitize(msg.text)}</span>`
         let dash = '<span class="msg-info"> - </span>'

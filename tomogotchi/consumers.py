@@ -1,6 +1,7 @@
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from tomogotchi.models import Items, Furniture, House, Message, Player
+from django.contrib.auth.models import User
 import json
 from django.utils import timezone
 
@@ -179,8 +180,9 @@ class MessagesConsumer(WebsocketConsumer):
                 'date': msg.date.isoformat(),    # ISO formatted date & time (needs to be read & reformatted in JS)
                 'user' : {
                     'id': msg.user.id,
-                    'first_name' : msg.user.first_name,
-                    'last_name': msg.user.last_name,
+                    'player': {
+                        'name': msg.user.player.name
+                    }
                 },
             }
             msg_list.append(msg_info)  
@@ -255,36 +257,67 @@ class FriendConsumer(WebsocketConsumer):
         
         # Handle friend request logic HERE
         # NOTE: make sure to deny friend requests to self
+        if 'action' not in data or not data['action']:
+            self.send_error('your request must contain an action')
+            return
+        
+        action = data['action']
+
+        if action == 'add':
+            self.add_follower(data)
+            return
+
+    # Saves a new following for the current user
+    def add_follower(self, data):
+        if 'name' not in data or not data['name']:
+            self.send_error('you must send a nonempty name for a friend request')
+            return
+        # Validate Friend Exists & Friend not self
+        if not Player.objects.filter(name=data['name']).exclude(user=self.user).exists():
+            self.send_error('The requested friend does not exist')
+            return
+        friend = User.objects.filter(player__name=data['name']).all()[0]
+        # Get Current User for update
+        player = self.user.player
+        player.following.add(friend)
+        player.save()
+
+        if friend.player.following.filter(id=self.user.id).exists():
+            self.send_friend_list()
+        else:
+            # Get house from player current visiting house
+            house = friend.player.house
+            notif = f'You recieved a Friend Request from {self.user.player.name}! Accept their request by searching their name in your friends bar.'
+            msg = Message(user=self.user, house=house, text=notif, date=timezone.now())
+            msg.save()
 
     # Sends current list of messages through websocket
     def send_friend_list(self): 
         # Get following from player (filter by the ones that follow back)
-        # following = self.user.player.following.filter(following__in=self.user)
-        
-        # DUMMY DATA
-        class player_data:
-                picture = ''
-                def __init__(self, picture) -> None:
-                    self.picture = picture
-        class user_data:
-            id = 0
-            first_name = ''
-            last_name = ''
-            player = None
-            def __init__(self, id, picture, first, last):
-                self.id = id
-                self.player = player_data(picture)
-                self.first_name = first
-                self.last_name = last
+        following = User.objects.filter(player__following__id=self.user.id, followers__id=self.user.player.id)
+        # # DUMMY DATA
+        # class player_data:
+        #         picture = ''
+        #         def __init__(self, picture) -> None:
+        #             self.picture = picture
+        # class user_data:
+        #     id = 0
+        #     first_name = ''
+        #     last_name = ''
+        #     player = None
+        #     def __init__(self, id, picture, first, last):
+        #         self.id = id
+        #         self.player = player_data(picture)
+        #         self.first_name = first
+        #         self.last_name = last
 
-        following = [user_data(1, '/images/icons/pikachu.png', 'first', 'last'), user_data(2, '/images/icons/burger.png', 'nyan', 'burger')] # Test data
-        
+        # following = [user_data(1, '/images/icons/pikachu.png', 'first', 'last'), user_data(2, '/images/icons/burger.png', 'nyan', 'burger')] # Test data
 
         friend_list = list()
         for user in following:
             friend_info = {
                 'id': user.id,
-                'picture': user.player.picture,
+                'picture': str(user.player.picture),
                 'first_name': user.first_name, 
                 'last_name': user.last_name,
             }

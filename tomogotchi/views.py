@@ -60,7 +60,7 @@ def home(request):
     context = {}
     with transaction.atomic():  # prevent race conditions
         # If this is a new user (no player, no house, CREATE needed things for new user)
-        if not Player.objects.select_for_update().filter(user=request.user).exists():   # get DB lock
+        if not Player.objects.select_for_update().filter(user__email=request.user.email).exists():   # get DB lock
             print("New user registering")
             house = House(user=request.user)
             house.save()

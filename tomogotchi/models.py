@@ -68,7 +68,7 @@ class Player(models.Model):
     # Player currently in house ...
     visiting = models.ForeignKey(House, on_delete=models.PROTECT, related_name="visitors")
     # friends
-    following = models.ManyToManyField(User, related_name="followed_by")
+    following = models.ManyToManyField(User, related_name="followers")
     # inventory (all items and food owned)
     inventory = models.ManyToManyField(Items, related_name="inventory")
     # money
