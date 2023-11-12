@@ -19,7 +19,7 @@ class Command(BaseCommand):
                     with open(file_path, 'rb') as file_content:
                         file_instance = File(file_content)
                         file_instance.name = file
-                        item = Items(name=file, picture=file_instance, is_furniture=is_furniture)
+                        item = Items(name=file, picture=file_instance, is_furniture=is_furniture,content_type="image/png")
                         item.save()
                         self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))
                 else:

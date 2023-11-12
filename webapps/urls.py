@@ -30,6 +30,7 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),
     path('logout', auth_views.logout_then_login, {"login_url" : "login"}, name='logout'),
     # path('edit-username/', auth_views.logout_then_login, name='logout'),
+    path('get-item-picture/<str:name>', views.get_item_picture, name='get-item-picture'),
 ]
 
 if settings.DEBUG:

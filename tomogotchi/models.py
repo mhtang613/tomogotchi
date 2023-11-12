@@ -9,6 +9,8 @@ class Items(models.Model):
     picture = models.FileField(blank=True,upload_to='',storage=None)
     # is_furniture - true if furniture, false if other item
     is_furniture = models.BooleanField(default=True)
+    # content type used for HTTP request to each picture
+    content_type = models.CharField(max_length=50)
 
 
     def __str__(self):

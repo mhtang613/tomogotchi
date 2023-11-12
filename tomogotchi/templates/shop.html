@@ -24,7 +24,7 @@
                 {% for item in item_list %}
                     <div class="cell" onclick="cellSelected()">
                         <div class="icon">
-                            <img id="shop" src="{% static item %}" width="50">
+                            <img id={{item.id}} src="{% url 'get-item-picture' item.name %}" width="50">
                         </div>
                     </div>
                 {% endfor %}
@@ -36,7 +36,7 @@
                 {% for furniture in furniture_list %}
                     <div class="cell" onclick="cellSelected()">
                         <div class="icon">
-                            <img id="shop" src="{% static furniture %}" width="50">
+                            <img id="shop" src="{% url 'get-item-picture' furniture.name %}" width="50">
                         </div>
                     </div>
                 {% endfor %}
