@@ -5,6 +5,8 @@
     {% load static %}
     <link href="{% static 'shop.css' %}" rel="stylesheet" type="text/css">
     {% block javascript %} {% endblock %}
+    <script src="{% static 'utils.js' %}" type="text/javascript"></script>  
+    <script src="{% static 'shop.js' %}" type="text/javascript"></script>
     <script>
         function iconSelected(iconId) {
             const icons = document.querySelectorAll('.icon');
@@ -16,31 +18,31 @@
             const selectedIcon = document.getElementById(iconId);
             selectedIcon.style.border = '2px solid red';
         }
-        function buyClicked() {
-            const selectedIcon = document.querySelector('.icon[style*="border: 2px solid red;"]');
+        // function buyClicked() {
+        //     const selectedIcon = document.querySelector('.icon[style*="border: 2px solid red;"]');
             
-            if (selectedIcon) {
-                const itemId = selectedIcon.id;
+        //     if (selectedIcon) {
+        //         const itemId = selectedIcon.id;
 
-                fetch('buy-item', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'  
-                    },
-                    body: JSON.stringify({ id: itemId }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            } else {
-                alert('No item selected.');
-            }
-        }
+        //         fetch('buy-item', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRFToken': '{{ csrf_token }}'  
+        //             },
+        //             body: JSON.stringify({ id: itemId }),
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        //     } else {
+        //         alert('No item selected.');
+        //     }
+        // }
         
     </script>
     <title> The Shop! </title>
@@ -71,10 +73,13 @@
             </div>
         </div>
         <div class="button">
-            <button onclick="buyClicked()">
+            <button id="buy-button"><!-- <button id="buy-button" onclick="buyClicked()"> -->
                 Buy!
             </button>
         </div>
+        <script>
+            ShopHandler.attachEvents()
+        </script>
     </div>
 </body>
 </html>

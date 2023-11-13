@@ -5,4 +5,5 @@ websocket_urlpatterns = [
     path('friends/data', consumers.FriendConsumer.as_asgi()),
     path('messages/data', consumers.MessagesConsumer.as_asgi()),
     path('furniture/data', consumers.FurnitureConsumer.as_asgi()),
+    path('shop/data', consumers.ShopConsumer.as_asgi()),
 ]
