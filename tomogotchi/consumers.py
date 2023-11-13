@@ -4,6 +4,7 @@ from tomogotchi.models import Items, Furniture, House, Message, Player
 from django.contrib.auth.models import User
 import json
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 class FurnitureConsumer(WebsocketConsumer):
     group_name = 'furniture_group'
@@ -330,6 +331,84 @@ class FriendConsumer(WebsocketConsumer):
                 'message': json.dumps(friend_list)
             }
         )
+    
+    def send_error(self, error_message):
+        self.send(text_data=json.dumps({'error': error_message}))
+
+    def broadcast_event(self, event):
+        self.send(text_data=event['message'])
+
+
+
+
+class ShopConsumer(WebsocketConsumer):
+    group_name = 'shop_group'
+    channel_name = 'shop_channel'
+
+    user = None
+
+    def connect(self):
+        print("shop consumer connected")
+        async_to_sync(self.channel_layer.group_add)(
+            self.group_name, self.channel_name
+        )
+
+        self.accept()
+
+        if not self.scope["user"].is_authenticated:
+            self.send_error(f'You must be logged in')
+            self.close()
+            return        
+
+        self.user = self.scope["user"]
+
+        # self.broadcast_list()
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.group_name, self.channel_name
+        )
+
+    def receive(self, **kwargs):
+        print("shop consumer received")
+        if 'text_data' not in kwargs:
+            self.send_error('you must send text_data')
+            return
+
+        try:
+            data = json.loads(kwargs['text_data'])
+        except json.JSONDecodeError:
+            self.send_error('invalid JSON sent to server')
+            return
+        print(f'data: {data}')
+        if 'item_id' not in data:
+            self.send_error('item_id not sent in JSON')
+            return
+        if 'action' not in data:
+            self.send_error('action property not sent in JSON')
+            return
+
+        action = data['action']
+        print(f'action: {action}')
+
+        if action == 'buy-item':
+            self.buy_item(data)
+            return
+
+        self.send_error(f'Invalid action property: "{action}"')
+
+    # Simply adds the item to the user's inventory, nothing more
+    def buy_item(self, data):
+        if 'item_id' not in data or not data['item_id']:
+            self.send_error('you must select an item to buy')
+            return
+        item_id = data['item_id']
+        item = get_object_or_404(Items, id = item_id)
+        player = get_object_or_404(Player, user=self.user)
+        player.inventory.add(item)
+        player.save()
+        print(f'player: {player.name} bought item {item_id}')
+        
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))

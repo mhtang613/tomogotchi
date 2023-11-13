@@ -96,3 +96,7 @@ html, body {
     font-family: Verdana, sans-serif;
     font-weight: bold;
 }
+
+.cell_selected {
+    border: 2px solid red;
+}

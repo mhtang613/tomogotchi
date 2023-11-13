@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from tomogotchi import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.login, name="login"),
@@ -28,4 +30,9 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),
     path('logout', auth_views.logout_then_login, {"login_url" : "login"}, name='logout'),
     # path('edit-username/', auth_views.logout_then_login, name='logout'),
+    path('get-item-picture/<str:name>', views.get_item_picture, name='get-item-picture'),
+    path('buy-item', views.buy_item, name='buy-item'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

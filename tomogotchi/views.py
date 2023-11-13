@@ -145,22 +145,33 @@ def login(request):
     return render(request, "login.html", context)
 
 def shop(request):
-    # todo: fill in context with the Items and Furniture models
-    furniture_list = []
-    item_list = []
-    for i in range(10):
-        item_list.append("images/icons/burger.png")
-        item_list.append("images/icons/cake.png")
-        item_list.append("images/icons/sushi.png")
-        item_list.append("images/icons/sushi.png")
-        furniture_list.append("images/icons/bookshelf1.png")
-        furniture_list.append("images/icons/plant1.png")
-        furniture_list.append("images/icons/plant1.png")
-        furniture_list.append("images/icons/table1.png")
-        
-    
-    
+    furniture_items = Items.objects.filter(is_furniture=True)
+    other_items = Items.objects.filter(is_furniture=False)
 
-    context = {'furniture_list' : furniture_list, 'item_list' : item_list}
+    context = {'furniture_list' : furniture_items, 'item_list' : other_items}
     return render(request, 'shop.html', context)
     
+
+def get_item_picture(request, name):
+    item_instance = Items.objects.get(name=name)
+    if not item_instance.picture:
+        return Http404
+    return HttpResponse(item_instance.picture, content_type = item_instance.content_type)
+
+def buy_item(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            item_id = data['id']
+        except:
+            return HttpResponse(status=400)
+    
+        item = get_object_or_404(Items, id=item_id)
+        player = get_object_or_404(Player, user=request.user)
+        player.inventory.add(item)
+        player.save()
+        print(f'bought item {item_id}')
+        print(f'player:  {player.name}')
+
+        return HttpResponse()
+

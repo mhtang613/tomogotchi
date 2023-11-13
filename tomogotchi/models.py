@@ -6,7 +6,12 @@ class Items(models.Model):
     # name
     name = models.CharField(max_length=200)
     # image
-    picture = models.FileField(blank=True)
+    picture = models.FileField(blank=True,upload_to='',storage=None)
+    # is_furniture - true if furniture, false if other item
+    is_furniture = models.BooleanField(default=True)
+    # content type used for HTTP request to each picture
+    content_type = models.CharField(max_length=50)
+
 
     def __str__(self):
         return f'id={self.id}, name="{self.name}", picture={self.picture}'
@@ -70,7 +75,7 @@ class Player(models.Model):
     # friends
     following = models.ManyToManyField(User, related_name="followers")
     # inventory (all items and food owned)
-    inventory = models.ManyToManyField(Items, related_name="inventory")
+    inventory = models.ManyToManyField(Items, related_name="inventory", unique=False)
     # money
     money = models.IntegerField(default=0)
     # tamagotchi info
