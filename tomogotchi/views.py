@@ -157,3 +157,21 @@ def get_item_picture(request, name):
     if not item_instance.picture:
         return Http404
     return HttpResponse(item_instance.picture, content_type = item_instance.content_type)
+
+def buy_item(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            item_id = data['id']
+        except:
+            return HttpResponse(status=400)
+    
+        item = get_object_or_404(Items, id=item_id)
+        player = get_object_or_404(Player, user=request.user)
+        player.inventory.add(item)
+        player.save()
+        print(f'bought item {item_id}')
+        print(f'player:  {player.name}')
+
+        return HttpResponse()
+

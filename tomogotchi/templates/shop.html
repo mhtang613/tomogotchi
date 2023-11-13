@@ -6,8 +6,40 @@
     <link href="{% static 'shop.css' %}" rel="stylesheet" type="text/css">
     {% block javascript %} {% endblock %}
     <script>
-        function cellSelected() {
-                alert("Selected item/furniture"); 
+        function iconSelected(iconId) {
+            const icons = document.querySelectorAll('.icon');
+            
+            icons.forEach(icon => {
+                icon.style.border = 'none';
+            });
+
+            const selectedIcon = document.getElementById(iconId);
+            selectedIcon.style.border = '2px solid red';
+        }
+        function buyClicked() {
+            const selectedIcon = document.querySelector('.icon[style*="border: 2px solid red;"]');
+            
+            if (selectedIcon) {
+                const itemId = selectedIcon.id;
+
+                fetch('buy-item', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'  
+                    },
+                    body: JSON.stringify({ id: itemId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert('No item selected.');
+            }
         }
         
     </script>
@@ -22,10 +54,8 @@
             <div class="title">Item</div>
             <div class="grid">
                 {% for item in item_list %}
-                    <div class="cell" onclick="cellSelected()">
-                        <div class="icon">
-                            <img id={{item.id}} src="{% url 'get-item-picture' item.name %}" width="50">
-                        </div>
+                    <div class="cell" onclick="iconSelected('{{ item.id }}')">
+                        <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width="50">                       
                     </div>
                 {% endfor %}
             </div>
@@ -34,16 +64,14 @@
             <div class="title">Furniture</div>
             <div class="grid">
                 {% for furniture in furniture_list %}
-                    <div class="cell" onclick="cellSelected()">
-                        <div class="icon">
-                            <img id="shop" src="{% url 'get-item-picture' furniture.name %}" width="50">
-                        </div>
+                    <div class="cell" onclick="iconSelected('{{ furniture.id }}')">
+                        <img class="icon" id={{furniture.id}} src="{% url 'get-item-picture' furniture.name %}" width="50">
                     </div>
                 {% endfor %}
             </div>
         </div>
         <div class="button">
-            <button>
+            <button onclick="buyClicked()">
                 Buy!
             </button>
         </div>

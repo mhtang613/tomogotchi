@@ -75,7 +75,7 @@ class Player(models.Model):
     # friends
     following = models.ManyToManyField(User, related_name="followers")
     # inventory (all items and food owned)
-    inventory = models.ManyToManyField(Items, related_name="inventory")
+    inventory = models.ManyToManyField(Items, related_name="inventory", unique=False)
     # money
     money = models.IntegerField(default=0)
     # tamagotchi info

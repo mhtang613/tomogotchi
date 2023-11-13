@@ -9,3 +9,4 @@ my_env
 /tomogotchi/migrations/*
 */__pycache__/*
 .vscode/*
+/media/*
