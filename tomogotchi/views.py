@@ -73,7 +73,7 @@ def get_placed_furniture(player):
         'locationY': furniture.locationY,
         'hitboxX': furniture.hitboxX,
         'hitboxY': furniture.hitboxY,
-        'imageUrl': furniture.picture.url
+        'picture': furniture.picture.url
     } for furniture in furniture_list]
     return placedFurniture
 
@@ -106,6 +106,8 @@ def visit(request, user_id):
     # update self's visiting room
     request.user.player.visiting = other_user.house
     request.user.player.save()
+    # place furniture
+    context['placedFurniture'] = get_placed_furniture(other_user.player)
 
     # TODO: Check that users are Mutual Friends
     # TODO: If not, return redirect(reverse('home'))
@@ -116,7 +118,9 @@ def edit_furniture_page(request):
     context = {}
     # furniture_inventory = request.user.house.furnitureOwned
     # filter by size (big vs smol)
-
+    my_home = request.user.house
+    context['house'] = my_home
+    context['placedFurniture'] = get_placed_furniture(request.user.player)
     # example data
     context['big_list'] = [{'hitboxX': 3*3, 'hitboxY': 2*3}, 
                            {'hitboxX': 4*3, 'hitboxY': 1*3}, 
