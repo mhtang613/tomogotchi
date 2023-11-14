@@ -338,9 +338,6 @@ class FriendConsumer(WebsocketConsumer):
     def broadcast_event(self, event):
         self.send(text_data=event['message'])
 
-
-
-
 class ShopConsumer(WebsocketConsumer):
     group_name = 'shop_group'
     channel_name = 'shop_channel'
