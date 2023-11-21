@@ -146,6 +146,11 @@ def edit_furniture_page(request):
 
 def login(request):
     context = {}
+    # If user already logged in, 
+    # don't let them log in with different account 
+    # until they log out
+    if request.user.is_authenticated:   
+        return redirect(reverse('home'))
     return render(request, "login.html", context)
 
 def shop(request):
