@@ -111,7 +111,6 @@ class FurnitureConsumer(WebsocketConsumer):
     def broadcast_event(self, event):
         self.send(text_data=event['message'])
 
-
 class MessagesConsumer(WebsocketConsumer):
     group_name = 'message_group'
     channel_name = 'message_channel'
@@ -206,7 +205,6 @@ class MessagesConsumer(WebsocketConsumer):
         msg = Message(user=self.user, house=house, text=data['message'], date=timezone.now())
         msg.save()
         self.send_message_list()
-        
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
@@ -296,31 +294,32 @@ class FriendConsumer(WebsocketConsumer):
     def send_friend_list(self): 
         # Get following from player (filter by the ones that follow back)
         following = User.objects.filter(player__following__id=self.user.id, followers__id=self.user.player.id)
-        # # DUMMY DATA
-        # class player_data:
-        #         picture = ''
-        #         def __init__(self, picture) -> None:
-        #             self.picture = picture
-        # class user_data:
-        #     id = 0
-        #     first_name = ''
-        #     last_name = ''
-        #     player = None
-        #     def __init__(self, id, picture, first, last):
-        #         self.id = id
-        #         self.player = player_data(picture)
-        #         self.first_name = first
-        #         self.last_name = last
+        """
+        DUMMY DATA
+        class player_data:
+                picture = ''
+                def __init__(self, picture) -> None:
+                    self.picture = picture
+        class user_data:
+            id = 0
+            first_name = ''
+            last_name = ''
+            player = None
+            def __init__(self, id, picture, first, last):
+                self.id = id
+                self.player = player_data(picture)
+                self.first_name = first
+                self.last_name = last
 
-        # following = [user_data(1, '/images/icons/pikachu.png', 'first', 'last'), user_data(2, '/images/icons/burger.png', 'nyan', 'burger')] # Test data
+        following = [user_data(1, '/images/icons/pikachu.png', 'first', 'last'), user_data(2, '/images/icons/burger.png', 'nyan', 'burger')] # Test data
+        """
 
         friend_list = list()
         for user in following:
             friend_info = {
                 'id': user.id,
                 'picture': str(user.player.picture),
-                'first_name': user.first_name, 
-                'last_name': user.last_name,
+                'player_name': user.player.name, 
             }
             friend_list.append(friend_info)  
         
@@ -406,6 +405,9 @@ class ShopConsumer(WebsocketConsumer):
         player.save()
         print(f'player: {player.name} bought item {item_id}')
         
+        
+    
+          
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
