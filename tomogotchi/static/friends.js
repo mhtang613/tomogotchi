@@ -61,7 +61,7 @@ class FriendHandler {
 
     // Builds a new HTML "div" element for each message
     static makeFriendDiv(friend) {
-        let friend_name= `<a class="home-inline" id="id_friend_home_${friend.id}" href="${otherHomeURL(friend.id)}">${friend.first_name} ${friend.last_name}</a>`
+        let friend_name= `<a class="home-inline" id="id_friend_home_${friend.id}" href="${otherHomeURL(friend.id)}">${friend.player_name}</a>`
         let friend_pfp = `<img src="/static/${friend.picture}" width="50">`
         
         let friend_div = document.createElement("div")
