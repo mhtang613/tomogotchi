@@ -7,7 +7,7 @@ class MessageHandler {
         let wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:"
 
         // Create a new WebSocket.
-        let url = `${wsProtocol}//${window.location.host}/messages/data`
+        let url = `${wsProtocol}//${window.location.host}/messages/data/${currentRoomID}`
         this.socket = new WebSocket(url)
 
         // Handle any errors that occur.
@@ -17,7 +17,7 @@ class MessageHandler {
 
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
-            displayMessage("WebSocket Connected")
+            displayMessage("Messages WebSocket Connected")
         }
 
         // Show a disconnected message when the WebSocket is closed & try to reconnect
@@ -89,7 +89,6 @@ class MessageHandler {
         let message_input = document.getElementById('message-input')
         message_input.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
-                console.log("Enter pressed")
                 if (message_input.value) {
                     MessageHandler.sendRequest(message_input)
                 }

@@ -112,12 +112,13 @@ class FurnitureConsumer(WebsocketConsumer):
         self.send(text_data=event['message'])
 
 class MessagesConsumer(WebsocketConsumer):
-    group_name = 'message_group'
     channel_name = 'message_channel'
 
     user = None
 
     def connect(self):
+        self.group_name = f'message_group_{self.scope["url_route"]["kwargs"]["home_id"]}'
+        
         async_to_sync(self.channel_layer.group_add)(
             self.group_name, self.channel_name
         )
@@ -131,7 +132,7 @@ class MessagesConsumer(WebsocketConsumer):
 
         self.user = self.scope["user"]
 
-        self.broadcast_event({'message': 'Connected to Messages Websocket'})
+        self.broadcast_event({'message': f'Connected to Messages Websocket Group {self.group_name}'})
         self.send_message_list()    # On connection, send over current messages
     
     def disconnect(self, close_code):
@@ -213,12 +214,12 @@ class MessagesConsumer(WebsocketConsumer):
         self.send(text_data=event['message'])
 
 class FriendConsumer(WebsocketConsumer):
-    group_name = 'friends_group'
     channel_name = 'friends_channel'
     
     user = None
 
     def connect(self):
+        self.group_name = f'friends_group_{self.scope["url_route"]["kwargs"]["user_id"]}'
         async_to_sync(self.channel_layer.group_add)(
             self.group_name, self.channel_name
         )
@@ -232,7 +233,7 @@ class FriendConsumer(WebsocketConsumer):
 
         self.user = self.scope["user"]
 
-        self.broadcast_event({'message': 'Connected to Friends Websocket'})
+        self.broadcast_event({'message': f'Connected to Friends Websocket Group {self.group_name}'})
         self.send_friend_list()
 
     def disconnect(self, close_code):

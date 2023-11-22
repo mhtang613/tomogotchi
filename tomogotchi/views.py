@@ -92,7 +92,6 @@ def home(request):
             player.save()
 
     my_home = request.user.house
-    context['house'] = my_home
     context['placedFurniture'] = get_placed_furniture(request.user.player)
     # update self's visiting room
     request.user.player.visiting = my_home

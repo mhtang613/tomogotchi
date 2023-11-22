@@ -114,7 +114,7 @@ function updateList(items) {
 // Builds a new HTML "li" element for the to do list
 function makeListItemElement(item) {
     let deleteButton
-    if (item.user === myUserName) { // myUserName defined in edit.html
+    if (item.user.id === myUserID) { // myUserID defined in edit.html
         deleteButton = `<button onclick='deleteItem(${item.id})'>X</button>`
     } else {
         deleteButton = "<button style='visibility: hidden'>X</button> "

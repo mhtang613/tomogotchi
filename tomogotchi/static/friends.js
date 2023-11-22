@@ -7,7 +7,7 @@ class FriendHandler {
         let wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:"
     
         // Create a new WebSocket.
-        let url = `${wsProtocol}//${window.location.host}/friends/data`
+        let url = `${wsProtocol}//${window.location.host}/friends/data/${myUserID}` // myUserID defined in home.html
         this.socket = new WebSocket(url)
     
         // Handle any errors that occur.
@@ -84,7 +84,6 @@ class FriendHandler {
         let search_input = document.getElementById('search-friend-input')
         search_input.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
-                console.log("Enter pressed")
                 if (search_input.value) {
                     FriendHandler.sendRequest(search_input)   // sends request with friend-search-text
                 }
