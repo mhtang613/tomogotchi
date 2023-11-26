@@ -26,6 +26,21 @@ class Command(BaseCommand):
                                      is_furniture=is_furniture, 
                                      is_big=is_big, 
                                      content_type="image/png")
+                        # Manually add width and height for furniture items
+                        if is_furniture:
+                            if "bookshelf1" in file.lower():
+                                item.hitboxX = 3
+                                item.hitboxY = 4
+                            elif "clock1" in file.lower():
+                                item.hitboxX = 1
+                                item.hitboxY = 3
+                            elif "plant1" in file.lower():
+                                item.hitboxX = 1
+                                item.hitboxY = 2
+                            elif "table1" in file.lower():
+                                item.hitboxX = 2
+                                item.hitboxY = 3
+                            
                         item.save()
                         self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))
                 else:

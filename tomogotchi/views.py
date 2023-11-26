@@ -16,6 +16,10 @@ from tomogotchi.models import *
 import randomname, random
 import imghdr
 import json
+import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -157,6 +161,7 @@ def shop(request):
     other_items = Items.objects.filter(is_furniture=False)
 
     context = {'furniture_list' : furniture_items, 'item_list' : other_items}
+    
     return render(request, 'shop.html', context)
     
 
@@ -166,6 +171,7 @@ def get_item_picture(request, name):
         return Http404
     return HttpResponse(item_instance.picture, content_type = item_instance.content_type)
 
+# This function is never called, instead we usy buy_items in consumers.py
 def buy_item(request):
     if request.method == 'POST':
         try:
@@ -178,8 +184,17 @@ def buy_item(request):
         player = get_object_or_404(Player, user=request.user)
         player.inventory.add(item)
         player.save()
-        print(f'bought item {item_id}')
-        print(f'player:  {player.name}')
 
+        if item.is_furniture:
+            furn = Furniture(name=item.name,
+                                picture=item.picture,
+                                is_big=item.is_big,
+                                hitboxX=item.hitboxX,
+                                hitboxY=item.hitboxY,
+                                locationX=0,
+                                locationY=0,
+                                house=player.house,
+                                placed=False,
+                                content_type=item.content_type)
+            furn.save()
         return HttpResponse()
-
