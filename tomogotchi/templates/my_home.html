@@ -1,5 +1,7 @@
 {% extends "home.html" %}
 
+
+
 {% block header %}
 <div id="my-home-header">
     <div>
@@ -48,5 +50,12 @@
             </tr>
         </tbody>
     </table>
+</div>
+{% endblock %}
+
+{% block footer %}
+<button id="restore-button" onclick="restoreFood()" style="display: none;">Food</button>
+<div class="food-bar" id="food-bar">
+    <button id="shrink-button" onclick="toggleFood()">&#x25BC;</button>
 </div>
 {% endblock %}
