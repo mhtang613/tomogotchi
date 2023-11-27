@@ -7,8 +7,8 @@ function toggleFood() {
 
     foodBar.classList.toggle("collapsed");
     shrinkButton.innerHTML = foodBar.classList.contains("collapsed") ? "&#9650;" : "&#x25BC;";
-    home.style.maxHeight = foodBar.classList.contains("collapsed") ? "80vh" : "75vH";
-    home.style.maxWidth = foodBar.classList.contains("collapsed") ? "80vh" : "75vH";
+//     home.style.maxHeight = foodBar.classList.contains("collapsed") ? "80vh" : "75vH";
+//     home.style.maxWidth = foodBar.classList.contains("collapsed") ? "80vh" : "75vH";
 }
 
 function restoreFood() {
@@ -18,7 +18,7 @@ function restoreFood() {
 
     foodBar.classList.remove("collapsed");
     shrinkButton.innerHTML = "&#x25BC;";
-    home.style.maxHeight = "75vh";
-    home.style.maxWidth = "75vh";
+    // home.style.maxHeight = "75vh";
+    // home.style.maxWidth = "75vh";
 }
 

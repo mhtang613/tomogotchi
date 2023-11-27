@@ -85,7 +85,7 @@ class Player(models.Model):
     visiting = models.ForeignKey(House, on_delete=models.PROTECT, related_name="visitors")
     # friends
     following = models.ManyToManyField(User, related_name="followers")
-    # inventory (all items and food owned)
+    # inventory (all items and food owned, but doesn't keep track of how many of each item)
     inventory = models.ManyToManyField(Items, related_name="inventory", unique=False)
     # money
     money = models.IntegerField(default=0)

@@ -112,8 +112,8 @@ button {
 #grid-container {
     height: 57vw;
     width: 57vw;
-    max-height: 75vh;
-    max-width: 75vh;
+    max-height: 80vh;
+    max-width: 80vh;
     display: grid;
     align-content: stretch;
     grid-template-columns: repeat(20, 5%);
