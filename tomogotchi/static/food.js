@@ -2,16 +2,23 @@
 
 function toggleFood() {
     const foodBar = document.getElementById("food-bar");
-    const restoreButton = document.getElementById("restore-button");
+    const shrinkButton = document.getElementById("shrink-button");
+    const home = document.getElementById("grid-container")
 
     foodBar.classList.toggle("collapsed");
-    restoreButton.style.display = foodBar.classList.contains("collapsed") ? "block" : "none";
+    shrinkButton.innerHTML = foodBar.classList.contains("collapsed") ? "&#9650;" : "&#x25BC;";
+    home.style.maxHeight = foodBar.classList.contains("collapsed") ? "80vh" : "75vH";
+    home.style.maxWidth = foodBar.classList.contains("collapsed") ? "80vh" : "75vH";
 }
 
 function restoreFood() {
     const foodBar = document.getElementById("food-bar");
-    const restoreButton = document.getElementById("restore-button");
+    const shrinkButton = document.getElementById("shrink-button");
+    const home = document.getElementById("grid-container")
 
     foodBar.classList.remove("collapsed");
-    restoreButton.style.display = "none";
+    shrinkButton.innerHTML = "&#x25BC;";
+    home.style.maxHeight = "75vh";
+    home.style.maxWidth = "75vh";
 }
+

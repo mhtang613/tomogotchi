@@ -28,31 +28,45 @@ button {
     margin-top: 0.5vh;
     border: #b4e7ff solid 1vh;
     width: 100%;
-    height: 8%;  
+    height: 12%;  
+    position: relative;
+    transition: 0.7s;
+}
+
+#invisible-button-container {
+    margin-top: 0.5vh;
+    width: 100%;
+    height: 100%;  
+    display: none;
     position: relative;
     transition: 0.7s;
 }
 
 .food-bar.collapsed {
-    transform: translateY(200%);
+    transform: translateY(80%);
 }
 
 
 #shrink-button {
     position: absolute;
-    top: 0;
+    top: -5vh;
     right: 0;
-    /* background-color: #b4e7ff;  */
     border: none; 
     padding: 5px; 
     font-size: 18px; 
     cursor: pointer; 
+    background-color: #b4e7ff;
 }
 
 
 #restore-button {
     display: none;
+    bottom: 0;
+    right: 0;
+    position: absolute;
 }
+
+
 
 
 .sidebar {
@@ -110,6 +124,7 @@ button {
     gap: 0vh;
     padding: 0vh;
     overflow: hidden;
+    transition: max-height 0.7s ease, max-width 0.7s ease;
 }
 
 #grid-container > .gridlines {
