@@ -1,7 +1,7 @@
 # Sprint 3: Backlog
 * Implement random sprite spawn in house (with no spawn on furniture) (wmshaw, all)
-* Display user's furniture in edit.html, sort by size (mhtang)
-* Implement editing furniture functionality for house (all)
+* Display user's furniture in edit.html, sort by size (mhtang) (done)
+* Implement editing furniture functionality for house, needs WebSockets (all)
 * Integrate name change functionality for player (& display in game name - not email name) (zhejiay)
 * Prevent non-friends from visiting each other (zhejiay)
 * Implement feeding your tamagotchi (mhtang)
