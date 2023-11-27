@@ -57,7 +57,7 @@
             <div class="grid">
                 {% for item in item_list %}
                     <div class="cell" onclick="iconSelected('{{ item.id }}')">
-                        <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width="50">                       
+                        <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>                       
                     </div>
                 {% endfor %}
             </div>
@@ -67,7 +67,7 @@
             <div class="grid">
                 {% for furniture in furniture_list %}
                     <div class="cell" onclick="iconSelected('{{ furniture.id }}')">
-                        <img class="icon" id={{furniture.id}} src="{% url 'get-item-picture' furniture.name %}" width="50">
+                        <img class="icon" id={{furniture.id}} src="{% url 'get-item-picture' furniture.name %}" width=100%>
                     </div>
                 {% endfor %}
             </div>

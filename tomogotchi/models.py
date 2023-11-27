@@ -39,6 +39,8 @@ class House(models.Model):
 class Furniture(models.Model):
     # name
     name = models.CharField(max_length=200)
+    # true_id - the id corresponding to the item's unique id in Items Model
+    true_id = models.IntegerField()
     # image
     picture = models.FileField(blank=True)
     # is_big - true if big, false if small

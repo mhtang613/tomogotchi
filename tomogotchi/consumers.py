@@ -407,15 +407,16 @@ class ShopConsumer(WebsocketConsumer):
         print(f'player: {player.name} bought item {item_id}')
         if item.is_furniture:
             furn = Furniture(name=item.name,
-                                picture=item.picture,
-                                is_big=item.is_big,
-                                hitboxX=item.hitboxX,
-                                hitboxY=item.hitboxY,
-                                locationX=0,
-                                locationY=0,
-                                house=player.house,
-                                placed=False,
-                                content_type=item.content_type)
+                             true_id=item.id,
+                             picture=item.picture,
+                             is_big=item.is_big,
+                             hitboxX=item.hitboxX,
+                             hitboxY=item.hitboxY,
+                             locationX=0,
+                             locationY=0,
+                             house=player.house,
+                             placed=False,
+                             content_type=item.content_type)
             furn.save()
         
     

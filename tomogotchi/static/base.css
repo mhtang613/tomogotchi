@@ -11,6 +11,9 @@ button {
 
 .icon {
     padding-left: 5vh;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 #error {
@@ -218,7 +221,7 @@ progress {
 
 .furniture {
     margin-top: 2vh;
-    border: 1px solid #000000;
+    border: none;
     font-size: 80%;
     text-align: center;
     display: flex;
@@ -228,6 +231,9 @@ progress {
     font-weight: bold;
     min-width: 1vw;
     min-height: 1vh;
+    /* overflow: hidden; */
+    width: 100px;
+    height: 100px;
 }
 
 .grid-elem, .center-button {
@@ -235,4 +241,25 @@ progress {
     align-items: center;
     justify-content: center;
     margin-top: 2vh;
+}
+
+.furniture-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vh;
+    border: none;
+}
+
+.counter-circle {
+    position: relative;
+    top: -50%; 
+    right: 10%;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+    height: 15%;
+    width: 30%;
 }

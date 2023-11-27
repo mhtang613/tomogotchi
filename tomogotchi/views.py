@@ -12,6 +12,7 @@ from django.utils import timezone
 
 from tomogotchi.models import *
 # from tomogotchi.forms import *
+from collections import Counter
 
 import randomname, random
 import imghdr
@@ -119,31 +120,27 @@ def visit(request, user_id):
 
 def edit_furniture_page(request):
     context = {}
-    # furniture_inventory = request.user.house.furnitureOwned
-    # filter by size (big vs smol)
     my_home = request.user.house
     context['house'] = my_home
     context['placedFurniture'] = get_placed_furniture(request.user.player)
-    # example data
-    context['big_list'] = [{'hitboxX': 3*3, 'hitboxY': 2*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 3*3},
-                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 3*3},
-                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 3*3},
-                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 3*3},
-                           {'hitboxX': 3*3, 'hitboxY': 2*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 1*3}, 
-                           {'hitboxX': 4*3, 'hitboxY': 3*3},
-                           ]
-    context['small_list'] = [{'hitboxX': 2*5, 'hitboxY': 2*5}, 
-                             {'hitboxX': 1*5, 'hitboxY': 2*5}, 
-                             {'hitboxX': 1*5, 'hitboxY': 1*5}]
+    
+    my_furniture = Furniture.objects.filter(house=request.user.house)
+    counter = Counter(furn.true_id for furn in my_furniture)
+
+
+    unique_big_set = set()
+    unique_small_set = set()
+    context['big_list'] = []
+    context['small_list'] = []
+    for item in my_furniture:
+        if not item.placed:
+            if item.is_big and item.true_id not in unique_big_set:
+                context['big_list'].append((item, counter[item.true_id]))
+                unique_big_set.add(item.true_id)
+            elif not item.is_big and item.true_id not in unique_small_set:
+                context['small_list'].append((item, counter[item.true_id]))
+                unique_small_set.add(item.true_id)
+    
     
     return render(request, 'edit.html', context)
 
@@ -171,30 +168,30 @@ def get_item_picture(request, name):
         return Http404
     return HttpResponse(item_instance.picture, content_type = item_instance.content_type)
 
-# This function is never called, instead we usy buy_items in consumers.py
-def buy_item(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            item_id = data['id']
-        except:
-            return HttpResponse(status=400)
+# This function is never called (maybe), instead we use buy_items in consumers.py
+# def buy_item(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+#             item_id = data['id']
+#         except:
+#             return HttpResponse(status=400)
     
-        item = get_object_or_404(Items, id=item_id)
-        player = get_object_or_404(Player, user=request.user)
-        player.inventory.add(item)
-        player.save()
+#         item = get_object_or_404(Items, id=item_id)
+#         player = get_object_or_404(Player, user=request.user)
+#         player.inventory.add(item)
+#         player.save()
 
-        if item.is_furniture:
-            furn = Furniture(name=item.name,
-                                picture=item.picture,
-                                is_big=item.is_big,
-                                hitboxX=item.hitboxX,
-                                hitboxY=item.hitboxY,
-                                locationX=0,
-                                locationY=0,
-                                house=player.house,
-                                placed=False,
-                                content_type=item.content_type)
-            furn.save()
-        return HttpResponse()
+#         if item.is_furniture:
+#             furn = Furniture(name=item.name,
+#                                 picture=item.picture,
+#                                 is_big=item.is_big,
+#                                 hitboxX=item.hitboxX,
+#                                 hitboxY=item.hitboxY,
+#                                 locationX=0,
+#                                 locationY=0,
+#                                 house=player.house,
+#                                 placed=False,
+#                                 content_type=item.content_type)
+#             furn.save()
+#         return HttpResponse()
