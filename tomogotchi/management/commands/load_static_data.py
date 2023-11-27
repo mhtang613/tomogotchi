@@ -13,13 +13,34 @@ class Command(BaseCommand):
         for file in os.listdir(files_dir):
             if file.endswith('.png') or file.endswith('.gif'):
                 is_furniture = True if "furniture" in file.lower() else False
+                is_big = True if "big" in file.lower() else False
+                
                 file_path = os.path.join(files_dir, file)
 
                 if not Items.objects.filter(name__iexact=file).exists():
                     with open(file_path, 'rb') as file_content:
                         file_instance = File(file_content)
                         file_instance.name = file
-                        item = Items(name=file, picture=file_instance, is_furniture=is_furniture,content_type="image/png")
+                        item = Items(name=file, 
+                                     picture=file_instance, 
+                                     is_furniture=is_furniture, 
+                                     is_big=is_big, 
+                                     content_type="image/png")
+                        # Manually add width and height for furniture items
+                        if is_furniture:
+                            if "bookshelf1" in file.lower():
+                                item.hitboxX = 3
+                                item.hitboxY = 4
+                            elif "clock1" in file.lower():
+                                item.hitboxX = 1
+                                item.hitboxY = 3
+                            elif "plant1" in file.lower():
+                                item.hitboxX = 1
+                                item.hitboxY = 2
+                            elif "table1" in file.lower():
+                                item.hitboxX = 2
+                                item.hitboxY = 3
+                            
                         item.save()
                         self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))
                 else:

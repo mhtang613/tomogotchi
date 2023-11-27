@@ -9,8 +9,13 @@ class Items(models.Model):
     picture = models.FileField(blank=True,upload_to='',storage=None)
     # is_furniture - true if furniture, false if other item
     is_furniture = models.BooleanField(default=True)
+    # is_big- true if big furniture, false if small furniture
+    is_big = models.BooleanField(default=True)
     # content type used for HTTP request to each picture
     content_type = models.CharField(max_length=50)
+    # hitbox
+    hitboxX = models.IntegerField(default=0)
+    hitboxY = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -34,14 +39,20 @@ class House(models.Model):
 class Furniture(models.Model):
     # name
     name = models.CharField(max_length=200)
+    # true_id - the id corresponding to the item's unique id in Items Model
+    true_id = models.IntegerField()
     # image
     picture = models.FileField(blank=True)
+    # is_big - true if big, false if small
+    is_big = models.BooleanField(default=True)
     # hitbox
     hitboxX = models.IntegerField()
     hitboxY = models.IntegerField()
     # location
     locationX = models.IntegerField()
     locationY = models.IntegerField()
+    # content type used for HTTP request to each picture, if needed
+    content_type = models.CharField(max_length=50)
     
     # Each furniture belongs to exactly 1 house (house can have many furniture)
     house = models.ForeignKey(House, on_delete=models.PROTECT, related_name="furnitureOwned")

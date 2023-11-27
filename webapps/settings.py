@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from configparser import ConfigParser
 import os
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -161,3 +162,19 @@ LOGIN_REDIRECT_URL = 'home'
 # Added folder for storing media files created when database is initialized
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/images/'
+
+
+# For console logging 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}

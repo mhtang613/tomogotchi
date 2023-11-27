@@ -21,11 +21,18 @@
         Big Furniture
     </div>
     <div class="scroll-list">
-        {% for item in big_list %}
-            <!-- In actuality, width & height are in block units, so must multiply by grid block unit width -->
-            <!-- only set width since these will be images (rather than divs) to preserve aspect ratio -->
+        <!-- In actuality, width & height are in block units, so must multiply by grid block unit width -->
+        <!-- only set width since these will be images (rather than divs) to preserve aspect ratio -->
+        {% for item, count in big_list %}
             <div class="grid-elem">
-                <div class="furniture" onclick="cellSelected()" style="width: {{item.hitboxX}}vw; height: {{item.hitboxY}}vh;">item</div>
+                <div class="furniture" onclick="cellSelected()">
+                    <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>
+                    {% if count > 1 %}
+                        <div class="counter-circle">
+                            {{count}}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         {% endfor %}
     </div>
@@ -35,12 +42,19 @@
 {% block rightside %}
 <div class="sidebar-container">
     <div class="label-center">
-        Little Furniture
+        Small Furniture
     </div>
     <div class="scroll-list">
-        {% for item in small_list %}
+        {% for item, count in small_list %}
             <div class="grid-elem">
-                <div class="furniture" onclick="cellSelected()" style="width: {{item.hitboxX}}vw; height: {{item.hitboxY}}vh;">item</div>
+                <div class="furniture" onclick="cellSelected()">
+                    <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>
+                    {% if count > 1 %}
+                        <div class="counter-circle">
+                            {{count}}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         {% endfor %}
     </div>
