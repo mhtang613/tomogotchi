@@ -62,6 +62,21 @@ class Furniture(models.Model):
     def __str__(self):
         return f'id={self.id}, name="{self.name}", hitbox=({self.hitboxX},{self.hitboxY}), location=({self.locationX},{self.locationY})'
 
+# Food Model
+class Food(models.Model):
+    # name
+    name = models.CharField(max_length=200)
+    # true_id - the id corresponding to the item's unique id in Items Model
+    true_id = models.IntegerField()
+    # user_id - the id of the player that the Food item belongs to
+    user_id = models.IntegerField()
+    # image
+    picture = models.FileField(blank=True)
+    # content type used for HTTP request to each picture, if needed
+    content_type = models.CharField(max_length=50)
+    # count
+    count = models.IntegerField()
+
 # Messages Model
 class Message(models.Model):
     # Sender: (each message has ONE sender, but each user can send many messages)
