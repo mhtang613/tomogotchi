@@ -1,6 +1,6 @@
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-from tomogotchi.models import Items, Furniture, House, Message, Player
+from tomogotchi.models import *
 from django.contrib.auth.models import User
 import json
 from django.utils import timezone
@@ -483,10 +483,131 @@ class ShopConsumer(WebsocketConsumer):
                              placed=False,
                              content_type=item.content_type)
             furn.save()
+        else: # item must be food
+            existing_food = Food.objects.filter(true_id=item.id, user_id=self.user.id).first()
+            if existing_food:
+                existing_food.count += 1
+                existing_food.save()
+            else:
+                food = Food(name=item.name,
+                            true_id=item.id,
+                            user_id=self.user.id,
+                            picture=item.picture,
+                            content_type=item.content_type,
+                            count=1)
+                food.save()
         
     
           
     
+    def send_error(self, error_message):
+        self.send(text_data=json.dumps({'error': error_message}))
+
+    def broadcast_event(self, event):
+        self.send(text_data=event['message'])
+
+
+
+class FoodConsumer(WebsocketConsumer):
+    group_name = 'food_group'
+    channel_name = 'food_channel'
+
+    user = None
+
+    def connect(self):
+        print("food consumer connected//////////////////////////////////////////////////////////")
+        async_to_sync(self.channel_layer.group_add)(
+            self.group_name, self.channel_name
+        )
+
+        self.accept()
+
+        if not self.scope["user"].is_authenticated:
+            self.send_error(f'You must be logged in')
+            self.close()
+            return        
+
+        self.user = self.scope["user"]
+
+        # self.broadcast_list()
+        self.send_food_list()
+    
+    def send_food_list(self):
+        print("consumers.py send_food_list")
+        my_food = Food.objects.filter(user_id=self.user.id)
+        food_list = list()
+        for food in my_food:
+            food_info = {
+                'name' : food.name,
+                'food_id' : food.id,
+                'food_true_id' : food.true_id,
+                'user_id' : food.user_id,
+                'count' : food.count,
+            }
+            food_list.append(food_info)
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(food_list)
+            }
+        )
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.group_name, self.channel_name
+        )
+
+    def receive(self, **kwargs):
+        print("consumers.py food receive")
+        if 'text_data' not in kwargs:
+            self.send_error('you must send text_data')
+            return
+
+        try:
+            data = json.loads(kwargs['text_data'])
+        except json.JSONDecodeError:
+            self.send_error('invalid JSON sent to server')
+            return
+        print(f'data: {data}')
+        if 'food_id' not in data:
+            self.send_error('food_id not sent in JSON')
+            return
+        if 'action' not in data:
+            self.send_error('action property not sent in JSON')
+            return
+
+        action = data['action']
+        print(f'action: {action}')
+
+        if action == 'use-food':
+            self.broadcast_event({'message': f'use-food event received'}) 
+            self.use_food(data)
+            return
+        if action == 'get':
+            self.send_food_list()
+            return
+
+        self.send_error(f'Invalid action property: "{action}"')
+
+    # Simply adds the item to the user's inventory, nothing more
+    def use_food(self, data):
+        print("consumers.py use_food")
+        if 'food_id' not in data or not data['food_id']:
+            self.send_error('you must select an food to use')
+            return
+        # update Food model
+        food_id = data['food_id']
+        
+        food_instance = Food.objects.get(id=food_id)
+        f = food_instance.count - 1
+        food_instance.count = f
+        food_instance.save()
+        
+        
+            
+        self.send_food_list()
+        
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
 

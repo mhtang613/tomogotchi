@@ -24,9 +24,57 @@ button {
     min-height: 10vh;
 }
 
-#footer {
+.food-bar {
     margin-top: 0.5vh;
+    border: #b4e7ff solid 1vh;
+    width: 100%;
+    height: 12%;  
+    position: relative;
+    transition: 0.7s;
 }
+
+#food-bar-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#invisible-button-container {
+    margin-top: 0.5vh;
+    width: 100%;
+    height: 100%;  
+    display: none;
+    position: relative;
+    transition: 0.7s;
+}
+
+.food-bar.collapsed {
+    transform: translateY(80%);
+}
+
+
+#shrink-button {
+    position: absolute;
+    top: -5vh;
+    right: 0;
+    border: none; 
+    padding: 5px; 
+    font-size: 18px; 
+    cursor: pointer; 
+    background-color: #b4e7ff;
+}
+
+
+#restore-button {
+    display: none;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
+
+
 
 .sidebar {
     height: 100%; /* 100% Full-height */
@@ -36,12 +84,16 @@ button {
     /* transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
 
+
+
 .sidebar-container {
     padding: 1vh;
     border: #b4e7ff solid 1vh;
     height: 96vh;
     overflow: auto;
 }
+
+
 
 #sidebar_left {
     top: 0;
@@ -60,13 +112,15 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: margin-top .5s;
+    padding: 0.5%;
 }
 
 #grid-container {
     height: 57vw;
     width: 57vw;
-    max-height: 80vh;
-    max-width: 80vh;
+    max-height: 75vh;
+    max-width: 75vh;
     display: grid;
     align-content: stretch;
     grid-template-columns: repeat(20, 5%);
@@ -77,6 +131,7 @@ button {
     gap: 0vh;
     padding: 0vh;
     overflow: hidden;
+    transition: max-height 0.7s ease, max-width 0.7s ease;
 }
 
 #grid-container > .gridlines {
@@ -194,6 +249,7 @@ input {
     vertical-align: bottom;
 }
 
+
 #other-player-name {
     padding-top: 3vh;
 }
@@ -260,4 +316,16 @@ progress {
     font-size: 12px;
     height: 15%;
     width: 30%;
+}
+
+.food-elem {
+    width: 50px; 
+    height: 50px; 
+    margin-right: 10px;
+}
+
+.food-elem img {
+    width: 50px; 
+    height: 50px;
+    object-fit: contain; 
 }
