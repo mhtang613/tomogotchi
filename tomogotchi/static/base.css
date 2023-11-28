@@ -160,6 +160,10 @@ td {
     grid-area: 1 / 1 / span 2 / span 2;
     text-align: center;
     overflow: hidden;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
 }
 
 #player-info {

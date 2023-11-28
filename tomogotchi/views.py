@@ -168,6 +168,9 @@ def home(request):
     request.user.player.save()
     # place visitors
     context = place_visitors(context, my_home)
+    # Needed for background tiles:
+    context["range10"] = [i * 2 + 1 for i in range(10)]
+    context["range20"] = [i + 1 for i in range(20)]
     return render(request, 'my_home.html', context)
 
 def visit(request, user_id):
@@ -185,6 +188,9 @@ def visit(request, user_id):
     request.user.player.save()
     # place furniture
     context['placedFurniture'] = get_placed_furniture(other_user.player)
+    # Needed for background tiles:
+    context["range10"] = [i * 2 + 1 for i in range(10)]
+    context["range20"] = [i + 1 for i in range(20)]
     # place visitors
     context = place_visitors(context, other_user.house)
    
