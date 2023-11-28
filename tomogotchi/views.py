@@ -91,26 +91,21 @@ def get_visitors(house):
 # Collision check between sprite and furniture:
 def is_collide(xV, yV, xF, yF, xHF, yHF):
     # Sprites have a hitbox of 2x2
-    (xV1, xV2) = (xV, xV+1)
-    (yV1, yV2) = (yV, yV+1)
+    (xV1, xV2) = (xV, xV+2)
+    (yV1, yV2) = (yV, yV+2)
     # Furniture Hitbox:
-    (xF1, xF2) = (xF, xF + xHF - 1)
-    (yF1, yF2) = (yF, yF + yHF - 1)
+    (xF1, xF2) = (xF, xF + xHF)
+    (yF1, yF2) = (yF, yF + yHF)
     # Bounds check (20x20 screen)
-    if not (0 <= xV1 and xV2 < 20 and
-            0 <= yV1 and yV2 <20):
+    if not (0 <= xV1 and xV2 <= 20 and
+            0 <= yV1 and yV2 <= 20):
         return False
     # Collision check
-    # Check if the sprite's hitbox is in furniture's hitbox
-    if ((xV1 >= xF1 and xV1 <= xF2) or (xV2 >= xF1 and xV2 <= xF2)) and \
-       ((yV1 >= yF1 and yV1 <= yF2) or (yV2 >= yF1 and yV2 <= yF2)):
-        return True
-    # Check if the furniture's hitbox is in sprite's hitbox
-    if ((xF1 >= xV1 and xF1 <= xV2) or (xF2 >= xV1 and xF2 <= xV2)) and \
-       ((yF1 >= yV1 and yF1 <= yV2) or (yF2 >= yV1 and yF2 <= yV2)):
-        return True
-    # Valid otherwise:
-    return True
+    # Check for overlap in X and Y coordinates
+    overlap_x = (xV1 < xF2) and (xF1 < xV2)
+    overlap_y = (yV1 < yF2) and (yF1 < yV2)
+
+    return overlap_x and overlap_y
 
 # Generate open slots for sprites:
 def find_spaces(context):
