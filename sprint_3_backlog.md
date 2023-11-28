@@ -4,7 +4,7 @@
 * Implement editing furniture functionality for house (all)
 * Integrate name change functionality for player (& display in game name - not email name) (zhejiay)
 * Prevent non-friends from visiting each other (zhejiay)
-* Implement feeding your tamagotchi (mhtang)
+* Implement feeding your tamagotchi (mhtang) (done)
 * Implement increasing & decreasing mood & hunger bars (zhejiay)
 * Implement currency generation system (wmshaw)
 * Implement CSRF tokens for all editing requests (not many post requests in our system?) (all)
