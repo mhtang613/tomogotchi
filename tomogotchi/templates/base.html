@@ -29,10 +29,11 @@
             </div>
             <div id="room">
                 <div id="grid-container">
-                    <!-- Furniture Grid Items Go Here -->
-                    <div class="item">
+                    {% comment %} Initial player position {% endcomment %}
+                    {% comment %} <div class="item">
                         <img id="sprite" src="{% static request.user.player.picture %}" height="100%">
-                    </div>
+                    </div> {% endcomment %}
+                    <!-- Furniture Grid Items Go Here -->
                     {% comment %} Place furniture {% endcomment %}
                     {% for furniture in placedFurniture %}
                         <div class="item" style="grid-area: {{ furniture.locationY }} / {{ furniture.locationX }} / span {{ furniture.hitboxY }} / span {{ furniture.hitboxX }};">
