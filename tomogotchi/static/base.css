@@ -135,8 +135,6 @@ tbody {
 }
 
 #messages-list {
-    height: 74vh;
-    display: grid;
     vertical-align: bottom;
     justify-content: left;
     min-height: min-content;
