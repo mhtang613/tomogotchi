@@ -1,5 +1,5 @@
 # Sprint 3: Backlog
-* Implement random sprite spawn in house (with no spawn on furniture) (wmshaw, all)
+* Implement random sprite spawn in house (with no spawn on furniture) (wmshaw) (done)
 * Display user's furniture in edit.html, sort by size (mhtang) (done)
 * Implement editing furniture functionality for house (all)
 * Integrate name change functionality for player (& display in game name - not email name) (zhejiay)

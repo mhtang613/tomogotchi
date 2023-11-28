@@ -163,11 +163,11 @@ def home(request):
     my_home = request.user.house
     # place furniture
     context['placedFurniture'] = get_placed_furniture(request.user.player)
-    # place visitors
-    context = place_visitors(context, my_home)
     # update self's visiting room
     request.user.player.visiting = my_home
     request.user.player.save()
+    # place visitors
+    context = place_visitors(context, my_home)
     return render(request, 'my_home.html', context)
 
 def visit(request, user_id):
