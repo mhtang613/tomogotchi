@@ -83,7 +83,6 @@ html, body {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    overflow: auto;
 }
 
 .cell {
@@ -101,11 +100,27 @@ html, body {
 }
 
 .icon {
-    width: 75%; 
-    height: 75%; 
+    width: 100%; 
+    height: 100%; 
     object-fit: contain;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    overflow: hidden;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    /* Image fitting */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.cell_selected {
-    border: 2px solid red;
+.icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fit the entire image within the element */
+    object-position: center; /* Center the image within the element */
 }
