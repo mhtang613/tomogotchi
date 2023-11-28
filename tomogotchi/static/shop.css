@@ -34,14 +34,13 @@ html, body {
     color: white;
 }
 
-/* CSS for left and right divs */   
+
 .left-half {
-    /* float: left; */
     flex: 1;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background-color: #ffcccc; /* Left div background color */
-    height: 70vh; /* 100% of the viewport height */
+    justify-content: center; 
+    align-items: center; 
+    background-color: #ffcccc; 
+    height: 70vh; 
     width: 50vh;
     padding: 1vh;
     overflow: auto;
@@ -49,10 +48,10 @@ html, body {
 
 .right-half {
     flex: 1;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background-color: #ccffcc; /* Right div background color */
-    height: 70vh; /* 100% of the viewport height */
+    justify-content: center;
+    align-items: center; 
+    background-color: #ccffcc; 
+    height: 70vh; 
     width: 50vh;
     padding: 1vh;
     overflow: auto;
@@ -88,16 +87,18 @@ html, body {
 
 .cell {
     aspect-ratio: 1/1;
+    border: 1px solid #000000;
     border: none;
     font-size: 80%;
     text-align: center;
     vertical-align: middle;
-    line-height: 55px;
+    line-height: 1;
     font-family: Verdana, sans-serif;
     font-weight: bold;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .icon {
@@ -108,4 +109,12 @@ html, body {
 
 .cell_selected {
     border: 2px solid red;
+}
+
+.item-name {
+    color: #000000;
+    font-size: 10px;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    z-index: 10;
 }

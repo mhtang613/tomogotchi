@@ -18,31 +18,6 @@
             const selectedIcon = document.getElementById(iconId);
             selectedIcon.style.border = '2px solid red';
         }
-        // function buyClicked() {
-        //     const selectedIcon = document.querySelector('.icon[style*="border: 2px solid red;"]');
-            
-        //     if (selectedIcon) {
-        //         const itemId = selectedIcon.id;
-
-        //         fetch('buy-item', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRFToken': '{{ csrf_token }}'  
-        //             },
-        //             body: JSON.stringify({ id: itemId }),
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data);
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        //     } else {
-        //         alert('No item selected.');
-        //     }
-        // }
         
     </script>
     <title> The Shop! </title>
@@ -58,6 +33,7 @@
                 {% for item in item_list %}
                     <div class="cell" onclick="iconSelected('{{ item.id }}')">
                         <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>                       
+                        <div class="item-name">Name</div>
                     </div>
                 {% endfor %}
             </div>
@@ -73,7 +49,7 @@
             </div>
         </div>
         <div class="button">
-            <button id="buy-button"><!-- <button id="buy-button" onclick="buyClicked()"> -->
+            <button id="buy-button">
                 Buy!
             </button>
         </div>

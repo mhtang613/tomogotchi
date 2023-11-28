@@ -16,6 +16,8 @@ class Items(models.Model):
     # hitbox
     hitboxX = models.IntegerField(default=0)
     hitboxY = models.IntegerField(default=0)
+    # price
+    price = models.IntegerField(default=1)
 
 
     def __str__(self):
