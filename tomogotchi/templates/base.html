@@ -33,9 +33,16 @@
                     <div class="item">
                         <img id="sprite" src="{% static request.user.player.picture %}" height="100%">
                     </div>
+                    {% comment %} Place furniture {% endcomment %}
                     {% for furniture in placedFurniture %}
                         <div class="item" style="grid-area: {{ furniture.locationY }} / {{ furniture.locationX }} / span {{ furniture.hitboxY }} / span {{ furniture.hitboxX }};">
                             <img src="{% static furniture.picture %}" alt="{{ furniture.name }}" height="100%">
+                        </div>
+                    {% endfor %}
+                    {% comment %} Place visitors {% endcomment %}
+                    {% for visitor in visitors %}
+                        <div class="item" style="grid-area: {{ visitor.locationY }} / {{ visitor.locationX }} / span {{2}} / span {{2}};">
+                            <img src="{% static visitor.picture %}" height="100%">
                         </div>
                     {% endfor %}
                 </div>

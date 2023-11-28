@@ -157,7 +157,7 @@ td {
 }
 
 .item {
-    grid-area: 1 / 1 / span 2 / span 3;
+    grid-area: 1 / 1 / span 2 / span 2;
     text-align: center;
     overflow: hidden;
 }

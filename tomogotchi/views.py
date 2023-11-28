@@ -82,6 +82,75 @@ def get_placed_furniture(player):
     } for furniture in furniture_list]
     return placedFurniture
 
+# Gets set of visitors for a house:
+@login_required
+def get_visitors(house):
+    visitors = Player.objects.filter(visiting=house)
+    return set(visitors)
+
+# Collision check between sprite and furniture:
+def is_collide(xV, yV, xF, yF, xHF, yHF):
+    # Sprites have a hitbox of 2x2
+    (xV1, xV2) = (xV, xV+1)
+    (yV1, yV2) = (yV, yV+1)
+    # Furniture Hitbox:
+    (xF1, xF2) = (xF, xF + xHF - 1)
+    (yF1, yF2) = (yF, yF + yHF - 1)
+    # Bounds check (20x20 screen)
+    if not (0 <= xV1 and xV2 < 20 and
+            0 <= yV1 and yV2 <20):
+        return False
+    # Collision check
+    # Check if the sprite's hitbox is in furniture's hitbox
+    if ((xV1 >= xF1 and xV1 <= xF2) or (xV2 >= xF1 and xV2 <= xF2)) and \
+       ((yV1 >= yF1 and yV1 <= yF2) or (yV2 >= yF1 and yV2 <= yF2)):
+        return True
+    # Check if the furniture's hitbox is in sprite's hitbox
+    if ((xF1 >= xV1 and xF1 <= xV2) or (xF2 >= xV1 and xF2 <= xV2)) and \
+       ((yF1 >= yV1 and yF1 <= yV2) or (yF2 >= yV1 and yF2 <= yV2)):
+        return True
+    # Valid otherwise:
+    return True
+
+# Generate open slots for sprites:
+def find_spaces(context):
+    res = set()
+    for i in range(20):
+        for j in range(20):
+            valid = True
+            for furniture in context['placedFurniture']:
+                xF = furniture['locationX']
+                yF = furniture['locationY']
+                xHF = furniture['hitboxX']
+                yHF = furniture['hitboxY']
+                if is_collide(i, j, xF, yF, xHF, yHF): valid = False
+            if valid: res.add((i,j))
+    return res
+
+# Place visitors into unoccupied spaces
+    # Requires context to have context['placedFurniture'] populated
+def place_visitors(context, house):
+    # Find necessary info
+    visitors = list(get_visitors(house))
+    open_spaces = list(find_spaces(context))
+    random.shuffle(open_spaces) #in-place shuffle
+    context['visitors'] = []
+    # Populate as many open spaces as possible:
+    while open_spaces and visitors:
+        space = open_spaces.pop()
+        visitor = visitors.pop()
+        print(visitor)
+        print("hello")
+        context["visitors"].append({
+            "visitor" : visitor,
+            "locationX" : space[0],
+            "locationY" : space[1],
+            "picture" : visitor.picture
+        })
+    # return updated context
+    return context
+
+
 @login_required
 def home(request):
     context = {}
@@ -97,7 +166,10 @@ def home(request):
             player.save()
 
     my_home = request.user.house
+    # place furniture
     context['placedFurniture'] = get_placed_furniture(request.user.player)
+    # place visitors
+    context = place_visitors(context, my_home)
     # update self's visiting room
     request.user.player.visiting = my_home
     request.user.player.save()
@@ -118,6 +190,8 @@ def visit(request, user_id):
     request.user.player.save()
     # place furniture
     context['placedFurniture'] = get_placed_furniture(other_user.player)
+    # place visitors
+    context = place_visitors(context, other_user.house)
    
     return render(request, 'other_home.html', context)
 
