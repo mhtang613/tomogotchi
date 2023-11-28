@@ -5,6 +5,12 @@
         <meta charset="utf-8">
         {% load static %}
         <link href="{% static 'base.css' %}" rel="stylesheet" type="text/css">
+        <script>
+            var perfEntries = performance.getEntriesByType("navigation");
+            if (perfEntries[0].type === "back_forward") {
+                location.reload(true);
+            }
+        </script>
         {% block javascript %} {% endblock %}
         <title> Tomogotchi </title>
     </head>

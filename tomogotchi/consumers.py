@@ -117,8 +117,7 @@ class MessagesConsumer(WebsocketConsumer):
     user = None
 
     def connect(self):
-        self.group_name = f'message_group_{self.scope["url_route"]["kwargs"]["home_id"]}'
-        
+        self.group_name = f'message_group_{self.scope["url_route"]["kwargs"]["house_id"]}'
         async_to_sync(self.channel_layer.group_add)(
             self.group_name, self.channel_name
         )
@@ -169,7 +168,29 @@ class MessagesConsumer(WebsocketConsumer):
 
         self.send_error(f'Invalid action property: "{action}"')
 
-    # Sends current list of messages through websocket
+    # sends a single message (used for updating already loaded front end)
+    def send_message(self, msg):
+        msg_info = {
+                'id': msg.id,
+                'text': msg.text,
+                'date': msg.date.isoformat(),    # ISO formatted date & time (needs to be read & reformatted in JS)
+                'user' : {
+                    'id': msg.user.id,
+                    'player': {
+                        'name': msg.user.player.name
+                    }
+                },
+            }
+        msg_list = [msg_info]
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(msg_list)
+            }
+        )
+        
+    # Sends current list of all messages through websocket
     def send_message_list(self): 
         # Get house from player current visiting house
         house = self.user.player.visiting
@@ -196,7 +217,7 @@ class MessagesConsumer(WebsocketConsumer):
             }
         )
 
-    # Saves a new message to the current visiting house
+    # Saves a new message to the current visiting house (& broadcasts the new msg)
     def add_message(self, data):
         if 'message' not in data or not data['message']:
             self.send_error('you must send a nonempty message')
@@ -205,7 +226,7 @@ class MessagesConsumer(WebsocketConsumer):
         house = self.user.player.visiting
         msg = Message(user=self.user, house=house, text=data['message'], date=timezone.now())
         msg.save()
-        self.send_message_list()
+        self.send_message(msg)
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
@@ -283,13 +304,57 @@ class FriendConsumer(WebsocketConsumer):
         player.save()
 
         if friend.player.following.filter(id=self.user.id).exists():
-            self.send_friend_list()
+            self.send_user1_to_user2(friend, self.user)
+            self.send_user1_to_user2(self.user, friend)
         else:
             # Get house from player current visiting house
             house = friend.player.house
             notif = f'You recieved a Friend Request from {self.user.player.name}! Accept their request by searching their name in your friends bar.'
             msg = Message(user=self.user, house=house, text=notif, date=timezone.now())
             msg.save()
+            self.send_message(friend, msg)
+    
+    # Send message [user1_info] to user2's friend websocket
+    def send_user1_to_user2(self, user1, user2):
+        
+        friend_info = {
+            'id': user1.id,
+            'picture': str(user1.player.picture),
+            'player_name': user1.player.name, 
+        }
+        friend_list = [friend_info]  
+        
+        async_to_sync(self.channel_layer.group_send)(
+            f'friends_group_{user2.id}',
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(friend_list)
+            }
+        )
+    
+    # sends a single message (used for updating msg box with friend request)
+    def send_message(self, friend, msg):
+        msg_info = {
+                'id': msg.id,
+                'text': msg.text,
+                'date': msg.date.isoformat(),    # ISO formatted date & time (needs to be read & reformatted in JS)
+                'user' : {
+                    'id': msg.user.id,
+                    'player': {
+                        'name': msg.user.player.name
+                    }
+                },
+            }
+        msg_list = [msg_info]
+
+        friend_msg_group = f'message_group_{friend.player.house.id}'
+        async_to_sync(self.channel_layer.group_send)(
+            friend_msg_group,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(msg_list)
+            }
+        )
 
     # Sends current list of messages through websocket
     def send_friend_list(self): 
