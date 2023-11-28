@@ -71,11 +71,13 @@ class FoodHandler {
         let food_bar = document.getElementById("food-bar-container")
         response.forEach(food => {
             let existing_div = document.getElementById(`id_food_div_${food.food_id}`);
-            if (!existing_div) {
-                displayMessage("here")
+            if (!existing_div && food.count > 0) {
                 let new_div = FoodHandler.makeFoodDiv(food);
                 food_bar.appendChild(new_div)
+            } else if (!existing_div && food.count <= 0) {
+                // do nothing
             } else {
+                displayMessage(`id, count = ${food.food_id} ${food.count}`);
                 if ((food.count) <= 0) {
                     existing_div.remove();
                 } else {

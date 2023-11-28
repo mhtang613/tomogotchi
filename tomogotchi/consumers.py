@@ -534,14 +534,11 @@ class FoodConsumer(WebsocketConsumer):
         # update Food model
         food_id = data['food_id']
         
-        print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
         food_instance = Food.objects.get(id=food_id)
         f = food_instance.count - 1
-        if (f) > 0:
-            food_instance.count = f
-            food_instance.save()
-        else:
-            food_instance.delete()
+        food_instance.count = f
+        food_instance.save()
+        
         
             
         self.send_food_list()
