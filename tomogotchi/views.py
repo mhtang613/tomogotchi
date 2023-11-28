@@ -106,15 +106,18 @@ def home(request):
 def visit(request, user_id):
     context = {}
     other_user = get_object_or_404(User, id=user_id)
+
+    # Check that users are Mutual Friends
+    # If not, return redirect(reverse('home'))
+    if not other_user.player.following.filter(id=request.user.id).exists():
+        return redirect(reverse('home'))
+
     context['house'] = other_user.house
     # update self's visiting room
     request.user.player.visiting = other_user.house
     request.user.player.save()
     # place furniture
     context['placedFurniture'] = get_placed_furniture(other_user.player)
-
-    # TODO: Check that users are Mutual Friends
-    # TODO: If not, return redirect(reverse('home'))
    
     return render(request, 'other_home.html', context)
 

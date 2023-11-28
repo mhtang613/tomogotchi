@@ -9,6 +9,14 @@ button {
     margin-inline-start: 1vh;
 }
 
+table {
+    table-layout: fixed;
+}
+
+td {
+    word-wrap: break-word;
+}
+
 .icon {
     padding-left: 5vh;
     width: 100%;
@@ -91,6 +99,8 @@ button {
     border: #b4e7ff solid 1vh;
     height: 96vh;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -157,12 +167,15 @@ button {
     width: 100%;
     outline-offset: 1vh;
     outline: #b4e7ff solid 1vh;
+    flex: 0 0 auto;
 }
 
 #message-area {
     height: 80vh;
     width: 100%;
     margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .label-center {
@@ -177,12 +190,16 @@ button {
     text-align: left;
 }
 
+#message-area {
+    flex: 1 1 auto;
+}
+
 #messages-box {
     margin-top: 1vh;
     border: pink solid 0.5vh;
     padding: 0.5vh;
-    height: 100%;
-    width: 100%;
+    overflow: auto;
+    flex: 1 1 auto;
 }
 
 tbody {
@@ -193,7 +210,6 @@ tbody {
     vertical-align: bottom;
     justify-content: left;
     min-height: min-content;
-    overflow: auto;
 }
 
 .msg-info {

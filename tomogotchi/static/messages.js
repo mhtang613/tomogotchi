@@ -40,7 +40,7 @@ class MessageHandler {
             if (Array.isArray(response)) {
                 MessageHandler.updateMessages(response)
                 //auto scroll to bottom (with newest messages)
-                let elem = document.getElementById('messages-list');    
+                let elem = document.getElementById('messages-box');    
                 elem.scrollTop = elem.scrollHeight;
             } else {
                 displayResponse(response)

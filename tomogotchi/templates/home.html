@@ -35,8 +35,8 @@
                     {{request.user.player.name}}
                 </a>
             </td>
-            <td id="edit-name-button">
-                <button>Edit!</button>
+            <td>
+                <button id="edit-name-button" type="submit">Edit!</button>
             </td>
         </tr>
     </table>
@@ -44,25 +44,28 @@
         <div id="messages-label" class="label-center">
             Messages:
         </div>
-        <table id="messages-box">
-            <tbody>
-                <tr height="100%">
-                    <td>
-                        <div id="messages-list">
-                            
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" id="message-input"> 
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="messages-box">
+            <table>
+                <tbody>
+                    <tr height="100%">
+                        <td>
+                            <div id="messages-list">
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="message-input"> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script>
+    NameHandler.attachEvents()
     MessageHandler.attachEvents()
 </script>
 {% endblock %}

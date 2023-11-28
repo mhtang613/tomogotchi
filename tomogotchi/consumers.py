@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from django.db import transaction
 
 class FurnitureConsumer(WebsocketConsumer):
     group_name = 'furniture_group'
@@ -298,6 +299,8 @@ class FriendConsumer(WebsocketConsumer):
             self.send_error('The requested friend does not exist')
             return
         friend = User.objects.filter(player__name=data['name']).all()[0]
+        if self.user.player.following.filter(id=friend.id).exists():
+            self.send_error(f'You are already following {friend.player.name}')
         # Get Current User for update
         player = self.user.player
         player.following.add(friend)
@@ -506,7 +509,82 @@ class ShopConsumer(WebsocketConsumer):
     def broadcast_event(self, event):
         self.send(text_data=event['message'])
 
+class NameEditingConsumer(WebsocketConsumer):
+    channel_name = 'name_editing_channel'
+    group_name = f'name_editing_group'
 
+    user = None
+
+    def connect(self):
+        async_to_sync(self.channel_layer.group_add)(
+            self.group_name, self.channel_name
+        )
+
+        self.accept()
+
+        if not self.scope["user"].is_authenticated:
+            self.send_error(f'You must be logged in')
+            self.close()
+            return        
+
+        self.user = self.scope["user"]
+
+        self.broadcast_event({'message': f'Connected to Name Editing Websocket'})
+    
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.group_name, self.channel_name
+        )
+
+    def receive(self, **kwargs):
+        if 'text_data' not in kwargs:
+            self.send_error('you must send text_data')
+            return
+
+        try:
+            data = json.loads(kwargs['text_data'])
+        except json.JSONDecodeError:
+            self.send_error('invalid JSON sent to server')
+            return
+        
+        # NOTE: DEBUG SEND
+        self.broadcast_event({'message': f'Event recieved from user {self.user.id} with data {data}'}) 
+        if 'action' not in data or not data['action']:
+            self.send_error('your request must contain an action')
+            return
+        
+        action = data['action']
+
+        if action == 'edit':
+            self.validate_name(data)
+            return
+
+        self.send_error(f'Invalid action property: "{action}"')
+
+    # sends a single message (used for updating already loaded front end)
+    def send_name(self, name):
+        self.send(text_data=json.dumps({'name': name}))
+
+    # Saves a new message to the current visiting house (& broadcasts the new msg)
+    def validate_name(self, data):
+        if 'name' not in data or not data['name']:
+            self.send_error('Invalid name')
+            return
+        name = data['name']
+        # Check if name exists/is repeat here
+        with transaction.atomic():
+            if not Player.objects.select_for_update().filter(name=name).exists():   # get DB lock
+                self.user.player.name = name
+                self.user.player.save() # update name in DB
+                self.send_name(name)
+                return
+        self.send_error(f'The name {name} is already taken')
+    
+    def send_error(self, error_message):
+        self.send(text_data=json.dumps({'error': error_message}))
+
+    def broadcast_event(self, event):
+        self.send(text_data=event['message'])
 
 class FoodConsumer(WebsocketConsumer):
     channel_name = 'food_channel'
