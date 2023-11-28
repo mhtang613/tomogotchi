@@ -509,13 +509,12 @@ class ShopConsumer(WebsocketConsumer):
 
 
 class FoodConsumer(WebsocketConsumer):
-    group_name = 'food_group'
     channel_name = 'food_channel'
 
     user = None
 
     def connect(self):
-        print("food consumer connected//////////////////////////////////////////////////////////")
+        self.group_name = f'food_group_{self.scope["url_route"]["kwargs"]["user_id"]}'
         async_to_sync(self.channel_layer.group_add)(
             self.group_name, self.channel_name
         )

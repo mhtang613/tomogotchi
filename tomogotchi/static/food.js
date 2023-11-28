@@ -29,7 +29,7 @@ class FoodHandler {
         let wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:"
     
         // Create a new WebSocket.
-        let url = `${wsProtocol}//${window.location.host}/food/data`
+        let url = `${wsProtocol}//${window.location.host}/food/data/${myUserID}`
         this.socket = new WebSocket(url)
     
         // Handle any errors that occur.
