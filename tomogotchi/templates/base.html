@@ -34,10 +34,10 @@
                         <img id="sprite" src="{% static request.user.player.picture %}" height="100%">
                     </div> {% endcomment %}
                     {% comment %} Create background {% endcomment %}
-                    {% for i in range10 %}
-                        {% for j in range10 %}
-                            <div class="item" style="grid-area: {{ i }} / {{ j }} / span 2 / span 2;">
-                                <img src="{% static 'images/backgrounds/flooring.png' %}" alt="Background Tile" height="100%">
+                    {% for i in range20 %}
+                        {% for j in range20 %}
+                            <div class="item" style="grid-area: {{ i }} / {{ j }} / span 1 / span 1;">
+                                <img src="{% static 'images/backgrounds/floors/floor7.png' %}" alt="Background Tile" height="100%">
                             </div>
                         {% endfor %}
                     {% endfor %}
