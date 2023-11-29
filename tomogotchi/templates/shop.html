@@ -8,7 +8,7 @@
     <script src="{% static 'utils.js' %}" type="text/javascript"></script>  
     <script src="{% static 'shop.js' %}" type="text/javascript"></script>
     <script>
-        function iconSelected(iconId) {
+        function iconSelected(iconId, itemName, itemPrice) {
             const icons = document.querySelectorAll('.icon');
             
             icons.forEach(icon => {
@@ -17,47 +17,28 @@
 
             const selectedIcon = document.getElementById(iconId);
             selectedIcon.style.border = '2px solid red';
-        }
-        // function buyClicked() {
-        //     const selectedIcon = document.querySelector('.icon[style*="border: 2px solid red;"]');
-            
-        //     if (selectedIcon) {
-        //         const itemId = selectedIcon.id;
 
-        //         fetch('buy-item', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRFToken': '{{ csrf_token }}'  
-        //             },
-        //             body: JSON.stringify({ id: itemId }),
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data);
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        //     } else {
-        //         alert('No item selected.');
-        //     }
-        // }
+            const buyButton = document.getElementById('buy-button');
+            buyButton.textContent = 'Buy ' + itemName + '! ($' + itemPrice + ')';
+        }
         
     </script>
     <title> The Shop! </title>
 </head>
 <body>
-    <a href="{% url 'home' %}">
-        <button>Home!</button>
-    </a>
+    <div class="main-title">
+        Welcome to the Shop!
+    </div>
     <div class="container">
         <div class="left-half">
-            <div class="title">Item</div>
+            <div class="title">Food</div>
             <div class="grid">
                 {% for item in item_list %}
-                    <div class="cell" onclick="iconSelected('{{ item.id }}')">
-                        <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>                       
+                    <div class="cell" onclick="iconSelected('{{ item.id }}', '{{ item.name }}', '{{ item.price}}')">
+                        <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%> 
+                        <div class="item-text">
+                            {{ item.name }} (${{ item.price }})
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -66,20 +47,26 @@
             <div class="title">Furniture</div>
             <div class="grid">
                 {% for furniture in furniture_list %}
-                    <div class="cell" onclick="iconSelected('{{ furniture.id }}')">
+                    <div class="cell" onclick="iconSelected('{{ furniture.id }}', '{{ furniture.name }}', '{{ furniture.price }}')">
                         <img class="icon" id={{furniture.id}} src="{% url 'get-item-picture' furniture.name %}" width=100%>
+                        <div class="item-text">
+                            {{ furniture.name }} (${{ furniture.price }})
+                        </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
-        <div class="button">
-            <button id="buy-button"><!-- <button id="buy-button" onclick="buyClicked()"> -->
-                Buy!
-            </button>
-        </div>
-        <script>
-            ShopHandler.attachEvents()
-        </script>
     </div>
+    <div class="button-container">
+        <a href="{% url 'home' %}">
+            <button>Home!</button>
+        </a>
+        <button id="buy-button">
+            Buy!
+        </button>
+    </div>
+    <script>
+        ShopHandler.attachEvents()
+    </script>
 </body>
 </html>

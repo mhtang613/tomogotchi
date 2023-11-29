@@ -471,38 +471,38 @@ class ShopConsumer(WebsocketConsumer):
         item = get_object_or_404(Items, id = item_id)
         player = get_object_or_404(Player, user=self.user)
         player.inventory.add(item)
-        player.save()
-        print(f'player: {player.name} bought item {item_id}')
-        if item.is_furniture:
-            furn = Furniture(name=item.name,
-                             true_id=item.id,
-                             picture=item.picture,
-                             is_big=item.is_big,
-                             hitboxX=item.hitboxX,
-                             hitboxY=item.hitboxY,
-                             locationX=0,
-                             locationY=0,
-                             house=player.house,
-                             placed=False,
-                             content_type=item.content_type)
-            furn.save()
-        else: # item must be food
-            existing_food = Food.objects.filter(true_id=item.id, user_id=self.user.id).first()
-            if existing_food:
-                existing_food.count += 1
-                existing_food.save()
-            else:
-                food = Food(name=item.name,
-                            true_id=item.id,
-                            user_id=self.user.id,
-                            picture=item.picture,
-                            content_type=item.content_type,
-                            count=1)
-                food.save()
+        item_price = item.price
+        if (player.money - item_price >= 0):
+            player.money = player.money - item_price
+            player.save()
+            print(f'player: {player.name} bought item {item_id}')
+            if item.is_furniture:
+                furn = Furniture(name=item.name,
+                                true_id=item.id,
+                                picture=item.picture,
+                                is_big=item.is_big,
+                                hitboxX=item.hitboxX,
+                                hitboxY=item.hitboxY,
+                                locationX=0,
+                                locationY=0,
+                                house=player.house,
+                                placed=False,
+                                content_type=item.content_type)
+                furn.save()
+            else: # item must be food
+                existing_food = Food.objects.filter(true_id=item.id, user_id=self.user.id).first()
+                if existing_food:
+                    existing_food.count += 1
+                    existing_food.save()
+                else:
+                    food = Food(name=item.name,
+                                true_id=item.id,
+                                user_id=self.user.id,
+                                picture=item.picture,
+                                content_type=item.content_type,
+                                count=1)
+                    food.save()
         
-    
-          
-    
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
 
@@ -680,6 +680,14 @@ class FoodConsumer(WebsocketConsumer):
         f = food_instance.count - 1
         food_instance.count = f
         food_instance.save()
+
+        player = get_object_or_404(Player, user=self.user)
+        item_instance = get_object_or_404(Items, id=food_instance.true_id)
+        hunger_inc = item_instance.hunger
+        player.hunger = player.hunger + hunger_inc
+        if player.hunger > 100:
+            player.hunger = 100
+        player.save()
         
         
             

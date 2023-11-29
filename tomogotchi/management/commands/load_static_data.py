@@ -26,20 +26,32 @@ class Command(BaseCommand):
                                      is_furniture=is_furniture, 
                                      is_big=is_big, 
                                      content_type="image/png")
-                        # Manually add width and height for furniture items
+                        # Manually add width, height, and price for furniture items
                         if is_furniture:
                             if "bookshelf1" in file.lower():
                                 item.hitboxX = 3
                                 item.hitboxY = 4
+                                item.price = 50
                             elif "clock1" in file.lower():
                                 item.hitboxX = 1
                                 item.hitboxY = 3
+                                item.price = 30
                             elif "plant1" in file.lower():
                                 item.hitboxX = 1
                                 item.hitboxY = 2
+                                item.price = 10
                             elif "table1" in file.lower():
                                 item.hitboxX = 2
                                 item.hitboxY = 3
+                                item.price = 40
+                        # Manually add price for food items
+                        else:
+                            if "cake" in file.lower():
+                                item.price = 15
+                                item.hunger = 10
+                            elif "burger" in file.lower():
+                                item.price = 8
+                                item.hunger = 8
                             
                         item.save()
                         self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))

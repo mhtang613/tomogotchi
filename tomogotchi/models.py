@@ -16,6 +16,10 @@ class Items(models.Model):
     # hitbox
     hitboxX = models.IntegerField(default=0)
     hitboxY = models.IntegerField(default=0)
+    # price
+    price = models.IntegerField(default=1)
+    # hunger - only used Food items, should remain 0 for Furniture items
+    hunger = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -107,7 +111,7 @@ class Player(models.Model):
     # tamagotchi info
     name = models.CharField(max_length=200)
     picture = models.FileField(blank=True)
-    hunger = models.IntegerField()
+    hunger = models.IntegerField(default=70)
     mood = models.IntegerField()
 
     def __str__(self):
