@@ -48,8 +48,10 @@ class Command(BaseCommand):
                         else:
                             if "cake" in file.lower():
                                 item.price = 15
+                                item.hunger = 10
                             elif "burger" in file.lower():
                                 item.price = 8
+                                item.hunger = 8
                             
                         item.save()
                         self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))

@@ -18,6 +18,8 @@ class Items(models.Model):
     hitboxY = models.IntegerField(default=0)
     # price
     price = models.IntegerField(default=1)
+    # hunger - only used Food items, should remain 0 for Furniture items
+    hunger = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -105,11 +107,11 @@ class Player(models.Model):
     # inventory (all items and food owned, but doesn't keep track of how many of each item)
     inventory = models.ManyToManyField(Items, related_name="inventory", unique=False)
     # money
-    money = models.IntegerField(default=0)
+    money = models.IntegerField(default=10000)
     # tamagotchi info
     name = models.CharField(max_length=200)
     picture = models.FileField(blank=True)
-    hunger = models.IntegerField()
+    hunger = models.IntegerField(default=70)
     mood = models.IntegerField()
 
     def __str__(self):
