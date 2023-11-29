@@ -33,6 +33,14 @@
                     {% comment %} <div class="item">
                         <img id="sprite" src="{% static request.user.player.picture %}" height="100%">
                     </div> {% endcomment %}
+                    {% comment %} Create background {% endcomment %}
+                    {% for i in range10 %}
+                        {% for j in range10 %}
+                            <div class="item" style="grid-area: {{ i }} / {{ j }} / span 2 / span 2;">
+                                <img src="{% static 'images/backgrounds/flooring.png' %}" alt="Background Tile" height="100%">
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
                     <!-- Furniture Grid Items Go Here -->
                     {% comment %} Place furniture {% endcomment %}
                     {% for furniture in placedFurniture %}

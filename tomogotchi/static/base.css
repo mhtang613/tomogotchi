@@ -22,6 +22,10 @@ td {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
 }
 
 #error {
@@ -160,6 +164,36 @@ td {
     grid-area: 1 / 1 / span 2 / span 2;
     text-align: center;
     overflow: hidden;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    /* Image fitting */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fit the entire image within the element */
+    object-position: center; /* Center the image within the element */
+}
+
+.pixel-art {
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    /* Image fitting */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fit the entire image within the element */
+    object-position: center; /* Center the image within the element */
 }
 
 #player-info {
@@ -319,6 +353,10 @@ progress {
     justify-content: center;
     margin-top: 2vh;
     border: none;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
 }
 
 .counter-circle {

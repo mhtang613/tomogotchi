@@ -471,6 +471,8 @@ class ShopConsumer(WebsocketConsumer):
         item = get_object_or_404(Items, id = item_id)
         player = get_object_or_404(Player, user=self.user)
         player.inventory.add(item)
+        item_price = item.price
+        player.money = player.money - item_price
         player.save()
         print(f'player: {player.name} bought item {item_id}')
         if item.is_furniture:
@@ -500,9 +502,6 @@ class ShopConsumer(WebsocketConsumer):
                             count=1)
                 food.save()
         
-    
-          
-    
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
 
