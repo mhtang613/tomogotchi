@@ -7,54 +7,66 @@ class Command(BaseCommand):
     help = "Load static data (shop catalog) into the databases"
 
     def handle(self, *args, **options):
-        files_dir = os.path.join('tomogotchi','static','images','items')
+        # loop through food folder
+        files_dir = os.path.join('tomogotchi','static','images','food')
 
-        
         for file in os.listdir(files_dir):
             if file.endswith('.png') or file.endswith('.gif'):
-                is_furniture = True if "furniture" in file.lower() else False
-                is_big = True if "big" in file.lower() else False
-                
                 file_path = os.path.join(files_dir, file)
-
                 if not Items.objects.filter(name__iexact=file).exists():
                     with open(file_path, 'rb') as file_content:
                         file_instance = File(file_content)
                         file_instance.name = file
-                        item = Items(name=file, 
-                                     picture=file_instance, 
-                                     is_furniture=is_furniture, 
-                                     is_big=is_big, 
-                                     content_type="image/png")
-                        # Manually add width, height, and price for furniture items
-                        if is_furniture:
-                            if "bookshelf1" in file.lower():
-                                item.hitboxX = 3
-                                item.hitboxY = 4
-                                item.price = 50
-                            elif "clock1" in file.lower():
-                                item.hitboxX = 1
-                                item.hitboxY = 3
-                                item.price = 30
-                            elif "plant1" in file.lower():
-                                item.hitboxX = 1
-                                item.hitboxY = 2
-                                item.price = 10
-                            elif "table1" in file.lower():
-                                item.hitboxX = 2
-                                item.hitboxY = 3
-                                item.price = 40
-                        # Manually add price for food items
-                        else:
-                            if "cake" in file.lower():
-                                item.price = 15
-                                item.hunger = 10
-                            elif "burger" in file.lower():
-                                item.price = 8
-                                item.hunger = 8
+                        item = Items(picture=file_instance, 
+                                     is_furniture=False, 
+                                     is_big=False, 
+                                     content_type="image/png",
+                                     hitboxX = 0,
+                                     hitboxY = 0)
+                        # Add hunger and price for food items
+                        file_name = (file.lower())[:-4]
+                        words = file_name.split('_')
+                        name = words[0]
+                        hunger = int(words[1])
+                        price = int(words[2])
+                        item.name = name
+                        item.price = price
+                        item.hunger = hunger                       
                             
                         item.save()
-                        self.stdout.write(self.style.SUCCESS(f'Loaded {file}'))
+                        self.stdout.write(self.style.SUCCESS(f'Loaded food: {file}'))
                 else:
-                    self.stdout.write(self.style.SUCCESS(f'Skipped {file}'))
+                    self.stdout.write(self.style.SUCCESS(f'Skipped food: {file}'))
+    
+        # loop through furniture folder
+        files_dir2 = os.path.join('tomogotchi','static','images','furniture')
+
+        for file in os.listdir(files_dir2):
+            if file.endswith('.png') or file.endswith('.gif'):
+                file_path = os.path.join(files_dir2, file)
+                if not Items.objects.filter(name__iexact=file).exists():
+                    with open(file_path, 'rb') as file_content:
+                        file_instance = File(file_content)
+                        file_instance.name = file
+                        item = Items(picture=file_instance, 
+                                     is_furniture=True, 
+                                     content_type="image/png",
+                                     hunger=0)
+                        # Add hunger and price for food items
+                        file_name = (file.lower())[:-4]
+                        words = file_name.split('_')
+                        name = words[0]
+                        width = int(words[1])
+                        height = int(words[2])
+                        price = int(words[3])
+                        item.name = name
+                        item.hitboxX = width
+                        item.hitboxY = height
+                        item.price = price
+                        item.is_big = True if (width * height > 1) else False
+                            
+                        item.save()
+                        self.stdout.write(self.style.SUCCESS(f'Loaded furniture: {file}'))
+                else:
+                    self.stdout.write(self.style.SUCCESS(f'Skipped furniture: {file}'))
 
