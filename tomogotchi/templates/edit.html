@@ -28,7 +28,7 @@
                 <div class="furniture" onclick="cellSelected()">
                     <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>
                     {% if count > 1 %}
-                        <div class="counter-circle">
+                        <div class="counter-circle-edit">
                             {{count}}
                         </div>
                     {% endif %}
@@ -50,7 +50,7 @@
                 <div class="furniture" onclick="cellSelected()">
                     <img class="icon" id={{item.id}} src="{% url 'get-item-picture' item.name %}" width=100%>
                     {% if count > 1 %}
-                        <div class="counter-circle">
+                        <div class="counter-circle-edit">
                             {{count}}
                         </div>
                     {% endif %}
@@ -63,10 +63,10 @@
 
 {% block footer %}
 <div class="center-button">
-    <button> Save </button>
-    
     <a href="{% url 'home' %}">
         <button> Home </button>
     </a>
+
+    <button> Save </button>
 </div>
 {% endblock %}

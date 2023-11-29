@@ -35,6 +35,10 @@ html, body {
     justify-content: center;
 }
 
+button {
+    margin-inline-start: 1vh;
+}
+
 
 .left-half {
     flex: 1;

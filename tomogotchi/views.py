@@ -111,8 +111,8 @@ def is_collide(xV, yV, xF, yF, xHF, yHF):
 # Generate open slots for sprites:
 def find_spaces(context):
     res = set()
-    for i in range(20):
-        for j in range(20):
+    for i in range(1,20):
+        for j in range(1,20):
             valid = True
             for furniture in context['placedFurniture']:
                 xF = furniture['locationX']
