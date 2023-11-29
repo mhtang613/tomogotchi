@@ -108,10 +108,6 @@ html, body {
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     overflow: hidden;
-    /* Sprite rendering */
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
     /* Image fitting */
     display: flex;
     justify-content: center;
