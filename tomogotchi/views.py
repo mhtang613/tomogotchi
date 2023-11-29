@@ -233,9 +233,10 @@ def login(request):
     return render(request, "login.html", context)
 
 def shop(request):
-    furniture_items = Items.objects.filter(is_furniture=True)
-    other_items = Items.objects.filter(is_furniture=False)
-
+    furniture_items = Items.objects.filter(is_furniture=True).order_by("name")
+    other_items = Items.objects.filter(is_furniture=False).order_by("price")
+    print(furniture_items)
+    print("HEWWO")
     context = {'furniture_list' : furniture_items, 'item_list' : other_items}
     
     return render(request, 'shop.html', context)

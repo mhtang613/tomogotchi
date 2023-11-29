@@ -1,5 +1,9 @@
 /* CSS for the container */
+@import url('https://fonts.cdnfonts.com/css/pf-tempesta-seven');
 
+* {
+    font-family: 'PF Tempesta Seven', sans-serif;
+}
 
 html, body {
     margin-left: 3vw; 
@@ -73,7 +77,7 @@ html, body {
 .title {
     color: #000000;
     font-size: 20px;
-    font-family: 'Arial', sans-serif;
+    /* font-family: 'Arial', sans-serif; */
     font-weight: bold;
     width: 30%;
     padding: 10px;
