@@ -67,6 +67,7 @@ def get_random_tomogotchi(player):
     player.picture = rand_tomogotchi
     player.hunger = 70
     player.mood = 70
+    player.money = 10000
 
 # Gets furniture from home and puts it into a list.
 @login_required

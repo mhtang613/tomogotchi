@@ -107,7 +107,7 @@ class Player(models.Model):
     # inventory (all items and food owned, but doesn't keep track of how many of each item)
     inventory = models.ManyToManyField(Items, related_name="inventory", unique=False)
     # money
-    money = models.IntegerField(default=10000)
+    money = models.IntegerField(default=0)
     # tamagotchi info
     name = models.CharField(max_length=200)
     picture = models.FileField(blank=True)
