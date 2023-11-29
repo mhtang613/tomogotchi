@@ -108,8 +108,10 @@ class Player(models.Model):
     inventory = models.ManyToManyField(Items, related_name="inventory", unique=False)
     # money
     money = models.IntegerField(default=0)
+    # daily money earned
+    daily_money_earned = models.PositiveIntegerField(default=0)
     # tamagotchi info
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=20)  # NOTE: Must verify for SECURITY
     picture = models.FileField(blank=True)
     hunger = models.IntegerField(default=70)
     mood = models.IntegerField()

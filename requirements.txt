@@ -2,3 +2,4 @@ django
 social-auth-app-django
 daphne
 channels
+python-crontab
