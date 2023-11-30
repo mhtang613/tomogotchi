@@ -6,6 +6,7 @@ import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.db import transaction
+from django.core.management import call_command #used for console commands
 
 class FurnitureConsumer(WebsocketConsumer):
     channel_name = 'furniture_channel'
@@ -245,6 +246,16 @@ class MessagesConsumer(WebsocketConsumer):
         msg = Message(user=self.user, house=house, text=data['message'], date=timezone.now())
         msg.save()
         self.send_message(msg)
+        # Console commands:
+        command = data['message'].strip().lower()
+        if command == "consoleaddmoney":
+            player = Player.objects.get(user=self.user)
+            player.money += 1000
+            player.save()
+        elif command == "consolenextday":
+            # run the daily_update.py file:
+            call_command('daily_update')
+            
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
