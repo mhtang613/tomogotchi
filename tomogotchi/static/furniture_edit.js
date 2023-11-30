@@ -27,6 +27,7 @@ function cellSelected() {
     alert("Selected furniture"); 
 }
 
+
 // Takes in the furniture item you want to place, returns True if valid placement
 function can_place_furniture(furn) {
     let furnX1 = furn.locationX;
@@ -49,6 +50,57 @@ function can_place_furniture(furn) {
         return !(overlap_x && overlap_y)
     })
 }
+
+class dragFurniture {
+    static pos1 = 0; 
+    static pos2 = 0; 
+    static pos3 = 0; 
+    static pos4 = 0;
+    // This func get's attatched to furniture's onclick event
+    static clickFurniture(event) {
+        var elem = event.target || event.srcElement
+        // Make a copy of the target furniture
+        // Decrease count of target furniture
+        // Make the copy draggable:
+        dragFurniture.dragElement(elem);
+    }
+
+    static dragElement(elem) {
+        elem.onmousedown = dragFurniture.dragMouseDown;   // set onmousedown
+    }
+
+    static dragMouseDown(e) {
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = dragFurniture.elementDrag;
+    }
+
+    static elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    static closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+
+// ---------------------------- Websockets Stuff ---------------------------- //
+
 
 // ---------------------------- Websockets Stuff ---------------------------- //
 

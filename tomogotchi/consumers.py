@@ -329,7 +329,7 @@ class FriendConsumer(WebsocketConsumer):
         else:
             # Get house from player current visiting house
             house = friend.player.house
-            notif = f'You recieved a Friend Request from {self.user.player.name}! Accept their request by searching their name in your friends bar.'
+            notif = f'requests to be your friend! Accept their request by searching their name in your friends bar.'
             msg = Message(user=self.user, house=house, text=notif, date=timezone.now())
             msg.save()
             self.send_message(friend, msg)
