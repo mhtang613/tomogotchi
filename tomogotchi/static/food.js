@@ -59,17 +59,19 @@ class FoodHandler {
                 console.log(`Server: ${event.data}`)
                 return
             }
-            if (Array.isArray(response)) {
+            if (Array.isArray(response.food_list)) {
                 FoodHandler.updateFoodList(response)
             } else {
                 displayResponse(response)
             }
         }
     }
+
+
     static updateFoodList(response) {
         displayMessage("food.js updateFoodList")
         let food_bar = document.getElementById("food-bar-container")
-        response.forEach(food => {
+        response.food_list.forEach(food => {
             let existing_div = document.getElementById(`id_food_div_${food.food_id}`);
             if (!existing_div && food.count > 0) {
                 let new_div = FoodHandler.makeFoodDiv(food);
@@ -86,6 +88,9 @@ class FoodHandler {
                 }
             }
         })
+
+        let food_meter = document.getElementById("hunger");
+        food_meter.value = food_meter.value + response.hunger;
     }
 
     static makeFoodDiv(food) {

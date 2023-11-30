@@ -666,7 +666,7 @@ class FoodConsumer(WebsocketConsumer):
         # self.broadcast_list()
         self.send_food_list()
     
-    def send_food_list(self):
+    def send_food_list(self, hunger_inc = 0):
         print("consumers.py send_food_list")
         my_food = Food.objects.filter(user_id=self.user.id)
         food_list = list()
@@ -679,11 +679,13 @@ class FoodConsumer(WebsocketConsumer):
                 'count' : food.count,
             }
             food_list.append(food_info)
+        
+        message_data = {'food_list' : food_list, 'hunger' : hunger_inc}
         async_to_sync(self.channel_layer.group_send)(
             self.group_name,
             {
                 'type': 'broadcast_event',
-                'message': json.dumps(food_list)
+                'message': json.dumps(message_data)
             }
         )
 
@@ -740,15 +742,15 @@ class FoodConsumer(WebsocketConsumer):
 
         player = get_object_or_404(Player, user=self.user)
         item_instance = get_object_or_404(Items, id=food_instance.true_id)
-        hunger_inc = item_instance.hunger
-        player.hunger = player.hunger + hunger_inc
+        hunger_incs = item_instance.hunger
+        player.hunger = player.hunger + hunger_incs
         if player.hunger > 100:
             player.hunger = 100
         player.save()
         
         
             
-        self.send_food_list()
+        self.send_food_list(hunger_inc = hunger_incs)
         
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
