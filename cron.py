@@ -1,7 +1,7 @@
 from crontab import CronTab
 import os
 
-path = path = os.path.abspath(".")
+path = os.path.abspath(".").replace(os.path.expanduser('~'), '')[1:]
 
 cron = CronTab(user=True)
 cron.remove_all()   # reset cron jobs
@@ -10,7 +10,7 @@ job = cron.new(command=f"cd {path} && venv && python3 manage.py decrease_hunger_
 job.hour.on(0)  # exec at 12AM every day
 job.set_comment("Decrease Hunger & Mood")
 
-job = cron.new(command=f"cd {path} && echo hi >> test.txt")
+job = cron.new(command=f"cd {path} && echo 'working?' >> test.txt")
 job.minute.every(1)  # exec every minute
 job.set_comment("Test Job")
 

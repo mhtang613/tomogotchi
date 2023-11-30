@@ -113,8 +113,8 @@ class Player(models.Model):
     # tamagotchi info
     name = models.CharField(max_length=20)  # NOTE: Must verify for SECURITY
     picture = models.FileField(blank=True)
-    hunger = models.IntegerField(default=70)
-    mood = models.IntegerField()
+    hunger = models.IntegerField(default=50)
+    mood = models.IntegerField(default=50)
 
     def __str__(self):
         return f'id={self.id}, user="{self.user.username}"'
