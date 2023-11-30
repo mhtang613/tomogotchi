@@ -246,15 +246,25 @@ class MessagesConsumer(WebsocketConsumer):
         msg = Message(user=self.user, house=house, text=data['message'], date=timezone.now())
         msg.save()
         self.send_message(msg)
+        # Update stats on message sent:
+
         # Console commands:
         command = data['message'].strip().lower()
         if command == "consoleaddmoney":
             player = Player.objects.get(user=self.user)
             player.money += 1000
             player.save()
+            print("Console: called AddMoney")
         elif command == "consolenextday":
             # run the daily_update.py file:
             call_command('daily_update')
+            print("Console: called NextDay")
+        elif command == "consolereset":
+            # reset hunger and mood to default:
+            player = Player.objects.get(user=self.user)
+            player.mood = 70
+            player.hunger = 70
+            player.save()
             
     
     def send_error(self, error_message):

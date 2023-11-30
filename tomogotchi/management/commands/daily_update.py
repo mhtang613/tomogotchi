@@ -25,15 +25,13 @@ class Command(BaseCommand):
         ))
         
         players = Player.objects.filter(Q(mood__gt=0))  # only update live players next
-
-        players.update( hunger=Subquery(
-            Player.objects.filter(id=OuterRef("id")).annotate(
-                newhunger=F("hunger") - Cast(Cast((100 - F("mood")), FloatField())/4, PositiveIntegerField()) # amount of hunger lost depends on 100-mood
-             # don't need +1 since live => mood > 0
-            ).values("newhunger")[:1]
-        ))
-
         
+        # Decrease hunger for all players, ensuring it doesn't go below 0
+        Player.objects.all().update(
+            hunger=F('hunger') - (100 - F("mood"))/4
+        )
+        Player.objects.filter(hunger__lt=0).update(hunger=0)
+
         dead_players = Player.objects.filter(Q(mood__lte=0) | Q(hunger__lte=0))
         # Update dead players or smthing
 
