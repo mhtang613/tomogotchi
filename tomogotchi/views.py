@@ -28,8 +28,7 @@ def test_html(request):
     context = {}
     return render(request, 'other_home.html', context)
 
-# Params : this function runs when a player clicks on the "Edit Username" button
-# TODO: Migrate this to websockets
+# THIS FUNCTION IS NOT USED; FUNCTIONALITY WAS MOVED TO WEBSOCKETS
 # def edit_username(request):
 #     if 'username' not in request.POST or not request.POST['username']:
 #         context = {}
@@ -254,7 +253,7 @@ def get_item_picture(request, name):
         return Http404
     return HttpResponse(item_instance.picture, content_type = item_instance.content_type)
 
-# This function is never called (maybe), instead we use buy_items in consumers.py
+# This function is never called, instead we use buy_items in consumers.py
 # def buy_item(request):
 #     if request.method == 'POST':
 #         try:
