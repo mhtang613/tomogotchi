@@ -24,7 +24,7 @@ class Command(BaseCommand):
                                      hitboxX = 0,
                                      hitboxY = 0)
                         # Add hunger and price for food items
-                        file_name = (file.lower())[:-4]
+                        file_name = (file)[:-4]
                         words = file_name.split('_')
                         name = words[0]
                         hunger = int(words[1])
@@ -53,7 +53,7 @@ class Command(BaseCommand):
                                      content_type="image/png",
                                      hunger=0)
                         # Add hunger and price for food items
-                        file_name = (file.lower())[:-4]
+                        file_name = (file)[:-4]
                         words = file_name.split('_')
                         name = words[0]
                         width = int(words[1])

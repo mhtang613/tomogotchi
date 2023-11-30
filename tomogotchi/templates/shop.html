@@ -29,9 +29,13 @@
     <div class="main-title">
         Welcome to the Shop!
     </div>
+    <div id="error"></div>
     <div class="container">
         <div class="left-half">
-            <div class="title">Food</div>
+            <div class="title-container">
+                <img class="shop-sign" src="static\images\backgrounds\wooden_sign.png">
+                <div class="title">Food</div>
+            </div>
             <div class="grid">
                 {% for item in item_list %}
                     <div class="cell" onclick="iconSelected('{{ item.id }}', '{{ item.name }}', '{{ item.price}}')">
@@ -44,7 +48,10 @@
             </div>
         </div>
         <div class="right-half">
-            <div class="title">Furniture</div>
+            <div class="title-container">
+                <img class="shop-sign" src="static\images\backgrounds\wooden_sign.png">
+                <div class="title">Furniture</div>
+            </div>
             <div class="grid">
                 {% for furniture in furniture_list %}
                     <div class="cell" onclick="iconSelected('{{ furniture.id }}', '{{ furniture.name }}', '{{ furniture.price }}')">

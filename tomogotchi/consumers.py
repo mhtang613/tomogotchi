@@ -346,11 +346,11 @@ class FriendConsumer(WebsocketConsumer):
             return
         # Validate Friend Exists & Friend not self
         if not Player.objects.filter(name=data['name']).exclude(user=self.user).exists():
-            self.send_error('The requested friend does not exist')
+            self.send_error('The requested friend does not exist.')
             return
         friend = User.objects.filter(player__name=data['name']).all()[0]
         if self.user.player.following.filter(id=friend.id).exists():
-            self.send_error(f'You are already following {friend.player.name}')
+            self.send_error(f'You are already friends with {friend.player.name}.')
         # Get Current User for update
         player = self.user.player
         player.following.add(friend)
@@ -515,11 +515,18 @@ class ShopConsumer(WebsocketConsumer):
     # Simply adds the item to the user's inventory, nothing more
     def buy_item(self, data):
         if 'item_id' not in data or not data['item_id']:
-            self.send_error('you must select an item to buy')
+            self.send_error('You must select an item to buy.')
             return
         item_id = data['item_id']
-        item = get_object_or_404(Items, id = item_id)
-        player = get_object_or_404(Player, user=self.user)
+        item = None
+        player = None
+        try:
+            item = get_object_or_404(Items, id = item_id)
+            player = get_object_or_404(Player, user=self.user)
+        except:
+            self.send_error("No! That's not have you play the game!")
+            return
+        
         player.inventory.add(item)
         item_price = item.price
         if (player.money - item_price >= 0):
@@ -552,7 +559,7 @@ class ShopConsumer(WebsocketConsumer):
                                 content_type=item.content_type,
                                 count=1)
                     food.save()
-        
+    
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
 
