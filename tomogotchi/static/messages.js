@@ -57,6 +57,11 @@ class MessageHandler {
                 msg_container.append(MessageHandler.makeMessageDiv(msg))
             }
         })
+
+        let mood_meter = document.getElementById("mood")
+        if (mood_meter) {
+            mood_meter.value = mood_meter.value + 5
+        }
     }
 
     // Builds a new HTML "div" element for each message
