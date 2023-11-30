@@ -2,11 +2,11 @@
 
 {% block javascript %} 
 {% load static %}
-<script src="{% static 'furniture_edit.js' %}" type="text/javascript"></script>
 <script> 
     const myUserID = "{{ request.user.id }}"
     window.onload = displayGrid;
 </script>
+<script src="{% static 'furniture_edit.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block header %}

@@ -152,7 +152,7 @@ class MessagesConsumer(WebsocketConsumer):
             return
         
         # NOTE: DEBUG SEND
-        self.broadcast_event({'message': f'Event recieved from user {self.user.id} with data {data}'}) 
+        self.broadcast_event({'message': f'Event received from user {self.user.id} with data {data}'}) 
         if 'action' not in data or not data['action']:
             self.send_error('your request must contain an action')
             return
@@ -275,7 +275,7 @@ class FriendConsumer(WebsocketConsumer):
             return
         
         # NOTE: DEBUG SEND
-        self.broadcast_event({'message': f'Event recieved from user {self.user.id} with data {data}'}) 
+        self.broadcast_event({'message': f'Event received from user {self.user.id} with data {data}'}) 
         
         # Handle friend request logic HERE
         # NOTE: make sure to deny friend requests to self
@@ -312,7 +312,7 @@ class FriendConsumer(WebsocketConsumer):
         else:
             # Get house from player current visiting house
             house = friend.player.house
-            notif = f'You recieved a Friend Request from {self.user.player.name}! Accept their request by searching their name in your friends bar.'
+            notif = f'You received a Friend Request from {self.user.player.name}! Accept their request by searching their name in your friends bar.'
             msg = Message(user=self.user, house=house, text=notif, date=timezone.now())
             msg.save()
             self.send_message(friend, msg)
@@ -548,7 +548,7 @@ class NameEditingConsumer(WebsocketConsumer):
             return
         
         # NOTE: DEBUG SEND
-        self.broadcast_event({'message': f'Event recieved from user {self.user.id} with data {data}'}) 
+        self.broadcast_event({'message': f'Event received from user {self.user.id} with data {data}'}) 
         if 'action' not in data or not data['action']:
             self.send_error('your request must contain an action')
             return
