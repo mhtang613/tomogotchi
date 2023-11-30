@@ -30,24 +30,25 @@ def test_html(request):
 
 # Params : this function runs when a player clicks on the "Edit Username" button
 # TODO: Migrate this to websockets
-def edit_username(request):
-    if 'username' not in request.POST or not request.POST['username']:
-        context = {}
-        context['error'] = True
-        context['error_message'] = 'You must enter text to post.'
-        return render(request, 'my_home.html', context)
-    user_id = request.user
-    player = get_object_or_404(Player, user_id=user_id)
-    player.name = request.POST['username']
+# def edit_username(request):
+#     if 'username' not in request.POST or not request.POST['username']:
+#         context = {}
+#         context['error'] = True
+#         context['error_message'] = 'You must enter text to post.'
+#         return render(request, 'my_home.html', context)
+#     user_id = request.user
+#     player = get_object_or_404(Player, user_id=user_id)
+#     player.name = request.POST['username']
 
-    return redirect(reverse('home'))
+#     return redirect(reverse('home'))
 
 # Params : player - an instance of the Player model
 # Returns : nothing
 # Given a Player instance, give it a unique random name and save it to the db
 # NOTE: Runs within atomic section of home
 def assign_random_username(player):
-    rand_name = randomname.get_name()
+    rand_name = randomname.get_name(adj=('speed','shape','sound','colors','taste'),
+                                    noun=('cats','dogs','apex_predators','birds','fish'))
     while Player.objects.select_for_update().filter(name=rand_name).exists():
         rand_name = randomname.get_name()
     player.name = rand_name
@@ -226,7 +227,7 @@ def edit_furniture_page(request):
     # Needed for background tiles:
     context["range10"] = [i * 2 + 1 for i in range(10)]
     context["range20"] = [i + 1 for i in range(20)]
-    
+
     return render(request, 'edit.html', context)
 
 def login(request):
