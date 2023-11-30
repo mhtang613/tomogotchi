@@ -197,9 +197,6 @@ td {
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     /* Image fitting */
-    display: flex;
-    justify-content: center;
-    align-items: center;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain; /* Fit the entire image within the element */
@@ -212,14 +209,6 @@ td {
     outline-offset: 1vh;
     outline: #b4e7ff solid 1vh;
     flex: 0 0 auto;
-}
-
-#message-area {
-    height: 75vh;
-    width: 100%;
-    margin-top: 3vh;
-    display: flex;
-    flex-direction: column;
 }
 
 .label-center {
@@ -235,6 +224,14 @@ td {
 }
 
 #message-area {
+    height: 75vh;
+    width: 100%;
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#message-area {
     flex: 1 1 auto;
 }
 
@@ -246,14 +243,20 @@ td {
     flex: 1 1 auto;
 }
 
-tbody {
-    vertical-align: bottom;
+.expander {
+    flex: 1 1 auto
 }
 
 #messages-list {
     vertical-align: bottom;
-    justify-content: left;
     min-height: min-content;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+tbody {
+    vertical-align: bottom;
 }
 
 .msg-info {
@@ -421,4 +424,9 @@ progress {
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     
+}
+
+#draggable {
+    position: absolute;
+    cursor: move;
 }
