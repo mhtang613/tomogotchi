@@ -33,15 +33,15 @@
         <tbody>
             {% load static %}
             <tr>
-                <td>
-                    <a href="{% url 'shop' %}">
+                <td class = "tableButton">
+                    <a href="{% url 'shop' %}" >
                         <div class="icon">
                             <img id="shop" src="{% static 'images/icons/shop-icon.png' %}" width="50">
                         </div>
                     </a>
                 </td>
-                <td>
-                    <a href="{% url 'edit' %}" class="icon" >
+                <td class = "tableButton">
+                    <a href="{% url 'edit' %}" >
                         <div class="icon">
                             <img id="edit-furniture" src="{% static 'images/icons/edit-icon.png' %}" width="50">
                         </div>
