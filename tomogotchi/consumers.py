@@ -8,12 +8,12 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 
 class FurnitureConsumer(WebsocketConsumer):
-    group_name = 'furniture_group'
     channel_name = 'furniture_channel'
 
     user = None
 
     def connect(self):
+        self.group_name = f'furniture_group_{self.scope["url_route"]["kwargs"]["house_id"]}'
         async_to_sync(self.channel_layer.group_add)(
             self.group_name, self.channel_name
         )
@@ -27,7 +27,7 @@ class FurnitureConsumer(WebsocketConsumer):
 
         self.user = self.scope["user"]
 
-        self.broadcast_list()
+        self.send_collision_list()
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -100,12 +100,30 @@ class FurnitureConsumer(WebsocketConsumer):
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
 
-    def broadcast_list(self):
+    def send_collision_list(self):
+        player = get_object_or_404(Player, user=self.user)
+        collision_list = Furniture.objects.filter(house=player.house, placed=True)
+        send_list = list()
+        for furn in collision_list:
+            furn_info = {
+                'name' : furn.name,
+                'true_id' : furn.id,
+                'picture' : furn.picture,
+                'is_big' : furn.is_big,
+                'hitboxX' : furn.hitboxX,
+                'hitboxY' : furn.hitboxY,
+                'locationX' : furn.locationX,
+                'locationY' : furn.locationY,
+                'content_type' : furn.content_type,
+                'house': furn.house,
+                'placed' : furn.placed
+            }
+        
         async_to_sync(self.channel_layer.group_send)(
             self.group_name,
             {
                 'type': 'broadcast_event',
-                'message': json.dumps()     # Updated Furniture list goes here
+                'message': json.dumps(send_list)     # Updated Furniture list goes here
             }
         )
 
