@@ -11,6 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         players = Player.objects.all()
+        # Mood update:
         players.update( mood=Subquery(
             Player.objects.filter(id=OuterRef("id")).annotate(
                 newmood=Cast( 
@@ -23,6 +24,8 @@ class Command(BaseCommand):
                     PositiveIntegerField()) # must always be positive
             ).values("newmood")[:1]
         ))
+        # set to a minimum of zero:
+        Player.objects.filter(mood__lt=0).update(mood=0)
         
         players = Player.objects.filter(Q(mood__gt=0))  # only update live players next
         

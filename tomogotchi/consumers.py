@@ -247,6 +247,18 @@ class MessagesConsumer(WebsocketConsumer):
         msg.save()
         self.send_message(msg)
         # Update stats on message sent:
+        player = Player.objects.get(user=self.user)
+        maximumCoins = 100
+        if player.daily_money_earned < maximumCoins:
+            player.money += 10
+            player.daily_money_earned += 10
+            player.save()
+        if player.mood < 100:
+            player.mood += 5
+            if player.mood > 100:
+                player.mood = 100
+            player.save()
+            print(player.mood)
 
         # Console commands:
         command = data['message'].strip().lower()
