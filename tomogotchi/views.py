@@ -75,6 +75,8 @@ def get_placed_furniture(player):
     house = player.house
     furniture_list = Furniture.objects.filter(house=house, placed=True)
     placedFurniture = [{
+        'name': furniture.name,
+        'id': furniture.id,
         'locationX': furniture.locationX,
         'locationY': furniture.locationY,
         'hitboxX': furniture.hitboxX,
@@ -98,8 +100,8 @@ def is_collide(xV, yV, xF, yF, xHF, yHF):
     (xF1, xF2) = (xF, xF + xHF)
     (yF1, yF2) = (yF, yF + yHF)
     # Bounds check (20x20 screen)
-    if not (0 <= xV1 and xV2 <= 20 and
-            0 <= yV1 and yV2 <= 20):
+    if not (1 <= xV1 and xV2 <= 20 and
+            1 <= yV1 and yV2 <= 20):
         return False
     # Collision check
     # Check for overlap in X and Y coordinates
@@ -197,6 +199,7 @@ def visit(request, user_id):
    
     return render(request, 'other_home.html', context)
 
+# for displaying the inventory of furniture in edit.html
 def edit_furniture_page(request):
     context = {}
     my_home = request.user.house
@@ -241,6 +244,7 @@ def shop(request):
     
 
 def get_item_picture(request, name):
+    print(name)
     item_instance = Items.objects.get(name=name)
     if not item_instance.picture:
         return Http404

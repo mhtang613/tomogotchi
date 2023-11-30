@@ -1,5 +1,6 @@
 "use strict"
 
+
 function displayGrid() {
     let grid = document.getElementById("grid-container");
     for (let i = grid.childElementCount; i < 400; i++) {
@@ -24,6 +25,30 @@ function hideGrid() {
 
 function cellSelected() {
     alert("Selected furniture"); 
+}
+
+
+// Takes in the furniture item you want to place, returns True if valid placement
+function can_place_furniture(furn) {
+    let furnX1 = furn.locationX;
+    let furnX2 = furnX1 + furn.hitboxX
+    let furnY1 = furn.locationY;
+    let furnY2 = furnY1 + furn.hitboxY
+    let collision_list = FurnitureHandler.getCollisionList();
+    collision_list.forEach(placed_furn => {
+        let pfurnX1 = placed_furn.locationX;
+        let pfurnX2 = pfurnX1 + placed_furn.hitboxX
+        let pfurnY1 = placed_furn.locationY;
+        let pfurnY2 = pfurnY1 + placed_furn.hitboxY
+
+        if (!(1 <= furnX1 && furnX2 <= 20 && 1 <= furnY1 && furnY2 <= 20)) {
+            return false
+        } 
+
+        overlap_x = (furnX1 < pfurnX2) && (pfurnX1 < furnX2)
+        overlap_y = (furnY1 < pfurnY2) && (pfurnY1 < furnY2)
+        return !(overlap_x && overlap_y)
+    })
 }
 
 class dragFurniture {
@@ -76,19 +101,13 @@ class dragFurniture {
 
 // ---------------------------- Websockets Stuff ---------------------------- //
 
-/*
- * Use a global variable for the socket.  Poor programming style, I know,
- * but I think the simpler implementations of the deleteItem() and addItem()
- * functions will be more approachable for students with less JS experience.
- */
+
+// ---------------------------- Websockets Stuff ---------------------------- //
 
 class FurnitureHandler {
     static furniture_socket = null;
+    static collision_list = [];
 
-    static receiveCollisionList(collision_list) {
-        displayMessage("furniture_edit.js receiveCollisionList")
-        displayMessage(collision_list)
-    }
 
     static connectToServer() {
         // Use wss: protocol if site using https:, otherwise use ws: protocol
@@ -124,73 +143,17 @@ class FurnitureHandler {
         }
     }
 
+    static receiveCollisionList(collision_list) {
+        displayMessage("furniture_edit.js receiveCollisionList")
+        displayMessage(collision_list)
+        FurnitureHandler.collision_list = collision_list
+    }
+
+    static getCollisionList() {
+        return this.collision_list
+    }
     
-
-    static updateList(items) {
-        // Removes items from todolist if they not in items
-        let liElements = document.getElementsByTagName("li")
-        for (let i = 0; i < liElements.length; i++) {
-            let element = liElements[i]
-            let deleteIt = true
-            items.forEach(item => {
-                if (element.id === `id_item_${item.id}`) deleteIt = false
-            })
-            if (deleteIt) element.remove()
-        }
-
-        // Adds each to do list item received from the server to the displayed list
-        let list = document.getElementById("todo-list")
-        items.forEach(item => {
-            if (document.getElementById(`id_item_${item.id}`) == null) {
-                list.append(makeListItemElement(item))
-            }
-        })
-    }
-
-    // Builds a new HTML "li" element for the to do list
-    static makeListItemElement(item) {
-        let deleteButton
-        if (item.user.id === myUserID) { // myUserID defined in edit.html
-            deleteButton = `<button onclick='deleteItem(${item.id})'>X</button>`
-        } else {
-            deleteButton = "<button style='visibility: hidden'>X</button> "
-        }
-
-        let details = `<span class="details">(id=${item.id}, ip_addr=${item.ip_addr}, user=${item.user})</span>`
-
-        let element = document.createElement("li")
-        element.id = `id_item_${item.id}`
-        element.innerHTML = `${deleteButton} ${sanitize(item.text)} ${details}`
-
-        return element
-    }
-
-    static sanitize(s) {
-        // Be sure to replace ampersand first
-        return s.replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-    }
-
-    static addItem() {
-        let textInputEl = document.getElementById("item")
-        let itemText = textInputEl.value
-        if (itemText === "") return
-
-        // Clear previous error message, if any
-        displayError("")
-        
-        let data = {"action": "add", "text": itemText}
-        this.furniture_socket.send(JSON.stringify(data))
-
-        textInputEl.value = ""
-    }
-
-    static deleteItem(id) {
-        let data = {"action": "delete", "id": id}
-        this.furniture_socket.send(JSON.stringify(data))
-    }
 }
+
 
 FurnitureHandler.connectToServer();
