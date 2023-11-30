@@ -95,8 +95,6 @@ td {
 }
 
 
-
-
 .sidebar {
     height: 100%; /* 100% Full-height */
     width: 20vw; /* 0 width - changeable this with JavaScript */
@@ -197,9 +195,6 @@ td {
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     /* Image fitting */
-    display: flex;
-    justify-content: center;
-    align-items: center;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain; /* Fit the entire image within the element */

@@ -6,9 +6,9 @@ path = path = os.path.abspath(".")
 cron = CronTab(user=True)
 cron.remove_all()   # reset cron jobs
 
-job = cron.new(command=f"cd {path} && venv && python3 manage.py decrease_hunger_mood")
+job = cron.new(command=f"cd {path} && venv && python3 manage.py daily_update")
 job.hour.on(0)  # exec at 12AM every day
-job.set_comment("Decrease Hunger & Mood")
+job.set_comment("Decrease Hunger & Mood. Reset earned coin count.")
 
 job = cron.new(command=f"cd {path} && echo hi >> test.txt")
 job.minute.every(1)  # exec every minute

@@ -33,6 +33,10 @@ class Command(BaseCommand):
             ).values("newhunger")[:1]
         ))
 
+        
         dead_players = Player.objects.filter(Q(mood__lte=0) | Q(hunger__lte=0))
         # Update dead players or smthing
+
+        # Update all currency:
+        Player.objects.all().update(daily_money_earned=0)
 
