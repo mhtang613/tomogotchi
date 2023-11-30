@@ -258,7 +258,6 @@ class MessagesConsumer(WebsocketConsumer):
             if player.mood > 100:
                 player.mood = 100
             player.save()
-            print(player.mood)
 
         # Console commands:
         command = data['message'].strip().lower()
@@ -277,6 +276,7 @@ class MessagesConsumer(WebsocketConsumer):
             player.mood = 70
             player.hunger = 70
             player.save()
+            print("Console: called Reset")
             
     
     def send_error(self, error_message):

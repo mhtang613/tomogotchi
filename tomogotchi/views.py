@@ -137,8 +137,6 @@ def place_visitors(context, house):
     while open_spaces and visitors:
         space = open_spaces.pop()
         visitor = visitors.pop()
-        print(visitor)
-        print("hello")
         context["visitors"].append({
             "visitor" : visitor,
             "locationX" : space[0],
@@ -244,7 +242,6 @@ def shop(request):
     
 
 def get_item_picture(request, name):
-    print(name)
     item_instance = Items.objects.get(name=name)
     if not item_instance.picture:
         return Http404
