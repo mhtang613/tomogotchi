@@ -137,8 +137,6 @@ def place_visitors(context, house):
     while open_spaces and visitors:
         space = open_spaces.pop()
         visitor = visitors.pop()
-        print(visitor)
-        print("hello")
         context["visitors"].append({
             "visitor" : visitor,
             "locationX" : space[0],
@@ -222,6 +220,7 @@ def edit_furniture_page(request):
             elif not item.is_big and item.true_id not in unique_small_set:
                 context['small_list'].append((item, counter[item.true_id]))
                 unique_small_set.add(item.true_id)
+
     
     # Needed for background tiles:
     context["range10"] = [i * 2 + 1 for i in range(10)]
@@ -247,7 +246,6 @@ def shop(request):
     
 
 def get_item_picture(request, name):
-    print(name)
     item_instance = Items.objects.get(name=name)
     if not item_instance.picture:
         return Http404
