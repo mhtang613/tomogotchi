@@ -108,16 +108,15 @@ class FurnitureConsumer(WebsocketConsumer):
             furn_info = {
                 'name' : furn.name,
                 'true_id' : furn.id,
-                'picture' : furn.picture,
                 'is_big' : furn.is_big,
                 'hitboxX' : furn.hitboxX,
                 'hitboxY' : furn.hitboxY,
                 'locationX' : furn.locationX,
                 'locationY' : furn.locationY,
-                'content_type' : furn.content_type,
-                'house': furn.house,
+                'house': furn.house.id,
                 'placed' : furn.placed
             }
+            send_list.append(furn_info)
         
         async_to_sync(self.channel_layer.group_send)(
             self.group_name,
