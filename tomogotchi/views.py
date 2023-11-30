@@ -223,6 +223,9 @@ def edit_furniture_page(request):
                 context['small_list'].append((item, counter[item.true_id]))
                 unique_small_set.add(item.true_id)
     
+    # Needed for background tiles:
+    context["range10"] = [i * 2 + 1 for i in range(10)]
+    context["range20"] = [i + 1 for i in range(20)]
     
     return render(request, 'edit.html', context)
 

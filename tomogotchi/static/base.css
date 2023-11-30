@@ -78,10 +78,10 @@ td {
 
 #shrink-button {
     position: absolute;
-    top: -5vh;
+    top: -3em;
     right: 0;
     border: none; 
-    padding: 5px; 
+    padding: 0.5em; 
     cursor: pointer; 
     background-color: #b4e7ff;
 }
