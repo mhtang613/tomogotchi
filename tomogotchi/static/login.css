@@ -1,8 +1,14 @@
+@import url('https://fonts.cdnfonts.com/css/pf-tempesta-seven');
+
+* {
+    font-family: 'PF Tempesta Seven', sans-serif;
+    font-size: small;
+}
+
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
 }
 
 .background {
@@ -31,24 +37,13 @@ body, html {
 
 .login-button {
     padding: 10px 20px;
-    background-color: #007BFF; /* You can change the color */
-    color: white;
+    background-color: white; /* You can change the color */
+    color: black;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
+    /* border-radius: 5px;
+    font-size: 16px; */
     transition: background-color 0.3s;
-    /* Center
-
-
-
-.login-button {
-    padding: 10px 20px;
-    background-color: #007BFF; /* You can change the color */
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    border: #b4e7ff 0.5vh;
 }
 
 .login-button:hover {

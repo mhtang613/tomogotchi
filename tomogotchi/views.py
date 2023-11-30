@@ -73,7 +73,7 @@ def get_random_tomogotchi(player):
 @login_required
 def get_placed_furniture(player):
     house = player.house
-    furniture_list = Furniture.objects.filter(house=house)
+    furniture_list = Furniture.objects.filter(house=house, placed=True)
     placedFurniture = [{
         'locationX': furniture.locationX,
         'locationY': furniture.locationY,
@@ -235,8 +235,6 @@ def login(request):
 def shop(request):
     furniture_items = Items.objects.filter(is_furniture=True).order_by("name")
     other_items = Items.objects.filter(is_furniture=False).order_by("price")
-    print(furniture_items)
-    print("HEWWO")
     context = {'furniture_list' : furniture_items, 'item_list' : other_items}
     
     return render(request, 'shop.html', context)
