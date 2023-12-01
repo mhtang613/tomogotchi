@@ -247,30 +247,4 @@ def get_item_picture(request, name):
         return Http404
     return HttpResponse(item_instance.picture, content_type = item_instance.content_type)
 
-# This function is never called, instead we use buy_items in consumers.py
-# def buy_item(request):
-#     if request.method == 'POST':
-#         try:
-#             data = json.loads(request.body)
-#             item_id = data['id']
-#         except:
-#             return HttpResponse(status=400)
-    
-#         item = get_object_or_404(Items, id=item_id)
-#         player = get_object_or_404(Player, user=request.user)
-#         player.inventory.add(item)
-#         player.save()
 
-#         if item.is_furniture:
-#             furn = Furniture(name=item.name,
-#                                 picture=item.picture,
-#                                 is_big=item.is_big,
-#                                 hitboxX=item.hitboxX,
-#                                 hitboxY=item.hitboxY,
-#                                 locationX=0,
-#                                 locationY=0,
-#                                 house=player.house,
-#                                 placed=False,
-#                                 content_type=item.content_type)
-#             furn.save()
-#         return HttpResponse()
