@@ -115,6 +115,8 @@ class Player(models.Model):
     picture = models.FileField(blank=True)
     hunger = models.IntegerField(default=50)
     mood = models.IntegerField(default=50)
+    locationX = models.IntegerField(default=7)
+    locationY = models.IntegerField(default=7)
 
     def __str__(self):
         return f'id={self.id}, user="{self.user.username}"'

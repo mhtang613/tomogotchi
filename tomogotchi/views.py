@@ -10,6 +10,9 @@ from django.http import HttpResponse, Http404
 
 from django.utils import timezone
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 from tomogotchi.models import *
 # from tomogotchi.forms import *
 from collections import Counter
@@ -68,12 +71,6 @@ def get_placed_furniture(player):
     } for furniture in furniture_list]
     return placedFurniture
 
-# Gets set of visitors for a house:
-@login_required
-def get_visitors(house):
-    visitors = Player.objects.filter(visiting=house)
-    return set(visitors)
-
 # Collision check between sprite and furniture:
 def is_collide(xV, yV, xF, yF, xHF, yHF):
     # Sprites have a hitbox of 2x2
@@ -93,9 +90,10 @@ def is_collide(xV, yV, xF, yF, xHF, yHF):
 
     return overlap_x and overlap_y
 
-# Generate open slots for sprites:
-def find_spaces(context):
+# Generate open slots for sprites: (prefers nonoverlaping sprites)
+def find_spaces(context, house):
     res = set()
+    preferred_res = set()
     for i in range(1,20):
         for j in range(1,20):
             valid = True
@@ -106,29 +104,41 @@ def find_spaces(context):
                 yHF = furniture['hitboxY']
                 if is_collide(i, j, xF, yF, xHF, yHF): valid = False
             if valid: res.add((i,j))
-    return res
+            for player in Player.objects.filter(visiting=house):
+                xP = player.locationX
+                yP = player.locationY
+                if is_collide(i, j, xP, yP, 2, 2): valid = False
+            if valid: preferred_res.add((i,j))
+    return res, preferred_res
 
-# Place visitors into unoccupied spaces
-    # Requires context to have context['placedFurniture'] populated
-def place_visitors(context, house):
-    # Find necessary info
-    visitors = list(get_visitors(house))
-    open_spaces = list(find_spaces(context))
-    random.shuffle(open_spaces) #in-place shuffle
-    context['visitors'] = []
-    # Populate as many open spaces as possible:
-    while open_spaces and visitors:
-        space = open_spaces.pop()
-        visitor = visitors.pop()
-        context["visitors"].append({
-            "visitor" : visitor,
-            "locationX" : space[0],
-            "locationY" : space[1],
-            "picture" : visitor.picture
-        })
-    # return updated context
-    return context
+# retrieve random pos from free spaces
+def get_random_free_space(context, house):
+    spaces, preferred_spaces = find_spaces(context, house)
+    if (len(preferred_spaces) == 0):
+        preferred_spaces = spaces
+    return random.choice(tuple(preferred_spaces))  # Randomly choose avalible space
 
+# This function MUST be run AFTER furniture is populated into context
+# Updates visiting, posx, posy for the current player when they change house
+def update_user_visiting(request, context, house):
+    if (request.user.player.visiting != house):
+        # Remove sprite when leave previous room
+        async_to_sync(get_channel_layer().group_send)(
+                f'message_group_{request.user.player.visiting.id}',
+                {
+                    'type': 'broadcast_event',
+                    'message': json.dumps({"leaving": request.user.player.id})
+                }
+            )
+
+        # update self's visiting room
+        request.user.player.visiting = house
+        # place self in room
+        open_x, open_y = get_random_free_space(context, house)
+        request.user.player.locationX = open_x
+        request.user.player.locationY = open_y
+        # save player updates
+        request.user.player.save()
 
 @login_required
 def home(request):
@@ -147,11 +157,9 @@ def home(request):
     my_home = request.user.house
     # place furniture
     context['placedFurniture'] = get_placed_furniture(request.user.player)
-    # update self's visiting room
-    request.user.player.visiting = my_home
-    request.user.player.save()
-    # place visitors
-    context = place_visitors(context, my_home)
+    # Update visiting house info if needed
+    update_user_visiting(request, context, my_home)
+
     # Needed for background tiles:
     context["range10"] = [i * 2 + 1 for i in range(10)]
     context["range20"] = [i + 1 for i in range(20)]
@@ -168,16 +176,14 @@ def visit(request, user_id):
         return redirect(reverse('home'))
 
     context['house'] = other_user.house
-    # update self's visiting room
-    request.user.player.visiting = other_user.house
-    request.user.player.save()
     # place furniture
     context['placedFurniture'] = get_placed_furniture(other_user.player)
+    # Update visiting house info if needed
+    update_user_visiting(request, context, other_user.house)
+    
     # Needed for background tiles:
     context["range10"] = [i * 2 + 1 for i in range(10)]
     context["range20"] = [i + 1 for i in range(20)]
-    # place visitors
-    context = place_visitors(context, other_user.house)
    
     return render(request, 'other_home.html', context)
 

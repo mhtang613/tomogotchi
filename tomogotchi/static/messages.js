@@ -18,6 +18,7 @@ class MessageHandler {
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
             console.log("Messages WebSocket Connected")
+            MessageHandler.sendSpriteUpdate()
         }
 
         // Show a disconnected message when the WebSocket is closed & try to reconnect
@@ -37,21 +38,20 @@ class MessageHandler {
                 console.log(`Server: ${event.data}`)
                 return
             }
-
-            MessageHandler.updateMessages(response)
-            let elem = document.getElementById('messages-box');    
-            elem.scrollTop = elem.scrollHeight;
-
-            
-
-            // if (Array.isArray(response.msg_list)) {
-            //     MessageHandler.updateMessages(response)
-            //     //auto scroll to bottom (with newest messages)
-            //     let elem = document.getElementById('messages-box');    
-            //     elem.scrollTop = elem.scrollHeight;
-            // } else {
-            //     displayResponse(response)
-            // }
+            if (Array.isArray(response)) {
+                MessageHandler.updateMessages(response)
+                //auto scroll to bottom (with newest messages)
+                let elem = document.getElementById('messages-box');    
+                elem.scrollTop = elem.scrollHeight;
+            } else if (response.hasOwnProperty("visitors")) {
+                console.log("Visitor recieved", response)
+                MessageHandler.updateVisitors(response["visitors"])
+            } else if (response.hasOwnProperty("leaving")) {
+                console.log("Player left room", response)
+                MessageHandler.removeVisitor(response["leaving"])
+            } else {
+                displayResponse(response)
+            }
         }
     }
 
@@ -87,6 +87,46 @@ class MessageHandler {
         msg_div.innerHTML = `${author_name} ${msg_text} ${dash} ${msg_time}`
 
         return msg_div
+    }
+
+    static sendSpriteUpdate() {
+        displayError("")    // clear error
+        let data = {"action": "sprite"}
+        this.socket.send(JSON.stringify(data))
+    }
+
+    static updateVisitors(visitors) {
+        let grid = document.getElementById("grid-container")
+        visitors.forEach(sprite => {
+            if (!document.getElementById(`player_${sprite.id}`)) {
+                grid.append(MessageHandler.buildSpriteDiv(sprite))
+            }
+        })
+    }
+
+    static buildSpriteDiv(sprite) {
+        let sprite_img = document.createElement("img")
+        sprite_img.setAttribute("src", `/static/${sprite.picture}`)
+        sprite_img.setAttribute("height", "100%")
+        
+        let sprite_div = document.createElement("div")
+        sprite_div.id = `player_${sprite.id}`
+        sprite_div.setAttribute("class", "sprite")
+        sprite_div.style.gridArea = `${sprite.locationY}/ ${sprite.locationX} / span 2 / span 2`
+        sprite_div.appendChild(sprite_img)
+        
+        return sprite_div
+    }
+
+    static removeVisitor(visitor_id) {
+        if (!visitor_id) {
+            return
+        }
+        let grid = document.getElementById("grid-container")
+        let visitor_div = document.getElementById(`player_${visitor_id}`)
+        if (visitor_div) {
+            grid.removeChild(visitor_div)
+        }
     }
 
     static sendRequest(element) {

@@ -47,12 +47,6 @@
                             <img id={{furniture.true_id}} src="{% url 'get-item-picture' furniture.name %}" alt="{{ furniture.name }}" height="100%">
                         </div>
                     {% endfor %}
-                    {% comment %} Place visitors {% endcomment %}
-                    {% for visitor in visitors %}
-                        <div class="placed-furniture" style="grid-area: {{ visitor.locationY }} / {{ visitor.locationX }} / span {{2}} / span {{2}};">
-                            <img src="{% static visitor.picture %}" height="100%">
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
             {% block footer %}

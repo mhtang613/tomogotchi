@@ -162,8 +162,30 @@ class MessagesConsumer(WebsocketConsumer):
             self.send_message_list()
             return
 
-        self.send_error(f'Invalid action property: "{action}"')
+        if action == 'sprite':
+            self.broadcast_join()
+            return
 
+        self.send_error(f'Invalid action property: "{action}"')
+    
+    def broadcast_join(self):
+        all_sprites = []
+        for player in Player.objects.filter(visiting=self.user.player.visiting):
+            sprite_info = {
+                "id" : player.id,
+                "locationX" : player.locationX,
+                "locationY" : player.locationY,
+                "picture" : player.picture.name
+            }
+            all_sprites.append(sprite_info)
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps({"visitors": all_sprites})
+            }
+        )
     # sends a single message (used for updating already loaded front end)
     def send_message(self, msg):
         msg_info = {

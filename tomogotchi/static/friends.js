@@ -18,6 +18,7 @@ class FriendHandler {
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
             console.log("Friend WebSocket Connected")
+            displayMessage("")
         }
     
         // Show a disconnected message when the WebSocket is closed & try to reconnect
