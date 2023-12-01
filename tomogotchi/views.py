@@ -76,7 +76,7 @@ def get_placed_furniture(player):
     furniture_list = Furniture.objects.filter(house=house, placed=True)
     placedFurniture = [{
         'name': furniture.name,
-        'id': furniture.id,
+        'true_id': furniture.true_id,
         'locationX': furniture.locationX,
         'locationY': furniture.locationY,
         'hitboxX': furniture.hitboxX,
@@ -215,10 +215,10 @@ def edit_furniture_page(request):
     for item in my_furniture:
         if not item.placed:
             if item.is_big and item.true_id not in unique_big_set:
-                context['big_list'].append((item, counter[item.true_id]))
+                context['big_list'].append((item, counter[item.true_id], item.hitboxX, item.hitboxY))
                 unique_big_set.add(item.true_id)
             elif not item.is_big and item.true_id not in unique_small_set:
-                context['small_list'].append((item, counter[item.true_id]))
+                context['small_list'].append((item, counter[item.true_id], item.hitboxX, item.hitboxY))
                 unique_small_set.add(item.true_id)
 
     

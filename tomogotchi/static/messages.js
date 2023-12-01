@@ -17,12 +17,12 @@ class MessageHandler {
 
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
-            displayMessage("Messages WebSocket Connected")
+            console.log("Messages WebSocket Connected")
         }
 
         // Show a disconnected message when the WebSocket is closed & try to reconnect
         this.socket.onclose = function(event) {
-            displayMessage("WebSocket Disconnected: Trying to Reconnect")
+            console.log("WebSocket Disconnected: Trying to Reconnect")
             setTimeout(function() {
                 MessageHandler.connectToServer()
             }, 1000);

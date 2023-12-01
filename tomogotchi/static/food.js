@@ -34,17 +34,17 @@ class FoodHandler {
     
         // Handle any errors that occur.
         this.socket.onerror = function(error) {
-            displayMessage("WebSocket Error: " + error)
+            console.log("WebSocket Error: " + error)
         }
     
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
-            displayMessage("Food WebSocket Connected")
+            console.log("Food WebSocket Connected")
         }
     
         // Show a disconnected message when the WebSocket is closed & try to reconnect
         this.socket.onclose = function(event) {
-            displayMessage("Food WebSocket Disconnected: Trying to Reconnect")
+            console.log("Food WebSocket Disconnected: Trying to Reconnect")
             setTimeout(function() {
                 FoodHandler.connectToServer()
             }, 1000);
@@ -67,7 +67,7 @@ class FoodHandler {
         }
     }
     static updateFoodList(response) {
-        displayMessage("food.js updateFoodList")
+        console.log("food.js updateFoodList")
         let food_bar = document.getElementById("food-bar-container")
         response.forEach(food => {
             let existing_div = document.getElementById(`id_food_div_${food.food_id}`);
@@ -77,7 +77,7 @@ class FoodHandler {
             } else if (!existing_div && food.count <= 0) {
                 // do nothing
             } else {
-                displayMessage(`id, count = ${food.food_id} ${food.count}`);
+               console.log(`id, count = ${food.food_id} ${food.count}`);
                 if ((food.count) <= 0) {
                     existing_div.remove();
                 } else {
@@ -89,7 +89,7 @@ class FoodHandler {
     }
 
     static makeFoodDiv(food) {
-        displayMessage("food.js makeFoodDiv")
+        console.log("food.js makeFoodDiv")
         let foodDiv = document.createElement("div")
         foodDiv.id = `id_food_div_${food.food_id}`
         foodDiv.className = "food-elem"
@@ -113,7 +113,7 @@ class FoodHandler {
     }
 
     static sendUseFoodRequest(food_id) {
-        displayMessage("food.js sendUseFoodRequest")
+        console.log("food.js sendUseFoodRequest")
         let data = {"action": "use-food", "food_id": food_id}
         console.log(`using food id ${food_id}`)
         this.socket.send(JSON.stringify(data))

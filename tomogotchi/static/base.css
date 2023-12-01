@@ -168,8 +168,7 @@ td {
     background-color: aquamarine;
 }
 
-.item {
-    grid-area: 1 / 1 / span 2 / span 2;
+.placed-furniture {
     text-align: center;
     overflow: hidden;
     /* Sprite rendering */
@@ -182,7 +181,7 @@ td {
     align-items: center;
 }
 
-.item img {
+.placed-furniture img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain; /* Fit the entire image within the element */
@@ -428,7 +427,8 @@ progress {
     
 }
 
-#draggable {
+.draggable {
     position: absolute;
     cursor: move;
+    z-index: 10;
 }

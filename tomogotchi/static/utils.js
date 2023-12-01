@@ -145,9 +145,8 @@ function displayError(message) {
 }
 
 function displayMessage(message) {
-    // let messageElement = document.getElementById("message")
-    // messageElement.innerHTML = message
-    console.log(message)
+    let messageElement = document.getElementById("message")
+    messageElement.innerHTML = message
 }
 
 function displayResponse(response) {
@@ -155,6 +154,8 @@ function displayResponse(response) {
         displayError(response.error)
     } else if ("message" in response) {
         displayMessage(response.message)
+    } else if ("debug" in response) {
+        console.log(response.debug)
     } else {
         displayMessage("Unknown response")
     }

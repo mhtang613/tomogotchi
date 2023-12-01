@@ -27,8 +27,7 @@ class FurnitureConsumer(WebsocketConsumer):
             return        
 
         self.user = self.scope["user"]
-
-        self.send_collision_list()
+        self.broadcast_message(json.dumps({'debug': 'Connected to Furniture Websocket'}))
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -46,89 +45,65 @@ class FurnitureConsumer(WebsocketConsumer):
             self.send_error('invalid JSON sent to server')
             return
 
-        if 'id' not in data:
-            self.send_error('furniture id not sent in JSON')
-            return
         if 'action' not in data:
             self.send_error('action property not sent in JSON')
+            return
+        if ('furniture-list' not in data) or (not data["furniture-list"]):
+            self.send_error('No updates were sent')
             return
 
         action = data['action']
 
-        if action == 'place':
-            self.received_place(data)
-            return
-
-        if action == 'remove':
-            self.received_remove(data)
+        if action == 'update':
+            self.received_update(data["furniture-list"])
             return
 
         self.send_error(f'Invalid action property: "{action}"')
 
     # User puts furniture in room
-    def received_place(self, data):
-        if 'pos' not in data:
-            self.send_error('"pos" property not sent in JSON')
-            return
-        
-        id = data['id']
-        pos_x = data['pos']['x']
-        pos_y = data['pos']['y']
-        try:
-            furniture = Furniture.objects.get(id=id)
-        except Furniture.DoesNotExist:
-            self.send_error(f'Furniture with id={id} Does Not Exist.')
-        if (furniture.house.user != self.user):    # NOTE: Uncertain if this comparison works... MUST TEST!!
-            self.send_error(f'You cannot place furniture you do not own.')
-        
-        furniture.locationX = pos_x
-        furniture.locationY = pos_y
-        furniture.save()
-        self.broadcast_list()
+    def received_update(self, furnlist):
+        if (type(furnlist) != list):
+            print("Invalid type: " + type(furnlist))
+            self.send_error("Invalid Update List")
+        for furn in furnlist:
+            if 'pos' not in furn:
+                self.send_error('"pos" property not sent in JSON')
+                return
+            if 'id' not in furn:
+                self.send_error('furniture id not sent in JSON')
+                return
+            
+            id = furn['id']
 
-    # User removes furniture from room
-    def received_remove(self, data):
-        id = data['id']
-        try:
-            furniture = Furniture.objects.get(id=id)
-        except Furniture.DoesNotExist:
-            self.send_error(f"Furniture with id={id} does not exist")
-            return
+            if (furn['placed']):
+                try:
+                    furniture = Furniture.objects.filter(house__user=self.user, true_id=id)
+                except Furniture.DoesNotExist:
+                    self.send_error(f'You cannot manipulate furniture you do not own.')
+                if (len(furniture) == 0):
+                     self.send_error(f'You cannot manipulate furniture you do not own.')
+                furniture = furniture[0]    # update the first avalible one
 
-        self.user.furnitureActive.remove(furniture)     # May need to retrieve user from database!!
-        self.broadcast_list()
+                pos_x = furn['pos']['x']
+                pos_y = furn['pos']['y']
+                
+                furniture.locationX = pos_x
+                furniture.locationY = pos_y
+                furniture.placed = True
+                print(furniture)
+                print(furn)
+                print(Furniture.objects.filter(house__user=self.user, true_id=id).count())
+                furniture.save()
+                
+        # self.broadcast_list()
+        self.broadcast_message(json.dumps({'message': "Update complete"}))
+        print(furnlist)
 
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
 
-    def send_collision_list(self):
-        player = get_object_or_404(Player, user=self.user)
-        collision_list = Furniture.objects.filter(house=player.house, placed=True)
-        send_list = list()
-        for furn in collision_list:
-            furn_info = {
-                'name' : furn.name,
-                'true_id' : furn.id,
-                'is_big' : furn.is_big,
-                'hitboxX' : furn.hitboxX,
-                'hitboxY' : furn.hitboxY,
-                'locationX' : furn.locationX,
-                'locationY' : furn.locationY,
-                'house': furn.house.id,
-                'placed' : furn.placed
-            }
-            send_list.append(furn_info)
-        
-        async_to_sync(self.channel_layer.group_send)(
-            self.group_name,
-            {
-                'type': 'broadcast_event',
-                'message': json.dumps(send_list)     # Updated Furniture list goes here
-            }
-        )
-
-    def broadcast_event(self, event):
-        self.send(text_data=event['message'])
+    def broadcast_message(self, message):
+        self.send(text_data=message)
 
 class MessagesConsumer(WebsocketConsumer):
     channel_name = 'message_channel'
