@@ -62,7 +62,7 @@ class NameHandler {
         name_entry.type = "text"
         name_entry.value = self.original_name
         name_entry.id = "name-entry"
-        name_entry.maxLength = 15
+        name_entry.maxLength = 30
         name_div.append(name_entry)
 
         NameHandler.editingEvents()
