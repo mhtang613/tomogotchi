@@ -37,18 +37,26 @@ class MessageHandler {
                 console.log(`Server: ${event.data}`)
                 return
             }
-            if (Array.isArray(response)) {
-                MessageHandler.updateMessages(response)
-                //auto scroll to bottom (with newest messages)
-                let elem = document.getElementById('messages-box');    
-                elem.scrollTop = elem.scrollHeight;
-            } else {
-                displayResponse(response)
-            }
+
+            MessageHandler.updateMessages(response)
+            let elem = document.getElementById('messages-box');    
+            elem.scrollTop = elem.scrollHeight;
+
+            
+
+            // if (Array.isArray(response.msg_list)) {
+            //     MessageHandler.updateMessages(response)
+            //     //auto scroll to bottom (with newest messages)
+            //     let elem = document.getElementById('messages-box');    
+            //     elem.scrollTop = elem.scrollHeight;
+            // } else {
+            //     displayResponse(response)
+            // }
         }
     }
 
-    static updateMessages(messages) {
+    static updateMessages(response) {
+        let messages = response.msg_list
         // Get the messages container
         let msg_container = document.getElementById("messages-list")
         // Adds each new message received from the server to the container
@@ -57,6 +65,9 @@ class MessageHandler {
                 msg_container.append(MessageHandler.makeMessageDiv(msg))
             }
         })
+
+        let mood_meter = document.getElementById("mood");
+        mood_meter.value = response.mood;
     }
 
     // Builds a new HTML "div" element for each message
