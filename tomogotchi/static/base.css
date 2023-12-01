@@ -168,7 +168,7 @@ td {
     background-color: aquamarine;
 }
 
-.placed-furniture .item .sprite {
+.placed-furniture {
     text-align: center;
     overflow: hidden;
     /* Sprite rendering */
@@ -182,6 +182,46 @@ td {
 }
 
 .placed-furniture img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fit the entire image within the element */
+    object-position: center; /* Center the image within the element */
+}
+
+.item {
+    text-align: center;
+    overflow: hidden;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    /* Image fitting */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fit the entire image within the element */
+    object-position: center; /* Center the image within the element */
+}
+
+.sprite {
+    text-align: center;
+    overflow: hidden;
+    /* Sprite rendering */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    /* Image fitting */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sprite img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain; /* Fit the entire image within the element */
