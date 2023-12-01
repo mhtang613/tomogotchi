@@ -536,6 +536,18 @@ class ShopConsumer(WebsocketConsumer):
                                 content_type=item.content_type,
                                 count=1)
                     food.save()
+        self.send_money(player.money)
+    
+    def send_money(self, money):
+        message_data = {'money' : money}
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps(message_data)
+            }
+        )
+
     
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))

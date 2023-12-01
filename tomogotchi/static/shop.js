@@ -37,9 +37,19 @@ class ShopHandler {
                 console.log(`Server: ${event.data}`)
                 return
             }
+
+            ShopHandler.updateMoney(response)
             
         }
     }
+
+    static updateMoney(response) {
+        let new_money = response.money;
+        let money_counter = document.getElementById('money-counter')
+        money_counter.innerHTML = `You have $${new_money}!`
+
+    }
+
 
     static sendBuyItemRequest(item_id) {
         let data = {"action": "buy-item", "item_id": item_id}

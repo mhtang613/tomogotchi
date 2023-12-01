@@ -10,6 +10,10 @@ html, body {
     margin-right: 3vw;
 }
 
+#money-counter {
+    margin-left: 2vw;
+}
+
 .container {
     display: flex;
     margin-top: 4vh;
