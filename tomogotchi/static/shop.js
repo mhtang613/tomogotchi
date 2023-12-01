@@ -17,7 +17,7 @@ class ShopHandler {
     
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
-            displayMessage("Shop WebSocket Connected")
+            console.log("Shop WebSocket Connected")
         }
     
         // Show a disconnected message when the WebSocket is closed & try to reconnect

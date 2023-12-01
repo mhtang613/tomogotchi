@@ -10,11 +10,6 @@
             if (perfEntries[0].type === "back_forward") {
                 location.reload(true);
             }
-
-            // To get row and col when clicking on furniture, use pointer-events: none;
-            function releasedMouse(row, col) {
-                displayMessage(`row=${row} col=${col}`)
-            }
         </script>
         {% block javascript %} {% endblock %}
         <title> Tomogotchi </title>
@@ -30,6 +25,7 @@
 
         <div class="container">
             <div id="error"></div>
+            <div id="message"></div>
             <div id="header">
                 {% block header %}
                 {% endblock %}
@@ -39,7 +35,7 @@
                     {% comment %} Create background {% endcomment %}
                     {% for i in range20 %}
                         {% for j in range20 %}
-                            <div id="tile_{{i}}_{{j}}" onmouseup="releasedMouse('{{i}}','{{j}}')" class="item" style="grid-area: {{ i }} / {{ j }} / span 1 / span 1;">
+                            <div id="tile_{{i}}_{{j}}" class="item" style="grid-area: {{ i }} / {{ j }} / span 1 / span 1;">
                                 <img src="{% static 'images/backgrounds/floors/floor7.png' %}" alt="Background Tile" height="100%">
                             </div>
                         {% endfor %}
@@ -47,13 +43,13 @@
                     <!-- Furniture Grid Items Go Here -->
                     {% comment %} Place furniture {% endcomment %}
                     {% for furniture in placedFurniture %}
-                        <div class="item" style="grid-area: {{ furniture.locationY }} / {{ furniture.locationX }} / span {{ furniture.hitboxY }} / span {{ furniture.hitboxX }};">
-                            <img id={{furniture.id}} src="{% url 'get-item-picture' furniture.name %}" alt="{{ furniture.name }}" height="100%">
+                        <div class="placed-furniture" style="grid-area: {{ furniture.locationY }} / {{ furniture.locationX }} / span {{ furniture.hitboxY }} / span {{ furniture.hitboxX }};">
+                            <img id={{furniture.true_id}} src="{% url 'get-item-picture' furniture.name %}" alt="{{ furniture.name }}" height="100%">
                         </div>
                     {% endfor %}
                     {% comment %} Place visitors {% endcomment %}
                     {% for visitor in visitors %}
-                        <div class="item" style="grid-area: {{ visitor.locationY }} / {{ visitor.locationX }} / span {{2}} / span {{2}};">
+                        <div class="placed-furniture" style="grid-area: {{ visitor.locationY }} / {{ visitor.locationX }} / span {{2}} / span {{2}};">
                             <img src="{% static visitor.picture %}" height="100%">
                         </div>
                     {% endfor %}
