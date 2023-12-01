@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.core.management import call_command #used for console commands
+from django.utils.html import escape
 
 class FurnitureConsumer(WebsocketConsumer):
     channel_name = 'furniture_channel'
@@ -65,6 +66,7 @@ class FurnitureConsumer(WebsocketConsumer):
         if (type(furnlist) != list):
             print("Invalid type: " + type(furnlist))
             self.send_error("Invalid Update List")
+        used_ids = set()
         for furn in furnlist:
             if 'pos' not in furn:
                 self.send_error('"pos" property not sent in JSON')
@@ -77,13 +79,13 @@ class FurnitureConsumer(WebsocketConsumer):
 
             if (furn['placed']):
                 try:
-                    furniture = Furniture.objects.filter(house__user=self.user, true_id=id)
+                    furniture = Furniture.objects.filter(house__user=self.user, true_id=id).exclude(id__in=used_ids)
                 except Furniture.DoesNotExist:
                     self.send_error(f'You cannot manipulate furniture you do not own.')
                 if (len(furniture) == 0):
                      self.send_error(f'You cannot manipulate furniture you do not own.')
                 furniture = furniture[0]    # update the first avalible one
-
+                used_ids.add(furniture.id)
                 pos_x = furn['pos']['x']
                 pos_y = furn['pos']['y']
                 
@@ -97,7 +99,7 @@ class FurnitureConsumer(WebsocketConsumer):
                 
         # self.broadcast_list()
         self.broadcast_message(json.dumps({'message': "Update complete"}))
-        print(furnlist)
+        print(Furniture.objects.filter(house__user=self.user, placed=True))
 
     def send_error(self, error_message):
         self.send(text_data=json.dumps({'error': error_message}))
@@ -218,7 +220,7 @@ class MessagesConsumer(WebsocketConsumer):
             return
         # Get house from player current visiting house
         house = self.user.player.visiting
-        msg = Message(user=self.user, house=house, text=data['message'], date=timezone.now())
+        msg = Message(user=self.user, house=house, text=escape(data['message']), date=timezone.now())
         msg.save()
         self.send_message(msg)
         # Update stats on message sent:
@@ -595,7 +597,7 @@ class NameEditingConsumer(WebsocketConsumer):
 
     # sends a single message (used for updating already loaded front end)
     def send_name(self, name):
-        self.send(text_data=json.dumps({'name': name}))
+        self.send(text_data=json.dumps({'name': self.user.player.name}))
 
     # Saves a new message to the current visiting house (& broadcasts the new msg)
     def validate_name(self, data):
@@ -603,10 +605,12 @@ class NameEditingConsumer(WebsocketConsumer):
             self.send_error('Invalid name')
             return
         name = data['name']
+        if len(name) > 15:
+            self.send_error(f'The name {name} is too long. Your name can be 15 chars max.')
         # Check if name exists/is repeat here
         with transaction.atomic():
             if not Player.objects.select_for_update().filter(name=name).exists():   # get DB lock
-                self.user.player.name = name
+                self.user.player.name = escape(name)
                 self.user.player.save() # update name in DB
                 self.send_name(name)
                 return

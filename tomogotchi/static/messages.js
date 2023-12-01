@@ -63,7 +63,7 @@ class MessageHandler {
     static makeMessageDiv(msg) {
         let author_home_link = `<a class="home-inline" id="id_msg_home_${msg.id}" href="${otherHomeURL(msg.user.id)}">${msg.user.player.name}</a>`
         let author_name = `<span class="msg_author"> ${author_home_link}: </span>`
-        let msg_text = `<span id="id_msg_text_${msg.id}">${sanitize(msg.text)}</span>`
+        let msg_text = `<span id="id_msg_text_${msg.id}">${msg.text}</span>`
         let dash = '<span class="msg-info"> - </span>'
         
         let date = new Date(msg.date)

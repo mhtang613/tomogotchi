@@ -71,6 +71,9 @@
     </a>
 
     <button id="save"> Save </button>
-    <button id="reset"> Reset </button>
+    <form action="{% url 'edit' %}" method="POST">
+        <button id="reset" type="submit"> Reset </button>
+        {% csrf_token %}
+    </form>
 </div>
 {% endblock %}

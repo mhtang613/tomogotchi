@@ -24,23 +24,6 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 
-def test_html(request):
-    context = {}
-    return render(request, 'other_home.html', context)
-
-# THIS FUNCTION IS NOT USED; FUNCTIONALITY WAS MOVED TO WEBSOCKETS
-# def edit_username(request):
-#     if 'username' not in request.POST or not request.POST['username']:
-#         context = {}
-#         context['error'] = True
-#         context['error_message'] = 'You must enter text to post.'
-#         return render(request, 'my_home.html', context)
-#     user_id = request.user
-#     player = get_object_or_404(Player, user_id=user_id)
-#     player.name = request.POST['username']
-
-#     return redirect(reverse('home'))
-
 # Params : player - an instance of the Player model
 # Returns : nothing
 # Given a Player instance, give it a unique random name and save it to the db
@@ -73,7 +56,7 @@ def get_random_tomogotchi(player):
 @login_required
 def get_placed_furniture(player):
     house = player.house
-    furniture_list = Furniture.objects.filter(house=house, placed=True)
+    furniture_list = Furniture.objects.filter(house=house, placed=True).order_by('-hitboxX')
     placedFurniture = [{
         'name': furniture.name,
         'true_id': furniture.true_id,
@@ -174,6 +157,7 @@ def home(request):
     context["range20"] = [i + 1 for i in range(20)]
     return render(request, 'my_home.html', context)
 
+@login_required
 def visit(request, user_id):
     context = {}
     other_user = get_object_or_404(User, id=user_id)
@@ -198,8 +182,12 @@ def visit(request, user_id):
     return render(request, 'other_home.html', context)
 
 # for displaying the inventory of furniture in edit.html
+@login_required
 def edit_furniture_page(request):
     context = {}
+    if request.method == 'POST':
+        # Remove furniture is only valid post request
+        my_furniture = Furniture.objects.filter(house__user=request.user, placed=True).update(placed=False)
     my_home = request.user.house
     context['house'] = my_home
     context['placedFurniture'] = get_placed_furniture(request.user.player)
@@ -221,7 +209,7 @@ def edit_furniture_page(request):
                 context['small_list'].append((item, counter[item.true_id], item.hitboxX, item.hitboxY))
                 unique_small_set.add(item.true_id)
 
-    
+        
     # Needed for background tiles:
     context["range10"] = [i * 2 + 1 for i in range(10)]
     context["range20"] = [i + 1 for i in range(20)]
@@ -237,6 +225,7 @@ def login(request):
         return redirect(reverse('home'))
     return render(request, "login.html", context)
 
+@login_required
 def shop(request):
     furniture_items = Items.objects.filter(is_furniture=True).order_by("name")
     other_items = Items.objects.filter(is_furniture=False).order_by("price")
@@ -244,7 +233,7 @@ def shop(request):
     
     return render(request, 'shop.html', context)
     
-
+@login_required
 def get_item_picture(request, name):
     item_instance = Items.objects.get(name=name)
     if not item_instance.picture:
