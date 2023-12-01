@@ -402,13 +402,13 @@ class FriendConsumer(WebsocketConsumer):
                 },
             }
         msg_list = [msg_info]
-
+        message_data = {'msg_list' : msg_list, 'mood' : self.user.player.mood}
         friend_msg_group = f'message_group_{friend.player.house.id}'
         async_to_sync(self.channel_layer.group_send)(
             friend_msg_group,
             {
                 'type': 'broadcast_event',
-                'message': json.dumps(msg_list)
+                'message': json.dumps(message_data)
             }
         )
 
