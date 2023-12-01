@@ -185,3 +185,5 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+CSRF_TRUSTED_ORIGINS = ['https://www.woli.page']
