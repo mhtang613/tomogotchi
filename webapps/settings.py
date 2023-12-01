@@ -31,7 +31,11 @@ SECRET_KEY = 'django-insecure-e32efnn%169wwyh(4zumj&7u9s#j0+ql7p9o$eiigo9-$1-!3q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["3.20.201.137",
+                 "kuso.app",
+                 "woli.page",
+                 "wolis.dev",
+                 "www.woli.page"]
 
 
 # Application definition
@@ -95,8 +99,11 @@ WSGI_APPLICATION = 'webapps.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'OPTIONS': {'charset': 'utf8mb4'},
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'django',
+    'USER': '',
+    'PASSWORD': '',
     }
 }
 
