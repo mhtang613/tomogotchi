@@ -175,12 +175,14 @@ class MessagesConsumer(WebsocketConsumer):
                     }
                 },
             }
+        new_mood = self.user.player.mood
         msg_list = [msg_info]
+        message_data = {'msg_list' : msg_list, 'new_mood' : new_mood}
         async_to_sync(self.channel_layer.group_send)(
             self.group_name,
             {
                 'type': 'broadcast_event',
-                'message': json.dumps(msg_list)
+                'message': json.dumps(message_data)
             }
         )
         
@@ -203,11 +205,13 @@ class MessagesConsumer(WebsocketConsumer):
             }
             msg_list.append(msg_info)  
         
+        new_mood = self.user.player.mood
+        message_data = {'msg_list' : msg_list, 'new_mood' : new_mood}
         async_to_sync(self.channel_layer.group_send)(
             self.group_name,
             {
                 'type': 'broadcast_event',
-                'message': json.dumps(msg_list)
+                'message': json.dumps(message_data)
             }
         )
 

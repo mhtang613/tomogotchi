@@ -37,8 +37,8 @@ class MessageHandler {
                 console.log(`Server: ${event.data}`)
                 return
             }
-            if (Array.isArray(response)) {
-                MessageHandler.updateMessages(response)
+            if (Array.isArray(response.msg_list)) {
+                MessageHandler.updateMessages(response.msg_list, response.new_mood)
                 //auto scroll to bottom (with newest messages)
                 let elem = document.getElementById('messages-box');    
                 elem.scrollTop = elem.scrollHeight;
@@ -48,7 +48,7 @@ class MessageHandler {
         }
     }
 
-    static updateMessages(messages) {
+    static updateMessages(messages, new_mood) {
         // Get the messages container
         let msg_container = document.getElementById("messages-list")
         // Adds each new message received from the server to the container
@@ -60,8 +60,9 @@ class MessageHandler {
 
         let mood_meter = document.getElementById("mood")
         if (mood_meter) {
-            mood_meter.value = mood_meter.value + 5
+            mood_meter.value = new_mood;
         }
+        displayMessage(new_mood)
     }
 
     // Builds a new HTML "div" element for each message
@@ -91,7 +92,7 @@ class MessageHandler {
     }
 
     static attachEvents() {
-        let message_input = document.getElementById('message-input')
+        let message_input = document.getElementById('message-input');
         message_input.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 if (message_input.value) {
