@@ -12,18 +12,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         players = Player.objects.all()
         # Mood update:
-        players.update( mood=Subquery(
-            Player.objects.filter(id=OuterRef("id")).annotate(
-                newmood=Cast( 
-                    Cast(F("mood"), FloatField()) - 40/Cast(  # amount of mood lost depends on 40/comfort, comfort = # of placed furniture + 1
-                        Count(
-                            F("house__furnitureOwned"), 
-                            filter=Q(house__furnitureOwned__placed=True)
-                        ) + 1,  # prevent division by zero
-                        FloatField() ),  
-                    PositiveIntegerField()) # must always be positive
-            ).values("newmood")[:1]
-        ))
+        mood_updates = {}
+        players = Player.objects.annotate(
+            comfort=Count('house__furnitureOwned', filter=Q(house__furnitureOwned__placed=True)) + 1
+        )
+        for player in players:
+            new_mood = max(0, player.mood - 40 / player.comfort)  # Ensure mood doesn't go below 0
+            mood_updates[player.id] = new_mood
+
+        # Update players' mood in the database
+        for player_id, new_mood in mood_updates.items():
+            Player.objects.filter(id=player_id).update(mood=new_mood)
+
         # set to a minimum of zero:
         Player.objects.filter(mood__lt=0).update(mood=0)
         
