@@ -90,7 +90,9 @@ class FoodHandler {
         })
 
         let food_meter = document.getElementById("hunger");
-        food_meter.value = food_meter.value + response.hunger;
+        if (!food_meter) {
+            food_meter.value = food_meter.value + response.hunger;
+        }
     }
 
     static makeFoodDiv(food) {
