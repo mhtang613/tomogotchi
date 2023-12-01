@@ -66,7 +66,9 @@ class MessageHandler {
             }
         })
         let mood_meter = document.getElementById("mood");
-        mood_meter.value = response.mood;
+        if (!mood_meter) {
+            mood_meter.value = response.mood;
+        }
     }
 
     // Builds a new HTML "div" element for each message
