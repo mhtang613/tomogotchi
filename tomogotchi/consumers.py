@@ -605,7 +605,7 @@ class NameEditingConsumer(WebsocketConsumer):
             self.send_error('Invalid name')
             return
         name = data['name']
-        if len(name) > 15:
+        if len(name) > 30:
             self.send_error(f'The name {name} is too long. Your name can be 15 chars max.')
         # Check if name exists/is repeat here
         with transaction.atomic():
