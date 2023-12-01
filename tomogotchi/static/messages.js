@@ -65,7 +65,6 @@ class MessageHandler {
                 msg_container.append(MessageHandler.makeMessageDiv(msg))
             }
         })
-
         let mood_meter = document.getElementById("mood");
         mood_meter.value = response.mood;
     }
