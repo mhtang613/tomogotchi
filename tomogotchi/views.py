@@ -194,6 +194,7 @@ def edit_furniture_page(request):
     if request.method == 'POST':
         # Remove furniture is only valid post request
         my_furniture = Furniture.objects.filter(house__user=request.user, placed=True).update(placed=False)
+        
     my_home = request.user.house
     context['house'] = my_home
     context['placedFurniture'] = get_placed_furniture(request.user.player)

@@ -1,6 +1,7 @@
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from tomogotchi.models import *
+from tomogotchi.views import is_collide
 from django.contrib.auth.models import User
 import json
 from django.utils import timezone
@@ -8,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.core.management import call_command #used for console commands
 from django.utils.html import escape
+import random
 
 class FurnitureConsumer(WebsocketConsumer):
     channel_name = 'furniture_channel'
@@ -60,7 +62,65 @@ class FurnitureConsumer(WebsocketConsumer):
             return
 
         self.send_error(f'Invalid action property: "{action}"')
+    
+    def find_spaces(self):
+        res = set()
+        for i in range(1,20):
+            for j in range(1,20):
+                valid = True
+                for furniture in Furniture.objects.filter(house=self.user.house, placed=True):
+                    xF = furniture.locationX
+                    yF = furniture.locationY
+                    xHF = furniture.hitboxX
+                    yHF = furniture.hitboxY
+                    if is_collide(i, j, xF, yF, xHF, yHF): valid = False
+                if valid: res.add((i,j))
+        return res
 
+    # Everyone leaves & rejoins on furniture update
+    def broadcast_all_re_join(self):
+        all_sprites = []
+        for player in Player.objects.filter(visiting=self.user.house):
+            sprite_info = {
+                "id" : player.id,
+                "locationX" : player.locationX,
+                "locationY" : player.locationY,
+                "picture" : player.picture.name
+            }
+            all_sprites.append(sprite_info)
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.group_name,
+            {
+                'type': 'broadcast_event',
+                'message': json.dumps({"visitors": all_sprites})
+            }
+        )
+
+    def re_place_all_users(self): 
+        house = self.user.house
+        spaces = self.find_spaces()
+        for player in Player.objects.filter(visiting=house):
+            # Remove sprite when leave previous room
+            async_to_sync(self.channel_layer.group_send)(
+                    self.group_name,
+                    {
+                        'type': 'broadcast_event',
+                        'message': json.dumps({"leaving": player.id})
+                    }
+                )
+            # update self's visiting room
+            player.visiting = house
+            # place self in room
+            open_x, open_y = random.choice(tuple(spaces))
+            player.locationX = open_x
+            player.locationY = open_y
+            # save player updates
+            player.save()
+            spaces.remove((open_x, open_y))
+        
+        self.broadcast_all_re_join()
+    
     # User puts furniture in room
     def received_update(self, furnlist):
         if (type(furnlist) != list):
@@ -96,8 +156,8 @@ class FurnitureConsumer(WebsocketConsumer):
                 print(furn)
                 print(Furniture.objects.filter(house__user=self.user, true_id=id).count())
                 furniture.save()
-                
-        # self.broadcast_list()
+
+        self.re_place_all_users()
         self.broadcast_message(json.dumps({'message': "Update complete"}))
         print(Furniture.objects.filter(house__user=self.user, placed=True))
 
@@ -186,6 +246,7 @@ class MessagesConsumer(WebsocketConsumer):
                 'message': json.dumps({"visitors": all_sprites})
             }
         )
+   
     # sends a single message (used for updating already loaded front end)
     def send_message(self, msg):
         msg_info = {
