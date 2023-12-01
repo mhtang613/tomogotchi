@@ -353,6 +353,7 @@ class FriendConsumer(WebsocketConsumer):
         friend = User.objects.filter(player__name=data['name']).all()[0]
         if self.user.player.following.filter(id=friend.id).exists():
             self.send_error(f'You are already friends with {friend.player.name}.')
+            return
         # Get Current User for update
         player = self.user.player
         player.following.add(friend)

@@ -38,11 +38,11 @@ class MessageHandler {
                 console.log(`Server: ${event.data}`)
                 return
             }
-            if (Array.isArray(response)) {
+            if (response.hasOwnProperty("msg_list")) {
                 MessageHandler.updateMessages(response)
                 //auto scroll to bottom (with newest messages)
                 let elem = document.getElementById('messages-box');    
-                elem.scrollTop = elem.scrollHeight;
+                elem.scrollTop = elem.scrollHeight
             } else if (response.hasOwnProperty("visitors")) {
                 console.log("Visitor recieved", response)
                 MessageHandler.updateVisitors(response["visitors"])
