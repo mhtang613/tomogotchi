@@ -90,7 +90,7 @@ class FoodHandler {
         })
 
         let food_meter = document.getElementById("hunger");
-        if (!food_meter) {
+        if (food_meter) {
             food_meter.value = food_meter.value + response.hunger;
         }
     }
