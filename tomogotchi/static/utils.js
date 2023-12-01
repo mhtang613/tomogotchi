@@ -13,17 +13,17 @@ class NameHandler {
 
         // Handle any errors that occur.
         this.socket.onerror = function(error) {
-            displayMessage("WebSocket Error: " + error)
+            console.log("WebSocket Error: " + error)
         }
 
         // Show a connected message when the WebSocket is opened.
         this.socket.onopen = function(event) {
-            displayMessage("Edit Name WebSocket Connected")
+            console.log("Edit Name WebSocket Connected")
         }
 
         // Show a disconnected message when the WebSocket is closed & try to reconnect
         this.socket.onclose = function(event) {
-            displayMessage("WebSocket Disconnected: Name Editing finished")
+            console.log("WebSocket Disconnected: Name Editing finished")
             this.socket = null   // reset static 
         }
 
@@ -71,11 +71,15 @@ class NameHandler {
     static submitName() {
         let name_entry = document.getElementById('name-entry')
         // only send name if name non-empty & different from original
-        if (name_entry.value && !(name_entry.value === self.original_name) ) { 
-            displayError("")    // clear error
-            let data = {"action": "edit", "name": name_entry.value}
-            name_entry.value = ""  // clear input box
-            this.socket.send(JSON.stringify(data))
+        if (name_entry.value) { 
+            if (name_entry.value === self.original_name) {
+                NameHandler.exit_editing()
+            } else {
+                displayError("")    // clear error
+                let data = {"action": "edit", "name": name_entry.value}
+                name_entry.value = ""  // clear input box
+                this.socket.send(JSON.stringify(data))
+            }
         }
     }
 
@@ -157,7 +161,7 @@ function displayResponse(response) {
     } else if ("debug" in response) {
         console.log(response.debug)
     } else {
-        displayMessage("Unknown response")
+        console.log("Unknown response")
     }
 }
 
