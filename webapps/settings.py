@@ -26,7 +26,7 @@ CONFIG.read(BASE_DIR / "config.ini")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e32efnn%169wwyh(4zumj&7u9s#j0+ql7p9o$eiigo9-$1-!3q'
+SECRET_KEY = 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
