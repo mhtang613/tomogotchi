@@ -1,8 +1,7 @@
-# f23_team_6
-Repository for f23_team_6
+# Tomogotchi
+A nostalgic web browser game that combines the classic toy Tamagotchi with more modern messaging and customization features. 
+ - Users raise and hatch a virtual pet
+ - Interact with friends and their pets
+ - Visit houses and leave messages for your friends
 
-AndrewID's: wmshaw, mhtang, zhejiay
-
-Sprint 1 Product Owner: mhtang
-Sprint 2 Product Owner: zhejiay
-Sprint 3 Product Owner: wmshaw
+mhtang, wmshaw, zhejiay
